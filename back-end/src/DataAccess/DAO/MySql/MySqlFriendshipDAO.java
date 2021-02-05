@@ -15,11 +15,6 @@ public class MySqlFriendshipDAO implements IFriendshipDAO {
     }
 
     @Override
-    public void updateFriendship(Friendship friendship) {
-
-    }
-
-    @Override
     public void deleteFriendship(Friendship friendship) {
 
     }
