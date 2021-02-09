@@ -1,17 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="174993c8-adaa-48df-ae15-d719a3071abb" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/DataAccess/Utilities/EntityUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back-end.iml" beforeDir="false" afterPath="$PROJECT_DIR$/back-end.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DataAccess/DAO/IFriendshipDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataAccess/DAO/IFriendshipDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DataAccess/DAO/MySql/MySqlFriendshipDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataAccess/DAO/MySql/MySqlFriendshipDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DataAccess/Entities/Friendship.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataAccess/Entities/Friendship.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DataAccess/Entities/Node.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataAccess/Entities/Node.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DataAccess/Entities/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataAccess/Entities/User.java" afterDir="false" />
-    </list>
+    <list default="true" id="174993c8-adaa-48df-ae15-d719a3071abb" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -60,17 +50,33 @@
       <option name="presentableId" value="Default" />
       <updated>1612481884615</updated>
     </task>
+    <task id="LOCAL-00001" summary="Work on setting up DataAccess">
+      <created>1612486651266</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1612486651266</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Work on setting up DataAccess" />
+    <option name="LAST_COMMIT_MESSAGE" value="Work on setting up DataAccess" />
   </component>
   <component name="WindowStateProjectService">
     <state x="832" y="155" key="#com.intellij.ide.util.MemberChooser" timestamp="1612485593276">
       <screen x="0" y="0" width="1368" height="882" />
     </state>
     <state x="832" y="155" key="#com.intellij.ide.util.MemberChooser/0.0.1368.882@0.0.1368.882" timestamp="1612485593276" />
-    <state x="283" y="37" key="CommitChangelistDialog2" timestamp="1612486625748">
+    <state x="283" y="37" key="CommitChangelistDialog2" timestamp="1612486650040">
       <screen x="0" y="0" width="1368" height="882" />
     </state>
-    <state x="283" y="37" key="CommitChangelistDialog2/0.0.1368.882@0.0.1368.882" timestamp="1612486625748" />
+    <state x="283" y="37" key="CommitChangelistDialog2/0.0.1368.882@0.0.1368.882" timestamp="1612486650040" />
+    <state x="277" y="164" key="Vcs.Push.Dialog.v2" timestamp="1612486656579">
+      <screen x="0" y="0" width="1368" height="882" />
+    </state>
+    <state x="277" y="164" key="Vcs.Push.Dialog.v2/0.0.1368.882@0.0.1368.882" timestamp="1612486656579" />
     <state x="749" y="339" key="com.intellij.jarRepository.RepositoryAttachDialog-DOWNLOAD" timestamp="1612484186011">
       <screen x="0" y="0" width="1368" height="882" />
     </state>

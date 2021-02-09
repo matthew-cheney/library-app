@@ -2,7 +2,11 @@ package DataAccess.Entities;
 
 import DataAccess.Utilities.EntityUtils;
 
+import java.util.Map;
+
 public class User {
+
+    // region Required Properties
 
     private String id;
     private String username;
@@ -10,22 +14,36 @@ public class User {
     private String passwordSalt;
     private String firstName;
     private String lastName;
-    private boolean isFemale; // gender
+
+    // endregion
+
+    // region Optional Properties
+
     private String email;
     private String phoneNumber;
+    private String imageUrl;
+
+    // endregion
+
+    // region Constructors
 
     public User(String username, String password, String firstName, String lastName,
-                boolean isFemale, String email, String phoneNumber) {
+                String email, String phoneNumber, String imageUrl) {
         id = EntityUtils.generateId();
 
         setUsername(username);
         setPassword(password);
         setFirstName(firstName);
         setLastName(lastName);
-        setGender(isFemale);
+
         setEmail(email);
         setPhoneNumber(phoneNumber);
+        setImageUrl(imageUrl);
     }
+
+    // endregion
+
+    // region Getters
 
     public String getId() {
         return id;
@@ -51,10 +69,6 @@ public class User {
         return lastName;
     }
 
-    public boolean getGender() {
-        return isFemale;
-    }
-
     public String getEmail() {
         return email;
     }
@@ -63,12 +77,25 @@ public class User {
         return phoneNumber;
     }
 
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    // endregion
+
+    // region Setters
+
     public void setUsername(String username) {
         this.username = username;
     }
 
     public void setPassword(String password) {
-        this.password = password;
+        Map<String, String> passwordPair = EntityUtils.hashPassword(password);
+        assert(passwordPair.entrySet().size() == 1);
+        for (Map.Entry<String, String> entry : passwordPair.entrySet()) {
+            this.passwordSalt = entry.getKey();
+            this.passwordHash = entry.getValue();
+        }
     }
 
     public void setFirstName(String firstName) {
@@ -79,10 +106,6 @@ public class User {
         this.lastName = lastName;
     }
 
-    public void setGender(boolean isFemale) {
-        isFemale = isFemale;
-    }
-
     public void setEmail(String email) {
         this.email = email;
     }
@@ -90,4 +113,10 @@ public class User {
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    // endregion
 }

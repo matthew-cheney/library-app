@@ -2,7 +2,7 @@ package DataAccess.DAO.MySql;
 
 import DataAccess.DAO.IDAOFactory;
 import DataAccess.DAO.IFriendshipDAO;
-import DataAccess.DAO.INodeDAO;
+import DataAccess.DAO.IItemDAO;
 import DataAccess.DAO.IUserDAO;
 
 public class MySqlDAOFactory implements IDAOFactory {
@@ -13,8 +13,8 @@ public class MySqlDAOFactory implements IDAOFactory {
     }
 
     @Override
-    public INodeDAO makeNodeDAO() {
-        return new MySqlNodeDAO();
+    public IItemDAO makeNodeDAO() {
+        return new MySqlItemDAO();
     }
 
     @Override

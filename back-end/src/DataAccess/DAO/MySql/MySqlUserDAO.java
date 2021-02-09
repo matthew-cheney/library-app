@@ -4,6 +4,7 @@ import DataAccess.DAO.IUserDAO;
 import DataAccess.Entities.User;
 
 public class MySqlUserDAO implements IUserDAO {
+
     @Override
     public User getUser(String id) {
         return null;

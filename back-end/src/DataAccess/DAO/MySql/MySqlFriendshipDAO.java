@@ -4,6 +4,7 @@ import DataAccess.DAO.IFriendshipDAO;
 import DataAccess.Entities.Friendship;
 
 public class MySqlFriendshipDAO implements IFriendshipDAO {
+
     @Override
     public boolean friendshipExists(Friendship friendship) {
         return false;

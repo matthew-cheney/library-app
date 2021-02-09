@@ -14,6 +14,7 @@ public class Friendship {
     // region Constructors
 
     public Friendship(@NotNull String userIdA, @NotNull String userIdB) {
+        // TODO: Ensure that userIdA is the alphabetically first id, to ensure friendships aren't duplicated in the db with the ids reversed
         this.userIdA = userIdA;
         this.userIdB = userIdB;
     }
