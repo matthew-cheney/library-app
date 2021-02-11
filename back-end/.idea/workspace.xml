@@ -1,18 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="174993c8-adaa-48df-ae15-d719a3071abb" name="Default Changelist" comment="Work on setting up DataAccess">
-      <change afterPath="$PROJECT_DIR$/../.idea/library-app.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/mysql_mysql_connector_java_8_0_23.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/DataAccess/DAO/MySql/MySqlConnectionFactory.java" afterDir="false" />
+    <list default="true" id="174993c8-adaa-48df-ae15-d719a3071abb" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back-end.iml" beforeDir="false" afterPath="$PROJECT_DIR$/back-end.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DataAccess/Entities/Friendship.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataAccess/Entities/Friendship.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/DataAccess/DAO/MySql/MySqlConnectionFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataAccess/Connection/ConnectionFactory.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/DataAccess/Entities/Item.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataAccess/Entities/Item.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/DataAccess/Entities/ItemCategory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataAccess/Entities/ItemCategory.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DataAccess/Utilities/ConnectionFactory.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DataAccess/Utilities/EntityUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataAccess/Utilities/EntityUtils.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -22,9 +15,9 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Interface" />
         <option value="Enum" />
         <option value="Class" />
+        <option value="Interface" />
       </list>
     </option>
   </component>
@@ -42,7 +35,9 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
   <component name="ProjectId" id="1o2Po9nxl6quDLXXyQVCG5kS6ZB" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showExcludedFiles" value="true" />
@@ -55,18 +50,18 @@
     <property name="Repository.Attach.Sources" value="false" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$USER_HOME$/IdeaProjects/DAOExercise" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.0" />
   </component>
   <component name="RunManager">
-    <configuration name="MySqlConnectionFactory" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="DataAccess.DAO.MySql.MySqlConnectionFactory" />
+    <configuration name="ConnectionFactory" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="DataAccess.Connection.ConnectionFactory" />
       <module name="back-end" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="DataAccess.DAO.MySql.*" />
+          <option name="PATTERN" value="DataAccess.Connection.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -99,12 +94,20 @@
       <option name="project" value="LOCAL" />
       <updated>1612486651266</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Create DB">
+      <created>1613066592368</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1613066592368</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Work on setting up DataAccess" />
-    <option name="LAST_COMMIT_MESSAGE" value="Work on setting up DataAccess" />
+    <MESSAGE value="Create DB" />
+    <option name="LAST_COMMIT_MESSAGE" value="Create DB" />
   </component>
   <component name="WindowStateProjectService">
     <state x="832" y="155" key="#com.intellij.ide.util.MemberChooser" timestamp="1612485593276">
@@ -115,18 +118,22 @@
       <screen x="0" y="0" width="1368" height="882" />
     </state>
     <state x="516" y="127" key="#com.intellij.openapi.roots.ui.configuration.libraryEditor.LibraryEditorDialog/0.0.1368.882@0.0.1368.882" timestamp="1613061427565" />
-    <state x="283" y="37" key="CommitChangelistDialog2" timestamp="1613066494959">
+    <state x="415" y="189" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1613066885470">
       <screen x="0" y="0" width="1368" height="882" />
     </state>
-    <state x="283" y="37" key="CommitChangelistDialog2/0.0.1368.882@0.0.1368.882" timestamp="1613066494959" />
+    <state x="415" y="189" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1368.882@0.0.1368.882" timestamp="1613066885470" />
+    <state x="283" y="37" key="CommitChangelistDialog2" timestamp="1613066591001">
+      <screen x="0" y="0" width="1368" height="882" />
+    </state>
+    <state x="283" y="37" key="CommitChangelistDialog2/0.0.1368.882@0.0.1368.882" timestamp="1613066591001" />
     <state x="131" y="78" key="DiffContextDialog" timestamp="1613062068944">
       <screen x="0" y="0" width="1368" height="882" />
     </state>
     <state x="131" y="78" key="DiffContextDialog/0.0.1368.882@0.0.1368.882" timestamp="1613062068944" />
-    <state x="466" y="198" key="FileChooserDialogImpl" timestamp="1613061395669">
+    <state x="466" y="198" key="FileChooserDialogImpl" timestamp="1613066969675">
       <screen x="0" y="0" width="1368" height="882" />
     </state>
-    <state x="466" y="198" key="FileChooserDialogImpl/0.0.1368.882@0.0.1368.882" timestamp="1613061395669" />
+    <state x="466" y="198" key="FileChooserDialogImpl/0.0.1368.882@0.0.1368.882" timestamp="1613066969675" />
     <state width="1326" height="230" key="GridCell.Tab.0.bottom" timestamp="1613062173720">
       <screen x="0" y="0" width="1368" height="882" />
     </state>
@@ -147,10 +154,10 @@
       <screen x="0" y="0" width="1368" height="882" />
     </state>
     <state x="165" y="17" key="SettingsEditor/0.0.1368.882@0.0.1368.882" timestamp="1613061431815" />
-    <state x="277" y="164" key="Vcs.Push.Dialog.v2" timestamp="1612486656579">
+    <state x="277" y="164" key="Vcs.Push.Dialog.v2" timestamp="1613066604788">
       <screen x="0" y="0" width="1368" height="882" />
     </state>
-    <state x="277" y="164" key="Vcs.Push.Dialog.v2/0.0.1368.882@0.0.1368.882" timestamp="1612486656579" />
+    <state x="277" y="164" key="Vcs.Push.Dialog.v2/0.0.1368.882@0.0.1368.882" timestamp="1613066604788" />
     <state x="749" y="339" key="com.intellij.jarRepository.RepositoryAttachDialog-DOWNLOAD" timestamp="1613061422878">
       <screen x="0" y="0" width="1368" height="882" />
     </state>

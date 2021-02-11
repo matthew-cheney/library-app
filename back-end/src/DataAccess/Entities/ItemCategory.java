@@ -20,10 +20,10 @@ public class ItemCategory {
 
     // region Constructors
 
-    public ItemCategory(@NotNull String name, @NotNull String ownerId) {
+    public ItemCategory(@NotNull String categoryName, @NotNull String ownerId) {
         id = EntityUtils.generateId();
 
-        setName(name);
+        setCategoryName(categoryName);
 
         this.ownerId = ownerId; // readonly property, no setter available
     }
@@ -36,7 +36,7 @@ public class ItemCategory {
         return id;
     }
 
-    public String getName() {
+    public String getCategoryName() {
         return categoryName;
     }
 
@@ -48,8 +48,8 @@ public class ItemCategory {
 
     // region Setters
 
-    public void setName(String name) {
-        this.categoryName = name;
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
     }
 
     // endregion

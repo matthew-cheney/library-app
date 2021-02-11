@@ -1,17 +1,16 @@
-package DataAccess.DAO.MySql;
+package DataAccess.Connection;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class MySqlConnectionFactory {
+public class ConnectionFactory {
 
     private static final String DRIVER = "com.mysql.cj.jdbc.Driver";
     private static final String CONNECTION_URL = "jdbc:mysql://159.203.100.250:3306/tadhgcra_lopdev?user=tadhgcra_lopdev&password=57vnAWD4gwyn3i6";
 
     private static Connection connection;
 
-    // Set up the MySql Driver...
     static {
         try {
             Class.forName(DRIVER);
@@ -35,7 +34,7 @@ public class MySqlConnectionFactory {
         }
     }
 
-    public static void closeConnection(boolean commit) {
+    public void closeConnection(boolean commit) {
         try {
             if (commit) connection.commit();
             else connection.rollback();

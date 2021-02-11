@@ -75,10 +75,10 @@ public class Item {
      * @param description
      * @param releaseYear
      * @param genre
-     * @param format
+     * @param itemFormat
      */
     public Item(@NotNull String title, boolean available, @NotNull String ownerId, @Nullable String imageUrl,
-                @Nullable String description, @Nullable Integer releaseYear, @Nullable String genre, @Nullable String format) {
+                @Nullable String description, @Nullable Integer releaseYear, @Nullable String genre, @Nullable String itemFormat) {
         id = EntityUtils.generateId();
 
         setTitle(title);
@@ -92,7 +92,7 @@ public class Item {
         setDescription(description);
         if (releaseYear != null) setReleaseYear(releaseYear);
         setGenre(genre);
-        setFormat(format);
+        setItemFormat(itemFormat);
     }
 
     /**
@@ -104,12 +104,12 @@ public class Item {
      * @param description
      * @param releaseYear
      * @param genre
-     * @param format
+     * @param itemFormat
      * @param author
      */
     public Item(@NotNull String title, boolean available, @NotNull String ownerId, @Nullable String imageUrl,
-                @Nullable String description, @Nullable Integer releaseYear, @Nullable String genre, @Nullable String format,
-                @Nullable String author) {
+                @Nullable String description, @Nullable Integer releaseYear, @Nullable String genre,
+                @Nullable String itemFormat, @Nullable String author) {
         id = EntityUtils.generateId();
 
         setTitle(title);
@@ -123,7 +123,7 @@ public class Item {
         setDescription(description);
         if (releaseYear != null) setReleaseYear(releaseYear);
         setGenre(genre);
-        setFormat(format);
+        setItemFormat(itemFormat);
         setAuthor(author);
     }
 
@@ -179,7 +179,7 @@ public class Item {
         return genre;
     }
 
-    public String getFormat() {
+    public String getItemFormat() {
         return itemFormat;
     }
 
@@ -227,8 +227,8 @@ public class Item {
         this.genre = genre;
     }
 
-    public void setFormat(String format) {
-        this.itemFormat = format;
+    public void setItemFormat(String itemFormat) {
+        this.itemFormat = itemFormat;
     }
 
     public void setAuthor(String author) {
