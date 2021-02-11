@@ -32,7 +32,7 @@ public class Item {
     private int timeToPlayInMins;
     private int releaseYear;
     private String genre;
-    private String format;
+    private String itemFormat;
     private String author;
 
     // endregion
@@ -180,7 +180,7 @@ public class Item {
     }
 
     public String getFormat() {
-        return format;
+        return itemFormat;
     }
 
     public String getAuthor() {
@@ -228,7 +228,7 @@ public class Item {
     }
 
     public void setFormat(String format) {
-        this.format = format;
+        this.itemFormat = format;
     }
 
     public void setAuthor(String author) {

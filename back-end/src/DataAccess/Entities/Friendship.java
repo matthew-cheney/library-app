@@ -1,11 +1,13 @@
 package DataAccess.Entities;
 
+import DataAccess.Utilities.EntityUtils;
 import org.jetbrains.annotations.NotNull;
 
 public class Friendship {
 
     // region Properties
 
+    private String id;
     private String userIdA;
     private String userIdB;
 
@@ -14,14 +16,25 @@ public class Friendship {
     // region Constructors
 
     public Friendship(@NotNull String userIdA, @NotNull String userIdB) {
-        // TODO: Ensure that userIdA is the alphabetically first id, to ensure friendships aren't duplicated in the db with the ids reversed
-        this.userIdA = userIdA;
-        this.userIdB = userIdB;
+        id = EntityUtils.generateId();
+
+        if (EntityUtils.idAIsLessThanIdB(userIdA, userIdB)) {
+            this.userIdA = userIdA;
+            this.userIdB = userIdB;
+        }
+        else {
+            this.userIdA = userIdB;
+            this.userIdB = userIdA;
+        }
     }
 
     // endregion
 
     // region Getters
+
+    public String getId() {
+        return id;
+    }
 
     public String getUserIdA() {
         return userIdA;

@@ -8,7 +8,7 @@ public class ItemCategory {
     // region Required Properties
 
     private String id;
-    private String name;
+    private String categoryName;
 
     // endregion
 
@@ -37,7 +37,7 @@ public class ItemCategory {
     }
 
     public String getName() {
-        return name;
+        return categoryName;
     }
 
     public String getOwnerId() {
@@ -49,7 +49,7 @@ public class ItemCategory {
     // region Setters
 
     public void setName(String name) {
-        this.name = name;
+        this.categoryName = name;
     }
 
     // endregion

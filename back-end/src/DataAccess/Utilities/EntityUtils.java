@@ -33,4 +33,12 @@ public class EntityUtils {
 
         return pair;
     }
+
+    public static boolean idAIsLessThanIdB(String idA, String idB) {
+        List<String> strings = new ArrayList<>();
+        strings.add(idA);
+        strings.add(idB);
+        strings.sort(String.CASE_INSENSITIVE_ORDER);
+        return strings.get(0).equals(idA);
+    }
 }
