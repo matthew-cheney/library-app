@@ -27,12 +27,31 @@ public class User {
 
     // region Constructors
 
+    // This is a constructor to use when receiving a user from the client
     public User(String username, String password, String firstName, String lastName,
-                String email, String phoneNumber, String imageUrl) {
+                 String email, String phoneNumber, String imageUrl) {
         id = EntityUtils.generateId();
 
         setUsername(username);
         setPassword(password);
+        setFirstName(firstName);
+        setLastName(lastName);
+
+        setEmail(email);
+        setPhoneNumber(phoneNumber);
+        setImageUrl(imageUrl);
+    }
+
+    // This is a constructor to use when retrieving a user from the database
+    public User(String id, String username, String passwordHash, String passwordSalt, String firstName, String lastName,
+                String email, String phoneNumber, String imageUrl) {
+        this.id = id;
+
+        setUsername(username);
+
+        this.passwordHash = passwordHash;
+        this.passwordSalt = passwordSalt;
+
         setFirstName(firstName);
         setLastName(lastName);
 

@@ -6,10 +6,16 @@ import java.sql.SQLException;
 
 public class ConnectionFactory {
 
+    // region Properties
+
     private static final String DRIVER = "com.mysql.cj.jdbc.Driver";
     private static final String CONNECTION_URL = "jdbc:mysql://159.203.100.250:3306/tadhgcra_lopdev?user=tadhgcra_lopdev&password=57vnAWD4gwyn3i6";
 
     private static Connection connection;
+
+    // endregion
+
+    // region Driver Initialization
 
     static {
         try {
@@ -19,6 +25,10 @@ public class ConnectionFactory {
             e.printStackTrace();
         }
     }
+
+    // endregion
+
+    // region Public
 
     public static Connection openConnection() {
         try {
@@ -34,7 +44,7 @@ public class ConnectionFactory {
         }
     }
 
-    public void closeConnection(boolean commit) {
+    public static void closeConnection(boolean commit) {
         try {
             if (commit) connection.commit();
             else connection.rollback();
@@ -49,4 +59,6 @@ public class ConnectionFactory {
             connection = null;
         }
     }
+
+    // endregion
 }
