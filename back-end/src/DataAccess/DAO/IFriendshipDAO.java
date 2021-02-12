@@ -6,6 +6,6 @@ import java.sql.SQLException;
 
 public interface IFriendshipDAO {
     boolean friendshipExists(Friendship friendship);
-    void addFriendship(Friendship friendship);
-    void deleteFriendship(Friendship friendship);
+    boolean addFriendship(Friendship friendship);
+    boolean deleteFriendship(Friendship friendship);
 }

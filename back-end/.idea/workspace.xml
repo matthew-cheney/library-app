@@ -2,10 +2,20 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="174993c8-adaa-48df-ae15-d719a3071abb" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/org_junit_jupiter_junit_jupiter_5_7_1.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test/DataAccess/Connection/ConnectionFactoryTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test/DataAccess/DAO/MySqlDAOFactoryTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test/DataAccess/DAO/MySqlFriendshipDAOTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test/DataAccess/DAO/MySqlItemDAOTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test/DataAccess/DAO/MySqlUserDAOTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DataAccess/Connection/ConnectionFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataAccess/Connection/ConnectionFactory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/back-end.iml" beforeDir="false" afterPath="$PROJECT_DIR$/back-end.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/DataAccess/DAO/IFriendshipDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataAccess/DAO/IFriendshipDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/DataAccess/DAO/IItemDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataAccess/DAO/IItemDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/DataAccess/DAO/IUserDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataAccess/DAO/IUserDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/DataAccess/DAO/MySql/MySqlFriendshipDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataAccess/DAO/MySql/MySqlFriendshipDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/DataAccess/DAO/MySql/MySqlItemDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataAccess/DAO/MySql/MySqlItemDAO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/DataAccess/DAO/MySql/MySqlUserDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataAccess/DAO/MySql/MySqlUserDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DataAccess/Entities/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataAccess/Entities/User.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -50,12 +60,20 @@
     <property name="Repository.Attach.Sources" value="false" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$USER_HOME$/IdeaProjects/DAOExercise" />
+    <property name="last_opened_file_path" value="$USER_HOME$/IdeaProjects/FamilyMapServer/FamilyMapServerStudent-master" />
     <property name="project.structure.last.edited" value="Modules" />
-    <property name="project.structure.proportion" value="0.0" />
-    <property name="project.structure.side.proportion" value="0.0" />
+    <property name="project.structure.proportion" value="0.15" />
+    <property name="project.structure.side.proportion" value="0.2" />
   </component>
-  <component name="RunManager">
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\User\Desktop\Chayston\School\CS 428\library-app\back-end\test\DataAccess\DAO" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\User\Desktop\Chayston\School\CS 428\library-app\back-end\test" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Application.MySqlUserDAO">
     <configuration name="ConnectionFactory" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="DataAccess.Connection.ConnectionFactory" />
       <module name="back-end" />
@@ -69,9 +87,22 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="MySqlUserDAO" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="DataAccess.DAO.MySql.MySqlUserDAO" />
+      <module name="back-end" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="DataAccess.DAO.MySql.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.MySqlConnectionFactory" />
+        <item itemvalue="Application.MySqlUserDAO" />
         <item itemvalue="Application.ConnectionFactory" />
       </list>
     </recent_temporary>
@@ -108,67 +139,99 @@
       <option name="project" value="LOCAL" />
       <updated>1613067178787</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Filling out UserDAO">
+      <created>1613069152528</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1613069152528</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Work on setting up DataAccess" />
     <MESSAGE value="Create DB" />
     <MESSAGE value="Edit packages" />
-    <option name="LAST_COMMIT_MESSAGE" value="Edit packages" />
+    <MESSAGE value="Filling out UserDAO" />
+    <option name="LAST_COMMIT_MESSAGE" value="Filling out UserDAO" />
   </component>
   <component name="WindowStateProjectService">
     <state x="832" y="155" key="#com.intellij.ide.util.MemberChooser" timestamp="1612485593276">
       <screen x="0" y="0" width="1368" height="882" />
     </state>
     <state x="832" y="155" key="#com.intellij.ide.util.MemberChooser/0.0.1368.882@0.0.1368.882" timestamp="1612485593276" />
-    <state x="516" y="127" key="#com.intellij.openapi.roots.ui.configuration.libraryEditor.LibraryEditorDialog" timestamp="1613061427565">
-      <screen x="0" y="0" width="1368" height="882" />
+    <state x="3702" y="212" key="#com.intellij.openapi.roots.ui.configuration.libraryEditor.LibraryEditorDialog" timestamp="1613092827943">
+      <screen x="2736" y="9" width="2560" height="1409" />
     </state>
+    <state x="3702" y="212" key="#com.intellij.openapi.roots.ui.configuration.libraryEditor.LibraryEditorDialog/0.0.1368.882/2736.9.2560.1409@2736.9.2560.1409" timestamp="1613092827943" />
     <state x="516" y="127" key="#com.intellij.openapi.roots.ui.configuration.libraryEditor.LibraryEditorDialog/0.0.1368.882@0.0.1368.882" timestamp="1613061427565" />
     <state x="415" y="189" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1613066885470">
       <screen x="0" y="0" width="1368" height="882" />
     </state>
     <state x="415" y="189" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1368.882@0.0.1368.882" timestamp="1613066885470" />
-    <state x="283" y="37" key="CommitChangelistDialog2" timestamp="1613067177707">
+    <state x="283" y="37" key="CommitChangelistDialog2" timestamp="1613069151106">
       <screen x="0" y="0" width="1368" height="882" />
     </state>
-    <state x="283" y="37" key="CommitChangelistDialog2/0.0.1368.882@0.0.1368.882" timestamp="1613067177707" />
+    <state x="283" y="37" key="CommitChangelistDialog2/0.0.1368.882@0.0.1368.882" timestamp="1613069151106" />
     <state x="131" y="78" key="DiffContextDialog" timestamp="1613062068944">
       <screen x="0" y="0" width="1368" height="882" />
     </state>
     <state x="131" y="78" key="DiffContextDialog/0.0.1368.882@0.0.1368.882" timestamp="1613062068944" />
-    <state x="466" y="198" key="FileChooserDialogImpl" timestamp="1613066969675">
-      <screen x="0" y="0" width="1368" height="882" />
+    <state x="3608" y="325" key="FileChooserDialogImpl" timestamp="1613093175617">
+      <screen x="2736" y="9" width="2560" height="1409" />
     </state>
+    <state x="3608" y="325" key="FileChooserDialogImpl/0.0.1368.882/2736.9.2560.1409@2736.9.2560.1409" timestamp="1613093175617" />
     <state x="466" y="198" key="FileChooserDialogImpl/0.0.1368.882@0.0.1368.882" timestamp="1613066969675" />
-    <state width="1326" height="230" key="GridCell.Tab.0.bottom" timestamp="1613062173720">
-      <screen x="0" y="0" width="1368" height="882" />
+    <state width="2517" height="403" key="GridCell.Tab.0.bottom" timestamp="1613092113574">
+      <screen x="2736" y="9" width="2560" height="1409" />
     </state>
+    <state width="2517" height="403" key="GridCell.Tab.0.bottom/0.0.1368.882/2736.9.2560.1409@2736.9.2560.1409" timestamp="1613092113574" />
     <state width="1326" height="230" key="GridCell.Tab.0.bottom/0.0.1368.882@0.0.1368.882" timestamp="1613062173720" />
-    <state width="1326" height="230" key="GridCell.Tab.0.center" timestamp="1613062173719">
-      <screen x="0" y="0" width="1368" height="882" />
+    <state width="2517" height="403" key="GridCell.Tab.0.center" timestamp="1613092113574">
+      <screen x="2736" y="9" width="2560" height="1409" />
     </state>
+    <state width="2517" height="403" key="GridCell.Tab.0.center/0.0.1368.882/2736.9.2560.1409@2736.9.2560.1409" timestamp="1613092113574" />
     <state width="1326" height="230" key="GridCell.Tab.0.center/0.0.1368.882@0.0.1368.882" timestamp="1613062173719" />
-    <state width="1326" height="230" key="GridCell.Tab.0.left" timestamp="1613062173719">
-      <screen x="0" y="0" width="1368" height="882" />
+    <state width="2517" height="403" key="GridCell.Tab.0.left" timestamp="1613092113574">
+      <screen x="2736" y="9" width="2560" height="1409" />
     </state>
+    <state width="2517" height="403" key="GridCell.Tab.0.left/0.0.1368.882/2736.9.2560.1409@2736.9.2560.1409" timestamp="1613092113574" />
     <state width="1326" height="230" key="GridCell.Tab.0.left/0.0.1368.882@0.0.1368.882" timestamp="1613062173719" />
-    <state width="1326" height="230" key="GridCell.Tab.0.right" timestamp="1613062173719">
-      <screen x="0" y="0" width="1368" height="882" />
+    <state width="2517" height="403" key="GridCell.Tab.0.right" timestamp="1613092113574">
+      <screen x="2736" y="9" width="2560" height="1409" />
     </state>
+    <state width="2517" height="403" key="GridCell.Tab.0.right/0.0.1368.882/2736.9.2560.1409@2736.9.2560.1409" timestamp="1613092113574" />
     <state width="1326" height="230" key="GridCell.Tab.0.right/0.0.1368.882@0.0.1368.882" timestamp="1613062173719" />
-    <state x="165" y="17" key="SettingsEditor" timestamp="1613061431815">
-      <screen x="0" y="0" width="1368" height="882" />
+    <state width="2517" height="496" key="GridCell.Tab.1.bottom" timestamp="1613091362036">
+      <screen x="2736" y="9" width="2560" height="1409" />
     </state>
+    <state width="2517" height="496" key="GridCell.Tab.1.bottom/0.0.1368.882/2736.9.2560.1409@2736.9.2560.1409" timestamp="1613091362036" />
+    <state width="2517" height="496" key="GridCell.Tab.1.center" timestamp="1613091362035">
+      <screen x="2736" y="9" width="2560" height="1409" />
+    </state>
+    <state width="2517" height="496" key="GridCell.Tab.1.center/0.0.1368.882/2736.9.2560.1409@2736.9.2560.1409" timestamp="1613091362035" />
+    <state width="2517" height="496" key="GridCell.Tab.1.left" timestamp="1613091362035">
+      <screen x="2736" y="9" width="2560" height="1409" />
+    </state>
+    <state width="2517" height="496" key="GridCell.Tab.1.left/0.0.1368.882/2736.9.2560.1409@2736.9.2560.1409" timestamp="1613091362035" />
+    <state width="2517" height="496" key="GridCell.Tab.1.right" timestamp="1613091362035">
+      <screen x="2736" y="9" width="2560" height="1409" />
+    </state>
+    <state width="2517" height="496" key="GridCell.Tab.1.right/0.0.1368.882/2736.9.2560.1409@2736.9.2560.1409" timestamp="1613091362035" />
+    <state x="3045" y="36" key="SettingsEditor" timestamp="1613093071178">
+      <screen x="2736" y="9" width="2560" height="1409" />
+    </state>
+    <state x="3045" y="36" key="SettingsEditor/0.0.1368.882/2736.9.2560.1409@2736.9.2560.1409" timestamp="1613093071178" />
     <state x="165" y="17" key="SettingsEditor/0.0.1368.882@0.0.1368.882" timestamp="1613061431815" />
-    <state x="277" y="164" key="Vcs.Push.Dialog.v2" timestamp="1613067183113">
+    <state x="277" y="164" key="Vcs.Push.Dialog.v2" timestamp="1613069156757">
       <screen x="0" y="0" width="1368" height="882" />
     </state>
-    <state x="277" y="164" key="Vcs.Push.Dialog.v2/0.0.1368.882@0.0.1368.882" timestamp="1613067183113" />
-    <state x="749" y="339" key="com.intellij.jarRepository.RepositoryAttachDialog-DOWNLOAD" timestamp="1613061422878">
-      <screen x="0" y="0" width="1368" height="882" />
+    <state x="277" y="164" key="Vcs.Push.Dialog.v2/0.0.1368.882@0.0.1368.882" timestamp="1613069156757" />
+    <state x="3673" y="522" key="com.intellij.jarRepository.RepositoryAttachDialog-DOWNLOAD" timestamp="1613093070023">
+      <screen x="2736" y="9" width="2560" height="1409" />
     </state>
+    <state x="3673" y="522" key="com.intellij.jarRepository.RepositoryAttachDialog-DOWNLOAD/0.0.1368.882/2736.9.2560.1409@2736.9.2560.1409" timestamp="1613093070023" />
     <state x="749" y="339" key="com.intellij.jarRepository.RepositoryAttachDialog-DOWNLOAD/0.0.1368.882@0.0.1368.882" timestamp="1613061422878" />
   </component>
 </project>

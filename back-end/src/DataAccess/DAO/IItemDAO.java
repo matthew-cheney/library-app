@@ -4,7 +4,7 @@ import DataAccess.Entities.Item;
 
 public interface IItemDAO {
     Item getItem(String id);
-    void addItem(Item item);
-    void updateItem(String id, Item item);
-    void deleteItem(String id);
+    boolean addItem(Item item);
+    boolean updateItem(String id, Item item);
+    boolean deleteItem(String id);
 }

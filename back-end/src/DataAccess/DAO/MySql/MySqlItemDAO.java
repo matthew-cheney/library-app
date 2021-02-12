@@ -11,17 +11,17 @@ public class MySqlItemDAO implements IItemDAO {
     }
 
     @Override
-    public void addItem(Item item) {
-
+    public boolean addItem(Item item) {
+        return false;
     }
 
     @Override
-    public void updateItem(String id, Item item) {
-
+    public boolean updateItem(String id, Item item) {
+        return false;
     }
 
     @Override
-    public void deleteItem(String id) {
-
+    public boolean deleteItem(String id) {
+        return false;
     }
 }

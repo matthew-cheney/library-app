@@ -4,12 +4,18 @@ import DataAccess.Connection.ConnectionFactory;
 import DataAccess.DAO.IUserDAO;
 import DataAccess.Entities.User;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class MySqlUserDAO implements IUserDAO {
+
+    public static void main(String[] args) {
+        IUserDAO dao = new MySqlUserDAO();
+        User user = dao.getUser("TEST");
+        dao.deleteUser("TEST");
+        dao.addUser(user);
+        user.setImageUrl("FUN");
+        dao.updateUser("TEST", user);
+    }
 
     @Override
     public User getUser(String id) {
@@ -17,16 +23,8 @@ public class MySqlUserDAO implements IUserDAO {
 
         boolean success = false;
         ResultSet resultSet;
-        String sqlCommand = "SELECT "
-                + "Users.Username, "
-                + "Users.PasswordHash, "
-                + "Users.PasswordSalt, "
-                + "Users.FirstName, "
-                + "Users.LastName, "
-                + "Users.Email, "
-                + "Users.PhoneNumber, "
-                + "Users.ImageUrl "
-                + "WHERE Users.Id = ?";
+        String sqlCommand = "SELECT Username, PasswordHash, PasswordSalt, FirstName, LastName, "
+                + "Email, PhoneNumber, ImageUrl FROM Users WHERE Id = ?";
 
         try (PreparedStatement statement = connection.prepareStatement(sqlCommand)) {
             statement.setString(1, id);
@@ -67,11 +65,11 @@ public class MySqlUserDAO implements IUserDAO {
     }
 
     @Override
-    public void addUser(User user) {
+    public boolean addUser(User user) {
         Connection connection = ConnectionFactory.openConnection();
 
         boolean success = false;
-        String sqlCommand = "INSERT OR IGNORE INTO Users VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
+        String sqlCommand = "INSERT INTO Users VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (PreparedStatement statement = connection.prepareStatement(sqlCommand)) {
             statement.setString(1, user.getId());
@@ -85,6 +83,7 @@ public class MySqlUserDAO implements IUserDAO {
             statement.setString(9, user.getImageUrl());
 
             success = true;
+            return statement.execute();
         }
         catch (SQLException ex) {
             System.out.println(ex.getMessage());
@@ -93,10 +92,12 @@ public class MySqlUserDAO implements IUserDAO {
         finally {
             ConnectionFactory.closeConnection(success);
         }
+
+        return false;
     }
 
     @Override
-    public void updateUser(String id, User user) {
+    public boolean updateUser(String id, User user) {
         Connection connection = ConnectionFactory.openConnection();
 
         boolean success = false;
@@ -123,6 +124,7 @@ public class MySqlUserDAO implements IUserDAO {
             statement.setString(9, user.getId());
 
             success = true;
+            return statement.execute();
         }
         catch (SQLException ex) {
             System.out.println(ex.getMessage());
@@ -131,10 +133,12 @@ public class MySqlUserDAO implements IUserDAO {
         finally {
             ConnectionFactory.closeConnection(success);
         }
+
+        return false;
     }
 
     @Override
-    public void deleteUser(String id) {
+    public boolean deleteUser(String id) {
         Connection connection = ConnectionFactory.openConnection();
 
         boolean success = false;
@@ -144,6 +148,7 @@ public class MySqlUserDAO implements IUserDAO {
             statement.setString(1, id);
 
             success = true;
+            return statement.execute();
         }
         catch (SQLException ex) {
             System.out.println(ex.getMessage());
@@ -152,5 +157,7 @@ public class MySqlUserDAO implements IUserDAO {
         finally {
             ConnectionFactory.closeConnection(success);
         }
+
+        return false;
     }
 }

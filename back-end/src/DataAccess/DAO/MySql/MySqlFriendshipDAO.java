@@ -11,12 +11,12 @@ public class MySqlFriendshipDAO implements IFriendshipDAO {
     }
 
     @Override
-    public void addFriendship(Friendship friendship) {
-
+    public boolean addFriendship(Friendship friendship) {
+        return false;
     }
 
     @Override
-    public void deleteFriendship(Friendship friendship) {
-
+    public boolean deleteFriendship(Friendship friendship) {
+        return false;
     }
 }
