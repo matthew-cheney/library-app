@@ -138,4 +138,31 @@ public class User {
     }
 
     // endregion
+
+    // region Overrides
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+
+        if (obj.getClass() != this.getClass()) {
+            return false;
+        }
+
+        final User other = (User) obj;
+
+        return this.getId().equals(other.getId()) &&
+                this.getUsername().equals(other.getUsername()) &&
+                this.getPasswordHash().equals(other.getPasswordHash()) &&
+                this.getPasswordSalt().equals(other.getPasswordSalt()) &&
+                this.getFirstName().equals(other.getFirstName()) &&
+                this.getLastName().equals(other.getLastName()) &&
+                this.getEmail().equals(other.getEmail()) &&
+                this.getPhoneNumber().equals(other.getPhoneNumber()) &&
+                this.getImageUrl().equals(other.getImageUrl());
+    }
+
+    // endregion
 }

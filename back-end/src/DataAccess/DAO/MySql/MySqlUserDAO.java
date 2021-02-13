@@ -8,15 +8,6 @@ import java.sql.*;
 
 public class MySqlUserDAO implements IUserDAO {
 
-    public static void main(String[] args) {
-        IUserDAO dao = new MySqlUserDAO();
-        User user = dao.getUser("TEST");
-        dao.deleteUser("TEST");
-        dao.addUser(user);
-        user.setImageUrl("FUN");
-        dao.updateUser("TEST", user);
-    }
-
     @Override
     public User getUser(String id) {
         Connection connection = ConnectionFactory.openConnection();
@@ -83,7 +74,7 @@ public class MySqlUserDAO implements IUserDAO {
             statement.setString(9, user.getImageUrl());
 
             success = true;
-            return statement.execute();
+            return statement.executeUpdate() == 1;
         }
         catch (SQLException ex) {
             System.out.println(ex.getMessage());
@@ -124,7 +115,7 @@ public class MySqlUserDAO implements IUserDAO {
             statement.setString(9, user.getId());
 
             success = true;
-            return statement.execute();
+            return statement.executeUpdate() == 1;
         }
         catch (SQLException ex) {
             System.out.println(ex.getMessage());
@@ -148,7 +139,7 @@ public class MySqlUserDAO implements IUserDAO {
             statement.setString(1, id);
 
             success = true;
-            return statement.execute();
+            return statement.executeUpdate() == 1;
         }
         catch (SQLException ex) {
             System.out.println(ex.getMessage());
