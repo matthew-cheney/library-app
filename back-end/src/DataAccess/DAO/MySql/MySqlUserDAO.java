@@ -1,6 +1,6 @@
 package DataAccess.DAO.MySql;
 
-import DataAccess.Connection.ConnectionFactory;
+import DataAccess.Connection.ConnectionPool;
 import DataAccess.DAO.IUserDAO;
 import DataAccess.Entities.User;
 
@@ -10,7 +10,7 @@ public class MySqlUserDAO implements IUserDAO {
 
     @Override
     public User getUser(String id) {
-        Connection connection = ConnectionFactory.openConnection();
+        Connection connection = ConnectionPool.getInstance().getConnection();
 
         boolean success = false;
         ResultSet resultSet;
@@ -49,7 +49,7 @@ public class MySqlUserDAO implements IUserDAO {
             ex.printStackTrace();
         }
         finally {
-            ConnectionFactory.closeConnection(success);
+            ConnectionPool.getInstance().freeConnection(connection, success);
         }
 
         return null;
@@ -57,7 +57,7 @@ public class MySqlUserDAO implements IUserDAO {
 
     @Override
     public boolean addUser(User user) {
-        Connection connection = ConnectionFactory.openConnection();
+        Connection connection = ConnectionPool.getInstance().getConnection();
 
         boolean success = false;
         String sqlCommand = "INSERT INTO Users VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -81,7 +81,7 @@ public class MySqlUserDAO implements IUserDAO {
             ex.printStackTrace();
         }
         finally {
-            ConnectionFactory.closeConnection(success);
+            ConnectionPool.getInstance().freeConnection(connection, success);
         }
 
         return false;
@@ -89,7 +89,7 @@ public class MySqlUserDAO implements IUserDAO {
 
     @Override
     public boolean updateUser(String id, User user) {
-        Connection connection = ConnectionFactory.openConnection();
+        Connection connection = ConnectionPool.getInstance().getConnection();
 
         boolean success = false;
         String sqlCommand = "UPDATE Users SET "
@@ -122,7 +122,7 @@ public class MySqlUserDAO implements IUserDAO {
             ex.printStackTrace();
         }
         finally {
-            ConnectionFactory.closeConnection(success);
+            ConnectionPool.getInstance().freeConnection(connection, success);
         }
 
         return false;
@@ -130,7 +130,7 @@ public class MySqlUserDAO implements IUserDAO {
 
     @Override
     public boolean deleteUser(String id) {
-        Connection connection = ConnectionFactory.openConnection();
+        Connection connection = ConnectionPool.getInstance().getConnection();
 
         boolean success = false;
         String sqlCommand = "DELETE FROM Users WHERE Id = ?";
@@ -146,7 +146,7 @@ public class MySqlUserDAO implements IUserDAO {
             ex.printStackTrace();
         }
         finally {
-            ConnectionFactory.closeConnection(success);
+            ConnectionPool.getInstance().freeConnection(connection, success);
         }
 
         return false;

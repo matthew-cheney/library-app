@@ -7,13 +7,13 @@ import java.sql.SQLException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class ConnectionFactoryTest {
+public class ConnectionPoolTest {
 
     @Test
     public void openAndCloseConnection_Success() {
-        Connection connection = ConnectionFactory.openConnection();
+        Connection connection = ConnectionPool.getInstance().getConnection();
         assertNotNull(connection);
-        ConnectionFactory.closeConnection(false);
+        ConnectionPool.getInstance().freeConnection(connection, false);
         String errorReceived = "";
         try {
 
@@ -22,6 +22,6 @@ public class ConnectionFactoryTest {
         catch (SQLException ex) {
             errorReceived = ex.getMessage();
         }
-        assertEquals("No operations allowed after connection closed.", errorReceived);
+        assertEquals("You can't operate on a closed Connection!!!", errorReceived);
     }
 }
