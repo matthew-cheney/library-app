@@ -52,5 +52,14 @@
     </orderEntry>
     <orderEntry type="library" name="mysql:mysql-connector-java:8.0.23" level="project" />
     <orderEntry type="library" name="c3p0:c3p0:0.9.1.2" level="project" />
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$USER_HOME$/Downloads/aws-lambda-java-core-1.2.1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
   </component>
 </module>

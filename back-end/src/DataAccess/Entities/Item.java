@@ -4,11 +4,19 @@ import DataAccess.Utilities.EntityUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Item {
 
-    // region Required Properties
+    // region Properties
+
+    public final String BOARD_GAME = "BOARD_GAME";
+    public final String MOVIE = "MOVIE";
+    public final String BOOK = "BOOK";
+
+    // region Required
 
     private String id;
     private String title;
@@ -24,7 +32,7 @@ public class Item {
 
     // endregion
 
-    // region Optional Properties
+    // region Optional
 
     private String imageUrl;
     private String description;
@@ -37,10 +45,12 @@ public class Item {
 
     // endregion
 
+    // endregion
+
     // region Constructors
 
     /**
-     * This is the constructor for a board game
+     * This is a constructor to use when retrieving a board game from the client
      * @param title
      * @param available
      * @param ownerId
@@ -54,7 +64,7 @@ public class Item {
         id = EntityUtils.generateId();
 
         setTitle(title);
-        setCategory("BOARD_GAME");
+        setCategory(BOARD_GAME);
         setAvailable(available);
 
         this.dateCreated = new Date(); // readonly property, no setter available
@@ -67,7 +77,7 @@ public class Item {
     }
 
     /**
-     * This is the constructor for a movie
+     * This is a constructor to use when retrieving a movie from the client
      * @param title
      * @param available
      * @param ownerId
@@ -82,7 +92,7 @@ public class Item {
         id = EntityUtils.generateId();
 
         setTitle(title);
-        setCategory("MOVIE");
+        setCategory(MOVIE);
         setAvailable(available);
 
         this.dateCreated = new Date(); // readonly property, no setter available
@@ -96,7 +106,7 @@ public class Item {
     }
 
     /**
-     * This is the constructor for a book
+     * This is a constructor to use when retrieving a book from the client
      * @param title
      * @param available
      * @param ownerId
@@ -113,7 +123,7 @@ public class Item {
         id = EntityUtils.generateId();
 
         setTitle(title);
-        setCategory("BOOK");
+        setCategory(BOOK);
         setAvailable(available);
 
         this.dateCreated = new Date(); // readonly property, no setter available
@@ -125,6 +135,53 @@ public class Item {
         setGenre(genre);
         setItemFormat(itemFormat);
         setAuthor(author);
+    }
+
+    /**
+     * This is a constructor to use when retrieving an item from the database
+     * @param id
+     * @param title
+     * @param category
+     * @param dateCreated
+     * @param available
+     * @param ownerId
+     * @param imageUrl
+     * @param description
+     * @param numPlayers
+     * @param timeToPlayInMins
+     * @param releaseYear
+     * @param genre
+     * @param itemFormat
+     * @param author
+     */
+    public Item(String id, String title, String category, String dateCreated, boolean available, String ownerId,
+                String imageUrl, String description, Integer numPlayers, Integer timeToPlayInMins, Integer releaseYear,
+                String genre, String itemFormat, String author) {
+        this.id = id;
+
+        setTitle(title);
+        setCategory(category);
+        setAvailable(available);
+
+        this.ownerId = ownerId; // readonly property, no setter available
+
+        setImageUrl(imageUrl);
+        setDescription(description);
+        if (numPlayers != null) setNumPlayers(numPlayers);
+        if (timeToPlayInMins != null) setTimeToPlayInMins(timeToPlayInMins);
+        if (releaseYear != null) setReleaseYear(releaseYear);
+        if (genre != null) setGenre(genre);
+        if (itemFormat != null) setItemFormat(itemFormat);
+        if (author != null) setAuthor(author);
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss");
+        try {
+            this.dateCreated = dateFormat.parse(dateCreated);
+        }
+        catch (ParseException ex) {
+            System.out.println(ex.getMessage());
+            this.dateCreated = null;
+        }
     }
 
     // endregion

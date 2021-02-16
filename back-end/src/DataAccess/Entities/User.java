@@ -27,7 +27,16 @@ public class User {
 
     // region Constructors
 
-    // This is a constructor to use when receiving a user from the client
+    /**
+     * This is a constructor to use when receiving a user from the client
+     * @param username
+     * @param password
+     * @param firstName
+     * @param lastName
+     * @param email
+     * @param phoneNumber
+     * @param imageUrl
+     */
     public User(String username, String password, String firstName, String lastName,
                  String email, String phoneNumber, String imageUrl) {
         id = EntityUtils.generateId();
@@ -42,7 +51,18 @@ public class User {
         setImageUrl(imageUrl);
     }
 
-    // This is a constructor to use when retrieving a user from the database
+    /**
+     * This is a constructor to use when retrieving a user from the database
+     * @param id
+     * @param username
+     * @param passwordHash
+     * @param passwordSalt
+     * @param firstName
+     * @param lastName
+     * @param email
+     * @param phoneNumber
+     * @param imageUrl
+     */
     public User(String id, String username, String passwordHash, String passwordSalt, String firstName, String lastName,
                 String email, String phoneNumber, String imageUrl) {
         this.id = id;
