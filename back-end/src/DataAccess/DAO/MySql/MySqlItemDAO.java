@@ -65,11 +65,84 @@ public class MySqlItemDAO implements IItemDAO {
 
     @Override
     public boolean addItem(Item item) {
+        Connection connection = ConnectionPool.getInstance().getConnection();
+
+        boolean success = false;
+        String sqlCommand = "INSERT INTO Items VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+        try (PreparedStatement statement = connection.prepareStatement(sqlCommand)) {
+            statement.setString(1, item.getId());
+            statement.setString(2, item.getTitle());
+            statement.setString(3, item.getCategory());
+            statement.setString(4, item.getDateCreated().toString());
+            statement.setBoolean(5, item.isAvailable());
+            statement.setString(6, item.getOwnerId());
+            statement.setString(7, item.getImageUrl());
+            statement.setString(8, item.getDescription());
+            statement.setInt(9, item.getNumPlayers());
+            statement.setInt(10, item.getTimeToPlayInMins());
+            statement.setInt(11, item.getReleaseYear());
+            statement.setString(12, item.getGenre());
+            statement.setString(13, item.getItemFormat());
+            statement.setString(14, item.getAuthor());
+
+            success = true;
+            return statement.executeUpdate() == 1;
+        }
+        catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+            ex.printStackTrace();
+        }
+        finally {
+            ConnectionPool.getInstance().freeConnection(connection, success);
+        }
+
         return false;
     }
 
     @Override
     public boolean updateItem(String id, Item item) {
+        Connection connection = ConnectionPool.getInstance().getConnection();
+
+        boolean success = false;
+        String sqlCommand = "UPDATE Items SET "
+                + "Username = ?, "
+                + "PasswordHash = ?, "
+                + "PasswordSalt = ?, "
+                + "FirstName = ?, "
+                + "LastName = ?, "
+                + "Email = ?, "
+                + "PhoneNumber = ?, "
+                + "ImageUrl = ? "
+                + "WHERE Id = ?";
+
+        try (PreparedStatement statement = connection.prepareStatement(sqlCommand)) {
+            statement.setString(1, item.getTitle());
+            statement.setString(2, item.getCategory());
+            statement.setString(3, item.getDateCreated().toString());
+            statement.setBoolean(4, item.isAvailable());
+            statement.setString(5, item.getOwnerId());
+            statement.setString(6, item.getImageUrl());
+            statement.setString(7, item.getDescription());
+            statement.setInt(8, item.getNumPlayers());
+            statement.setInt(9, item.getTimeToPlayInMins());
+            statement.setInt(10, item.getReleaseYear());
+            statement.setString(11, item.getGenre());
+            statement.setString(12, item.getItemFormat());
+            statement.setString(13, item.getAuthor());
+            statement.setString(14, item.getId());
+
+            success = true;
+            return statement.executeUpdate() == 1;
+        }
+        catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+            ex.printStackTrace();
+        }
+        finally {
+            ConnectionPool.getInstance().freeConnection(connection, success);
+        }
+
         return false;
     }
 
