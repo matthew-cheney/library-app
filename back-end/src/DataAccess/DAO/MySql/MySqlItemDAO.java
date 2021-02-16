@@ -106,14 +106,19 @@ public class MySqlItemDAO implements IItemDAO {
 
         boolean success = false;
         String sqlCommand = "UPDATE Items SET "
-                + "Username = ?, "
-                + "PasswordHash = ?, "
-                + "PasswordSalt = ?, "
-                + "FirstName = ?, "
-                + "LastName = ?, "
-                + "Email = ?, "
-                + "PhoneNumber = ?, "
-                + "ImageUrl = ? "
+                + "Title = ?, "
+                + "Category = ?, "
+                + "DateCreated = ?, "
+                + "Available = ?, "
+                + "OwnerId = ?, "
+                + "ImageUrl = ?, "
+                + "Description = ?, "
+                + "NumPlayers = ?, "
+                + "TimeToPlayInMins = ?, "
+                + "ReleaseYear = ?, "
+                + "Genre = ?, "
+                + "ItemFormat = ?, "
+                + "Author = ? "
                 + "WHERE Id = ?";
 
         try (PreparedStatement statement = connection.prepareStatement(sqlCommand)) {
