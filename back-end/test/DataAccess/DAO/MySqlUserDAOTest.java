@@ -36,77 +36,128 @@ public class MySqlUserDAOTest {
     @BeforeEach
     public void setUpTests() {
         dao = new MySqlUserDAO();
-        dao.addUser(testUser);
+        try {
+            dao.addUser(testUser);
+        }
+        catch (DatabaseException ex) {
+            System.out.println(ex.getMessage());
+        }
     }
 
     @AfterEach
     public void tearDownTests() {
-        dao.deleteUser(testUser.getId());
+        try {
+            dao.deleteUser(testUser.getId());
+        }
+        catch (DatabaseException ex) {
+            System.out.println(ex.getMessage());
+        }
     }
 
     @Test
     public void getUser_Success() {
-        User user = dao.getUser(testUser.getId());
-        assertEquals(testUser, user);
+        try {
+            User user = dao.getUser(testUser.getId());
+            assertEquals(testUser, user);
+        }
+        catch (DatabaseException ex) {
+            System.out.println(ex.getMessage());
+        }
     }
 
     @Test
     public void getUser_Failure() {
-        User user = dao.getUser("BUBBLES");
-        assertNull(user);
+        try {
+            User user = dao.getUser("BUBBLES");
+            assertNull(user);
+        }
+        catch (DatabaseException ex) {
+            System.out.println(ex.getMessage());
+        }
     }
 
     @Test
     public void addUser_Success() {
-        boolean success = dao.addUser(otherTestUser);
-        assertTrue(success);
-        User user = dao.getUser(otherTestUser.getId());
-        assertEquals(otherTestUser, user);
-        success = dao.deleteUser(otherTestUser.getId());
-        assertTrue(success);
+        try {
+            boolean success = dao.addUser(otherTestUser);
+            assertTrue(success);
+            User user = dao.getUser(otherTestUser.getId());
+            assertEquals(otherTestUser, user);
+            success = dao.deleteUser(otherTestUser.getId());
+            assertTrue(success);
+        }
+        catch (DatabaseException ex) {
+            System.out.println(ex.getMessage());
+        }
     }
 
     @Test
     public void addUser_Failure() {
-        boolean success = dao.addUser(testUser);
-        assertFalse(success);
+        boolean expected = false;
+        try {
+            dao.addUser(testUser);
+        }
+        catch (DatabaseException ex) {
+            expected = true;
+        }
+        assertTrue(expected);
     }
 
     @Test
     public void updateUser_Success() {
-        User user = testUser;
-        user.setEmail("marriedagain@match.com");
-        boolean success = dao.updateUser(testUser.getId(), user);
-        assertTrue(success);
-        User updatedUser = dao.getUser(testUser.getId());
-        assertEquals(user, updatedUser);
+        try {
+            User user = testUser;
+            user.setEmail("marriedagain@match.com");
+            boolean success = dao.updateUser(testUser.getId(), user);
+            assertTrue(success);
+            User updatedUser = dao.getUser(testUser.getId());
+            assertEquals(user, updatedUser);
+        }
+        catch (DatabaseException ex) {
+            System.out.println(ex.getMessage());
+        }
     }
 
     @Test
     public void updateUser_Failure() {
-        User user = otherTestUser;
-        user.setEmail("yetanotherfight@rl.com");
-        boolean success = dao.updateUser(otherTestUser.getId(), user);
-        assertFalse(success);
-        User notChangedUser = dao.getUser(testUser.getId());
-        assertNotEquals(user, notChangedUser);
+        try {
+            User user = otherTestUser;
+            user.setEmail("yetanotherfight@rl.com");
+            boolean success = dao.updateUser(otherTestUser.getId(), user);
+            assertFalse(success);
+            User notChangedUser = dao.getUser(testUser.getId());
+            assertNotEquals(user, notChangedUser);
+        }
+        catch (DatabaseException ex) {
+            System.out.println(ex.getMessage());
+        }
     }
 
     @Test
     public void deleteUser_Success() {
-        boolean success = dao.addUser(otherTestUser);
-        assertTrue(success);
-        success = dao.deleteUser(otherTestUser.getId());
-        assertTrue(success);
-        User user = dao.getUser(otherTestUser.getId());
-        assertNull(user);
+        try {
+            boolean success = dao.addUser(otherTestUser);
+            assertTrue(success);
+            success = dao.deleteUser(otherTestUser.getId());
+            assertTrue(success);
+            User user = dao.getUser(otherTestUser.getId());
+            assertNull(user);
+        }
+        catch (DatabaseException ex) {
+            System.out.println(ex.getMessage());
+        }
     }
 
     @Test
     public void deleteUser_Failure() {
-        boolean success = dao.deleteUser(otherTestUser.getId());
-        assertFalse(success);
-        User user = dao.getUser(otherTestUser.getId());
-        assertNull(user);
+        try {
+            boolean success = dao.deleteUser(otherTestUser.getId());
+            assertFalse(success);
+            User user = dao.getUser(otherTestUser.getId());
+            assertNull(user);
+        }
+        catch (DatabaseException ex) {
+            System.out.println(ex.getMessage());
+        }
     }
 }
