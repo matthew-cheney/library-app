@@ -19,7 +19,7 @@ public class MySqlItemDAO implements IItemDAO {
         ResultSet resultSet;
         String sqlCommand = "SELECT Title, Category, DateCreated, Available, OwnerId, "
                 + "ImageUrl, Description, NumPlayers, TimeToPlayInMins, ReleaseYear, "
-                + "Genre, ItemFormat, Author FROM Users WHERE Id = ?";
+                + "Genre, ItemFormat, Author FROM Items WHERE Id = ?";
 
         try (PreparedStatement statement = connection.prepareStatement(sqlCommand)) {
             statement.setString(1, id);
@@ -153,6 +153,25 @@ public class MySqlItemDAO implements IItemDAO {
 
     @Override
     public boolean deleteItem(String id) {
+        Connection connection = ConnectionPool.getInstance().getConnection();
+
+        boolean success = false;
+        String sqlCommand = "DELETE FROM Items WHERE Id = ?";
+
+        try (PreparedStatement statement = connection.prepareStatement(sqlCommand)) {
+            statement.setString(1, id);
+
+            success = true;
+            return statement.executeUpdate() == 1;
+        }
+        catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+            ex.printStackTrace();
+        }
+        finally {
+            ConnectionPool.getInstance().freeConnection(connection, success);
+        }
+
         return false;
     }
 }

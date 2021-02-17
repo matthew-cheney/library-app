@@ -4,7 +4,6 @@ import DataAccess.Utilities.EntityUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -15,13 +14,14 @@ public class Item {
     public final String BOARD_GAME = "BOARD_GAME";
     public final String MOVIE = "MOVIE";
     public final String BOOK = "BOOK";
+    public final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss");
 
     // region Required
 
     private String id;
     private String title;
     private String category;
-    private Date dateCreated;
+    private String dateCreated;
     private boolean available;
 
     // endregion
@@ -67,7 +67,7 @@ public class Item {
         setCategory(BOARD_GAME);
         setAvailable(available);
 
-        this.dateCreated = new Date(); // readonly property, no setter available
+        this.dateCreated = DATE_FORMAT.format(new Date()); // readonly property, no setter available
         this.ownerId = ownerId; // readonly property, no setter available
 
         setImageUrl(imageUrl);
@@ -95,7 +95,7 @@ public class Item {
         setCategory(MOVIE);
         setAvailable(available);
 
-        this.dateCreated = new Date(); // readonly property, no setter available
+        this.dateCreated = DATE_FORMAT.format(new Date()); // readonly property, no setter available
         this.ownerId = ownerId; // readonly property, no setter available
 
         setImageUrl(imageUrl);
@@ -126,7 +126,7 @@ public class Item {
         setCategory(BOOK);
         setAvailable(available);
 
-        this.dateCreated = new Date(); // readonly property, no setter available
+        this.dateCreated = DATE_FORMAT.format(new Date()); // readonly property, no setter available
         this.ownerId = ownerId; // readonly property, no setter available
 
         setImageUrl(imageUrl);
@@ -157,12 +157,13 @@ public class Item {
     public Item(String id, String title, String category, String dateCreated, boolean available, String ownerId,
                 String imageUrl, String description, Integer numPlayers, Integer timeToPlayInMins, Integer releaseYear,
                 String genre, String itemFormat, String author) {
-        this.id = id;
+        this.id = id; // readonly property, no setter available
 
         setTitle(title);
         setCategory(category);
         setAvailable(available);
 
+        this.dateCreated = dateCreated; // readonly property, no setter available
         this.ownerId = ownerId; // readonly property, no setter available
 
         setImageUrl(imageUrl);
@@ -173,15 +174,6 @@ public class Item {
         if (genre != null) setGenre(genre);
         if (itemFormat != null) setItemFormat(itemFormat);
         if (author != null) setAuthor(author);
-
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss");
-        try {
-            this.dateCreated = dateFormat.parse(dateCreated);
-        }
-        catch (ParseException ex) {
-            System.out.println(ex.getMessage());
-            this.dateCreated = null;
-        }
     }
 
     // endregion
@@ -200,7 +192,7 @@ public class Item {
         return category;
     }
 
-    public Date getDateCreated() {
+    public String getDateCreated() {
         return dateCreated;
     }
 
@@ -290,6 +282,47 @@ public class Item {
 
     public void setAuthor(String author) {
         this.author = author;
+    }
+
+    // endregion
+
+    // region Overrides
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+
+        if (obj.getClass() != this.getClass()) {
+            return false;
+        }
+
+        final Item other = (Item) obj;
+
+        return this.getId().equals(other.getId()) &&
+                this.getTitle().equals(other.getTitle()) &&
+                this.getCategory().equals(other.getCategory()) &&
+                this.getDateCreated().equals(other.getDateCreated()) &&
+                this.isAvailable() == other.isAvailable() &&
+                this.getOwnerId().equals(other.getOwnerId()) &&
+                this.getImageUrl().equals(other.getImageUrl()) &&
+                checkNullableStrings(this.getDescription(), other.getDescription()) &&
+                this.getNumPlayers() == other.getNumPlayers() &&
+                this.getTimeToPlayInMins() == other.getTimeToPlayInMins() &&
+                this.getReleaseYear() == other.getReleaseYear() &&
+                checkNullableStrings(this.getGenre(), other.getGenre()) &&
+                checkNullableStrings(this.getItemFormat(), other.getItemFormat()) &&
+                checkNullableStrings(this.getAuthor(), other.getAuthor());
+    }
+
+    private boolean checkNullableStrings(String a, String b) {
+        try {
+            return a.equals(b);
+        }
+        catch (NullPointerException ex) {
+            return a == null && b == null;
+        }
     }
 
     // endregion

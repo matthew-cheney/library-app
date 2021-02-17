@@ -179,9 +179,18 @@ public class User {
                 this.getPasswordSalt().equals(other.getPasswordSalt()) &&
                 this.getFirstName().equals(other.getFirstName()) &&
                 this.getLastName().equals(other.getLastName()) &&
-                this.getEmail().equals(other.getEmail()) &&
-                this.getPhoneNumber().equals(other.getPhoneNumber()) &&
-                this.getImageUrl().equals(other.getImageUrl());
+                checkNullableStrings(this.getEmail(), other.getEmail()) &&
+                checkNullableStrings(this.getPhoneNumber(), other.getPhoneNumber()) &&
+                checkNullableStrings(this.getImageUrl(), other.getImageUrl());
+    }
+
+    private boolean checkNullableStrings(String a, String b) {
+        try {
+            return a.equals(b);
+        }
+        catch (NullPointerException ex) {
+            return a == null && b == null;
+        }
     }
 
     // endregion
