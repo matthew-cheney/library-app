@@ -22,6 +22,7 @@ public class ConnectionPoolTest {
         catch (SQLException ex) {
             errorReceived = ex.getMessage();
         }
-        assertEquals("You can't operate on a closed Connection!!!", errorReceived);
+        assertNotNull(errorReceived);
+        assertTrue(errorReceived.contains("You can't operate on a closed Connection!!!"));
     }
 }

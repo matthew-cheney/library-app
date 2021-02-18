@@ -1,6 +1,6 @@
 package DataAccess.DAO;
 
-import DataAccess.Entities.Item;
+import Entities.Item;
 
 public interface IItemDAO {
     Item getItem(String id);

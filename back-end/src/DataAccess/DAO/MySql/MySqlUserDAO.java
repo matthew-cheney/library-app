@@ -1,15 +1,16 @@
 package DataAccess.DAO.MySql;
 
 import DataAccess.Connection.ConnectionPool;
+import DataAccess.DAO.DatabaseException;
 import DataAccess.DAO.IUserDAO;
-import DataAccess.Entities.User;
+import Entities.User;
 
 import java.sql.*;
 
 public class MySqlUserDAO implements IUserDAO {
 
     @Override
-    public User getUser(String id) {
+    public User getUser(String id) throws DatabaseException {
         Connection connection = ConnectionPool.getInstance().getConnection();
 
         boolean success = false;
@@ -47,16 +48,15 @@ public class MySqlUserDAO implements IUserDAO {
         catch (SQLException ex) {
             System.out.println(ex.getMessage());
             ex.printStackTrace();
+            throw new DatabaseException(ex.getErrorCode(), ex.getMessage());
         }
         finally {
             ConnectionPool.getInstance().freeConnection(connection, success);
         }
-
-        return null;
     }
 
     @Override
-    public boolean addUser(User user) {
+    public boolean addUser(User user) throws DatabaseException {
         Connection connection = ConnectionPool.getInstance().getConnection();
 
         boolean success = false;
@@ -79,16 +79,15 @@ public class MySqlUserDAO implements IUserDAO {
         catch (SQLException ex) {
             System.out.println(ex.getMessage());
             ex.printStackTrace();
+            throw new DatabaseException(ex.getErrorCode(), ex.getMessage());
         }
         finally {
             ConnectionPool.getInstance().freeConnection(connection, success);
         }
-
-        return false;
     }
 
     @Override
-    public boolean updateUser(String id, User user) {
+    public boolean updateUser(String id, User user) throws DatabaseException {
         Connection connection = ConnectionPool.getInstance().getConnection();
 
         boolean success = false;
@@ -120,16 +119,15 @@ public class MySqlUserDAO implements IUserDAO {
         catch (SQLException ex) {
             System.out.println(ex.getMessage());
             ex.printStackTrace();
+            throw new DatabaseException(ex.getErrorCode(), ex.getMessage());
         }
         finally {
             ConnectionPool.getInstance().freeConnection(connection, success);
         }
-
-        return false;
     }
 
     @Override
-    public boolean deleteUser(String id) {
+    public boolean deleteUser(String id) throws DatabaseException {
         Connection connection = ConnectionPool.getInstance().getConnection();
 
         boolean success = false;
@@ -144,11 +142,10 @@ public class MySqlUserDAO implements IUserDAO {
         catch (SQLException ex) {
             System.out.println(ex.getMessage());
             ex.printStackTrace();
+            throw new DatabaseException(ex.getErrorCode(), ex.getMessage());
         }
         finally {
             ConnectionPool.getInstance().freeConnection(connection, success);
         }
-
-        return false;
     }
 }

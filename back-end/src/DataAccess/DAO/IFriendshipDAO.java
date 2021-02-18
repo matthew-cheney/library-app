@@ -1,6 +1,6 @@
 package DataAccess.DAO;
 
-import DataAccess.Entities.Friendship;
+import Entities.Friendship;
 
 import java.sql.SQLException;
 
