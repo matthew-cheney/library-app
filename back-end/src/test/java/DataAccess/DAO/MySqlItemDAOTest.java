@@ -2,15 +2,12 @@ package DataAccess.DAO;
 
 import DataAccess.DAO.MySql.MySqlItemDAO;
 import Entities.Item;
-
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 public class MySqlItemDAOTest {
 
