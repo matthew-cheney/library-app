@@ -7,7 +7,8 @@ import Entities.User;
 import Request.RegisterRequest;
 import Response.RegisterResponse;
 
-public class RegisterService {
+public class RegisterService implements IRegisterService {
+    @Override
     public RegisterResponse register(RegisterRequest request) {
         User user = new User(
                 request.getUsername(),

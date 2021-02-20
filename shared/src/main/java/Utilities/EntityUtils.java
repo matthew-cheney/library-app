@@ -9,6 +9,10 @@ import java.util.*;
 
 public class EntityUtils {
 
+    private static final int ITERATION_COUNT = 65536;
+    private static final int KEY_LENGTH = 128;
+    private static final String SECRET = "PBKDF2WithHmacSHA1";
+
     public static String generateId() {
         return UUID.randomUUID().toString();
     }
@@ -20,11 +24,10 @@ public class EntityUtils {
             byte[] salt = new byte[16];
             Random random = new Random();
             random.nextBytes(salt);
-            KeySpec spec = new PBEKeySpec(password.toCharArray(), salt, 65536, 128);
-            SecretKeyFactory f = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
-            byte[] hash = f.generateSecret(spec).getEncoded();
-            Base64.Encoder enc = Base64.getEncoder();
-            pair.put(enc.encodeToString(salt), enc.encodeToString(hash));
+            KeySpec spec = new PBEKeySpec(password.toCharArray(), salt, ITERATION_COUNT, KEY_LENGTH);
+            SecretKeyFactory keyFactory = SecretKeyFactory.getInstance(SECRET);
+            byte[] hash = keyFactory.generateSecret(spec).getEncoded();
+            pair.put(Base64.getEncoder().encodeToString(salt), Base64.getEncoder().encodeToString(hash));
         }
         catch (NoSuchAlgorithmException | InvalidKeySpecException ex) {
             System.out.println("Error hashing password due to following exception: " + ex);
@@ -32,6 +35,21 @@ public class EntityUtils {
         }
 
         return pair;
+    }
+
+    public static boolean verifyPassword(String password, String passwordHash, String passwordSalt) {
+        try {
+            byte[] salt = Base64.getDecoder().decode(passwordSalt);
+            KeySpec spec = new PBEKeySpec(password.toCharArray(), salt, ITERATION_COUNT, KEY_LENGTH);
+            SecretKeyFactory keyFactory = SecretKeyFactory.getInstance(SECRET);
+            byte[] hash = keyFactory.generateSecret(spec).getEncoded();
+            return passwordHash.equals(Base64.getEncoder().encodeToString(hash));
+        }
+        catch (NoSuchAlgorithmException | InvalidKeySpecException ex) {
+            System.out.println("Error verifying password due to following exception: " + ex);
+        }
+
+        return false;
     }
 
     public static boolean idAIsLessThanIdB(String idA, String idB) {

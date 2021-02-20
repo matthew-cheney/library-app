@@ -1,34 +1,16 @@
 package Response;
 
-public class RegisterResponse {
+import Response.Abstract.BaseResponse;
 
-    private boolean success;
-    private String message;
+public class RegisterResponse extends BaseResponse {
 
     public RegisterResponse() {}
 
     public RegisterResponse(boolean success) {
-        setSuccess(success);
+        super(success);
     }
 
     public RegisterResponse(boolean success, String message) {
-        setSuccess(success);
-        setMessage(message);
-    }
-
-    public boolean isSuccess() {
-        return success;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setSuccess(boolean success) {
-        this.success = success;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
+        super(success, message);
     }
 }

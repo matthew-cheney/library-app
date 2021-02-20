@@ -57,7 +57,7 @@ public class MySqlUserDAOTest {
     @Test
     public void getUser_Success() {
         try {
-            User user = dao.getUser(testUser.getId());
+            User user = dao.getUserById(testUser.getId());
             assertEquals(testUser, user);
         }
         catch (DatabaseException ex) {
@@ -68,7 +68,7 @@ public class MySqlUserDAOTest {
     @Test
     public void getUser_Failure() {
         try {
-            User user = dao.getUser("BUBBLES");
+            User user = dao.getUserById("BUBBLES");
             assertNull(user);
         }
         catch (DatabaseException ex) {
@@ -81,7 +81,7 @@ public class MySqlUserDAOTest {
         try {
             boolean success = dao.addUser(otherTestUser);
             assertTrue(success);
-            User user = dao.getUser(otherTestUser.getId());
+            User user = dao.getUserById(otherTestUser.getId());
             assertEquals(otherTestUser, user);
             success = dao.deleteUser(otherTestUser.getId());
             assertTrue(success);
@@ -110,7 +110,7 @@ public class MySqlUserDAOTest {
             user.setEmail("marriedagain@match.com");
             boolean success = dao.updateUser(testUser.getId(), user);
             assertTrue(success);
-            User updatedUser = dao.getUser(testUser.getId());
+            User updatedUser = dao.getUserById(testUser.getId());
             assertEquals(user, updatedUser);
         }
         catch (DatabaseException ex) {
@@ -125,7 +125,7 @@ public class MySqlUserDAOTest {
             user.setEmail("yetanotherfight@rl.com");
             boolean success = dao.updateUser(otherTestUser.getId(), user);
             assertFalse(success);
-            User notChangedUser = dao.getUser(testUser.getId());
+            User notChangedUser = dao.getUserById(testUser.getId());
             assertNotEquals(user, notChangedUser);
         }
         catch (DatabaseException ex) {
@@ -140,7 +140,7 @@ public class MySqlUserDAOTest {
             assertTrue(success);
             success = dao.deleteUser(otherTestUser.getId());
             assertTrue(success);
-            User user = dao.getUser(otherTestUser.getId());
+            User user = dao.getUserById(otherTestUser.getId());
             assertNull(user);
         }
         catch (DatabaseException ex) {
@@ -153,7 +153,7 @@ public class MySqlUserDAOTest {
         try {
             boolean success = dao.deleteUser(otherTestUser.getId());
             assertFalse(success);
-            User user = dao.getUser(otherTestUser.getId());
+            User user = dao.getUserById(otherTestUser.getId());
             assertNull(user);
         }
         catch (DatabaseException ex) {

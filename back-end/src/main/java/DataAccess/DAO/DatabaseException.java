@@ -5,6 +5,10 @@ public class DatabaseException extends Exception {
     private int errorCode;
     private String message;
 
+    public DatabaseException(String message) {
+        setMessage(message);
+    }
+
     public DatabaseException(int errorCode, String message) {
         setErrorCode(errorCode);
         setMessage(message);
