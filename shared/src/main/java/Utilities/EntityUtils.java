@@ -59,4 +59,13 @@ public class EntityUtils {
         strings.sort(String.CASE_INSENSITIVE_ORDER);
         return strings.get(0).equals(idA);
     }
+
+    public static boolean checkNullableObjects(Object a, Object b) {
+        try {
+            return a.equals(b);
+        }
+        catch (NullPointerException ex) {
+            return a == null && b == null;
+        }
+    }
 }

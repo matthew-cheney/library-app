@@ -307,22 +307,13 @@ public class Item {
                 this.isAvailable() == other.isAvailable() &&
                 this.getOwnerId().equals(other.getOwnerId()) &&
                 this.getImageUrl().equals(other.getImageUrl()) &&
-                checkNullableStrings(this.getDescription(), other.getDescription()) &&
+                EntityUtils.checkNullableObjects(this.getDescription(), other.getDescription()) &&
                 this.getNumPlayers() == other.getNumPlayers() &&
                 this.getTimeToPlayInMins() == other.getTimeToPlayInMins() &&
                 this.getReleaseYear() == other.getReleaseYear() &&
-                checkNullableStrings(this.getGenre(), other.getGenre()) &&
-                checkNullableStrings(this.getItemFormat(), other.getItemFormat()) &&
-                checkNullableStrings(this.getAuthor(), other.getAuthor());
-    }
-
-    private boolean checkNullableStrings(String a, String b) {
-        try {
-            return a.equals(b);
-        }
-        catch (NullPointerException ex) {
-            return a == null && b == null;
-        }
+                EntityUtils.checkNullableObjects(this.getGenre(), other.getGenre()) &&
+                EntityUtils.checkNullableObjects(this.getItemFormat(), other.getItemFormat()) &&
+                EntityUtils.checkNullableObjects(this.getAuthor(), other.getAuthor());
     }
 
     // endregion

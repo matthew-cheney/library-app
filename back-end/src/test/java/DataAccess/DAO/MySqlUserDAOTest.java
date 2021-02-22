@@ -55,7 +55,7 @@ public class MySqlUserDAOTest {
     }
 
     @Test
-    public void getUser_Success() {
+    public void getUserById_Success() {
         try {
             User user = dao.getUserById(testUser.getId());
             assertEquals(testUser, user);
@@ -66,7 +66,7 @@ public class MySqlUserDAOTest {
     }
 
     @Test
-    public void getUser_Failure() {
+    public void getUserById_Failure() {
         try {
             User user = dao.getUserById("BUBBLES");
             assertNull(user);

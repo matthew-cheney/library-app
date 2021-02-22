@@ -95,6 +95,9 @@ public class MySqlUserDAO implements IUserDAO {
                 counter++;
             }
 
+            if (user == null) {
+                throw new DatabaseException("Invalid Username!");
+            }
             success = true;
             return user;
         }

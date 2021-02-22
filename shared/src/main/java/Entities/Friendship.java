@@ -15,6 +15,13 @@ public class Friendship {
 
     // region Constructors
 
+    /**
+     * To ensure we don't end up with duplicate friendships in the database,
+     * this constructor sorts the userIds alphabetically before assigning them
+     * to their interior properties.
+     * @param userIdA
+     * @param userIdB
+     */
     public Friendship(@NotNull String userIdA, @NotNull String userIdB) {
         id = EntityUtils.generateId();
 
@@ -36,11 +43,11 @@ public class Friendship {
         return id;
     }
 
-    public String getUserIdA() {
+    public String getSortedUserIdA() {
         return userIdA;
     }
 
-    public String getUserIdB() {
+    public String getSortedUserIdB() {
         return userIdB;
     }
 
