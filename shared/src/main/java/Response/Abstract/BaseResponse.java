@@ -1,5 +1,8 @@
 package Response.Abstract;
 
+import Response.RegisterResponse;
+import Utilities.EntityUtils;
+
 public abstract class BaseResponse {
 
     private boolean success;
@@ -43,4 +46,24 @@ public abstract class BaseResponse {
     public void setMessage(String message) {
         this.message = message;
     }
+
+    // region Overrides
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+
+        if (obj.getClass() != this.getClass()) {
+            return false;
+        }
+
+        final RegisterResponse other = (RegisterResponse) obj;
+
+        return this.isSuccess() == other.isSuccess() &&
+                EntityUtils.checkNullableObjects(this.getMessage(), other.getMessage());
+    }
+
+    // endregion
 }
