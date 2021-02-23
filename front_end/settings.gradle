@@ -1,2 +1,5 @@
 include ':app'
 rootProject.name = "Library Of Peers"
+
+include ":shared"
+project(":shared").projectDir = new File("../shared")

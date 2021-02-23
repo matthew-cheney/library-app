@@ -3,7 +3,7 @@ package com.example.libraryofpeers;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
-mkdir
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
