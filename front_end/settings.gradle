@@ -3,3 +3,6 @@ rootProject.name = "Library Of Peers"
 
 include ":shared"
 project(":shared").projectDir = new File("../shared")
+
+include ":back_end"
+project(":back_end").projectDir = new File("../back_end")
