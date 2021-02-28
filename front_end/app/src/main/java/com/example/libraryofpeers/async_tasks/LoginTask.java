@@ -3,14 +3,9 @@ package com.example.libraryofpeers.async_tasks;
 import android.os.AsyncTask;
 
 import com.example.libraryofpeers.presenters.LoginPresenter;
-import com.example.libraryofpeers.presenters.RegisterPresenter;
-
-import org.jetbrains.annotations.Async;
 
 import Request.LoginRequest;
-import Request.RegisterRequest;
 import Response.LoginResponse;
-import Response.RegisterResponse;
 
 public class LoginTask extends AsyncTask<LoginRequest, Void, LoginResponse> {
     private final LoginTask.LoginRequestObserver observer;
