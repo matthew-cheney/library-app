@@ -1,16 +1,23 @@
-package com.example.libraryofpeers.activities;
+package com.example.libraryofpeers.view;
 
+import Request.RegisterRequest;
+import Response.RegisterResponse;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.libraryofpeers.R;
+import com.example.libraryofpeers.async_tasks.RegisterTask;
+import com.example.libraryofpeers.presenters.RegisterPresenter;
 
-public class RegisterActivity extends AppCompatActivity {
+public class RegisterActivity extends AppCompatActivity implements RegisterPresenter.View, RegisterTask.RegisterRequestObserver {
+    private RegisterPresenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +45,27 @@ public class RegisterActivity extends AppCompatActivity {
         String passwordRegister = passwordInputRegister.getText().toString();
         String confirmPasswordRegister = confirmPasswordInputRegister.getText().toString();
 
+        presenter = new RegisterPresenter(this);
+
+        if (passwordRegister.equals(confirmPasswordRegister)) {
+            RegisterRequest registerRequest = new RegisterRequest(userNameRegister, passwordRegister, firstNameRegister,
+                    lastNameRegister, "", "", "");
+            RegisterTask registerTask = new RegisterTask(this, presenter);
+            registerTask.execute(registerRequest);
+        } else {
+            Toast.makeText(this, "Passwords must be the same!", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    @Override
+    public void onRegisterSuccess(RegisterResponse registerResponse) {
         Intent mainIntent = new Intent(this, MainActivity.class);
         startActivity(mainIntent);
+    }
+
+    @Override
+    public void onRegisterFailure(RegisterResponse registerResponse) {
+        Log.e("", "Error with Register");
+        Toast.makeText(this, "Register failed. Try again!", Toast.LENGTH_LONG).show();
     }
 }

@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/main_blue"
     android:id="@+id/registerLayout"
-    tools:context=".activities.RegisterActivity">
+    tools:context=".view.RegisterActivity">
 
     <LinearLayout
         android:id="@+id/loginFields"

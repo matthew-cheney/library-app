@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/main_blue"
     android:id="@+id/loginActivity"
-    tools:context=".activities.LoginActivity">
+    tools:context=".view.LoginActivity">
 
     <LinearLayout
         android:id="@+id/loginFields"
