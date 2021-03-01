@@ -1,13 +1,12 @@
 package Service;
 
 import DataAccess.DAO.DatabaseException;
-import DataAccess.DAO.IUserDAO;
 import DataAccess.DAO.MySql.MySqlUserDAO;
 import Entities.User;
 import Request.LoginRequest;
 import Request.RegisterRequest;
 import Response.LoginResponse;
-import TestUtils.BaseTest;
+import TestUtils.TestConfig;
 import Utilities.EntityUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,11 +14,11 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
 
-public class LoginServiceTest extends BaseTest {
+public class LoginServiceTest {
 
     private LoginService service;
+    private MySqlUserDAO dao;
     private LoginRequest successfulRequest = new LoginRequest("dinosaursAreCool", "rossIsBest");
     private LoginRequest failureUsernameRequest = new LoginRequest("false", "credentials");
     private LoginRequest failurePasswordRequest = new LoginRequest("dinosaursAreCool", "credentials");
@@ -41,10 +40,15 @@ public class LoginServiceTest extends BaseTest {
 
     @BeforeEach
     public void setUpTests() {
+        dao = Mockito.spy(MySqlUserDAO.class);
+        Mockito.when(dao.getConnectionPool()).thenReturn(TestConfig.connectionPool);
+
         service = Mockito.spy(LoginService.class);
-        Mockito.when(service.getUserDAO()).thenReturn(new MySqlUserDAO(connectionPool));
+        Mockito.when(service.getUserDAO()).thenReturn(dao);
+
         RegisterService registerService = Mockito.spy(RegisterService.class);
-        Mockito.when(registerService.getUserDAO()).thenReturn(new MySqlUserDAO(connectionPool));
+        Mockito.when(registerService.getUserDAO()).thenReturn(dao);
+
         RegisterRequest request = new RegisterRequest(
                 "dinosaursAreCool",
                 "rossIsBest",
@@ -59,7 +63,6 @@ public class LoginServiceTest extends BaseTest {
 
     @AfterEach
     public void tearDownTests() {
-        IUserDAO dao = new MySqlUserDAO(connectionPool);
         try {
             User user = dao.getUserByCredentials(successfulRequest.getUsername(), successfulRequest.getPassword());
             dao.deleteUser(user.getId());

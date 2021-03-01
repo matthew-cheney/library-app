@@ -2,16 +2,17 @@ package DataAccess.DAO;
 
 import DataAccess.DAO.MySql.MySqlUserDAO;
 import Entities.User;
-import TestUtils.BaseTest;
+import TestUtils.TestConfig;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class MySqlUserDAOTest extends BaseTest {
-    IUserDAO dao;
+public class MySqlUserDAOTest {
+    MySqlUserDAO dao;
     User testUser = new User(
             "TEST",
             "dinosaursAreCool",
@@ -37,7 +38,8 @@ public class MySqlUserDAOTest extends BaseTest {
 
     @BeforeEach
     public void setUpTests() {
-        dao = new MySqlUserDAO(connectionPool);
+        dao = Mockito.spy(MySqlUserDAO.class);
+        Mockito.when(dao.getConnectionPool()).thenReturn(TestConfig.connectionPool);
         try {
             dao.addUser(testUser);
         }

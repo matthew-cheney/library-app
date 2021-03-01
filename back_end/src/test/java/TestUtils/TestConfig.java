@@ -1,7 +1,12 @@
 package TestUtils;
 
+import DataAccess.Connection.ConnectionPool;
+
 public class TestConfig {
 
-    public static final String TEST_USER = "tadhgcra_loptest";
-    public static final String TEST_PASSWORD = "qCxQAMNV8ghbBa9";
+    private static final String TEST_USER = "tadhgcra_loptest";
+    private static final String TEST_PASSWORD = "qCxQAMNV8ghbBa9";
+
+    public static final ConnectionPool connectionPool =
+            ConnectionPool.getInstance(TestConfig.TEST_USER, TestConfig.TEST_PASSWORD);
 }

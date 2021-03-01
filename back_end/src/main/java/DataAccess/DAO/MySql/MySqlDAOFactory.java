@@ -1,9 +1,9 @@
 package DataAccess.DAO.MySql;
 
-import DataAccess.DAO.IDAOFactory;
-import DataAccess.DAO.IFriendshipDAO;
-import DataAccess.DAO.IItemDAO;
-import DataAccess.DAO.IUserDAO;
+import DataAccess.DAO.Interfaces.IDAOFactory;
+import DataAccess.DAO.Interfaces.IFriendshipDAO;
+import DataAccess.DAO.Interfaces.IItemDAO;
+import DataAccess.DAO.Interfaces.IUserDAO;
 
 public class MySqlDAOFactory implements IDAOFactory {
 

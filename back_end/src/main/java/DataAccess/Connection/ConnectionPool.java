@@ -40,14 +40,16 @@ public class ConnectionPool {
     // region Public
 
     public static ConnectionPool getInstance() {
-        if (dataSource == null)
+        if (dataSource == null) {
             dataSource = new ConnectionPool(DEFAULT_USER, DEFAULT_PASSWORD);
+        }
         return dataSource;
     }
 
     public static ConnectionPool getInstance(String user, String password) {
-        if (dataSource == null)
+        if (dataSource == null) {
             dataSource = new ConnectionPool(user, password);
+        }
         return dataSource;
     }
 

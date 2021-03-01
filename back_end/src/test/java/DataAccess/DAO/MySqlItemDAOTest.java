@@ -2,20 +2,21 @@ package DataAccess.DAO;
 
 import DataAccess.DAO.MySql.MySqlItemDAO;
 import Entities.Item;
-import TestUtils.BaseTest;
+import TestUtils.TestConfig;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class MySqlItemDAOTest extends BaseTest {
+public class MySqlItemDAOTest {
 
-    IItemDAO dao;
+    MySqlItemDAO dao;
     SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss");
     Item boardGame = new Item(
             "TEST_BOARD_GAME",
@@ -68,7 +69,8 @@ public class MySqlItemDAOTest extends BaseTest {
 
     @BeforeEach
     public void setUpTests() {
-        dao = new MySqlItemDAO(connectionPool);
+        dao = Mockito.spy(MySqlItemDAO.class);
+        Mockito.when(dao.getConnectionPool()).thenReturn(TestConfig.connectionPool);
         dao.addItem(boardGame);
     }
 

@@ -1,12 +1,10 @@
 package Service;
 
 import DataAccess.DAO.DatabaseException;
-import DataAccess.DAO.IUserDAO;
+import DataAccess.DAO.Interfaces.IUserDAO;
 import DataAccess.DAO.MySql.MySqlUserDAO;
-import Entities.User;
 import Request.EditUserRequest;
 import Response.EditUserResponse;
-import Response.RegisterResponse;
 
 public class EditUserService implements IEditUserService {
     @Override
@@ -19,7 +17,7 @@ public class EditUserService implements IEditUserService {
         }
     }
 
-    private IUserDAO getUserDAO() {
+    public IUserDAO getUserDAO() {
         return new MySqlUserDAO();
     }
 }
