@@ -10,9 +10,19 @@ import java.sql.*;
 
 public class MySqlUserDAO implements IUserDAO {
 
+    private ConnectionPool connectionPool;
+
+    public MySqlUserDAO() {
+        connectionPool = ConnectionPool.getInstance();
+    }
+
+    public MySqlUserDAO(ConnectionPool connectionPool) {
+        this.connectionPool = connectionPool;
+    }
+
     @Override
     public User getUserById(String id) throws DatabaseException {
-        Connection connection = ConnectionPool.getInstance().getConnection();
+        Connection connection = connectionPool.getConnection();
 
         boolean success = false;
         ResultSet resultSet;
@@ -52,13 +62,13 @@ public class MySqlUserDAO implements IUserDAO {
             throw new DatabaseException(ex.getErrorCode(), ex.getMessage());
         }
         finally {
-            ConnectionPool.getInstance().freeConnection(connection, success);
+            connectionPool.freeConnection(connection, success);
         }
     }
 
     @Override
     public User getUserByCredentials(String username, String password) throws DatabaseException {
-        Connection connection = ConnectionPool.getInstance().getConnection();
+        Connection connection = connectionPool.getConnection();
 
         boolean success = false;
         ResultSet resultSet;
@@ -107,13 +117,13 @@ public class MySqlUserDAO implements IUserDAO {
             throw new DatabaseException(ex.getErrorCode(), ex.getMessage());
         }
         finally {
-            ConnectionPool.getInstance().freeConnection(connection, success);
+            connectionPool.freeConnection(connection, success);
         }
     }
 
     @Override
     public boolean addUser(User user) throws DatabaseException {
-        Connection connection = ConnectionPool.getInstance().getConnection();
+        Connection connection = connectionPool.getConnection();
 
         boolean success = false;
         String sqlCommand = "INSERT INTO Users VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -138,13 +148,13 @@ public class MySqlUserDAO implements IUserDAO {
             throw new DatabaseException(ex.getErrorCode(), ex.getMessage());
         }
         finally {
-            ConnectionPool.getInstance().freeConnection(connection, success);
+            connectionPool.freeConnection(connection, success);
         }
     }
 
     @Override
     public boolean updateUser(String id, User user) throws DatabaseException {
-        Connection connection = ConnectionPool.getInstance().getConnection();
+        Connection connection = connectionPool.getConnection();
 
         boolean success = false;
         String sqlCommand = "UPDATE Users SET "
@@ -178,13 +188,13 @@ public class MySqlUserDAO implements IUserDAO {
             throw new DatabaseException(ex.getErrorCode(), ex.getMessage());
         }
         finally {
-            ConnectionPool.getInstance().freeConnection(connection, success);
+            connectionPool.freeConnection(connection, success);
         }
     }
 
     @Override
     public boolean deleteUser(String id) throws DatabaseException {
-        Connection connection = ConnectionPool.getInstance().getConnection();
+        Connection connection = connectionPool.getConnection();
 
         boolean success = false;
         String sqlCommand = "DELETE FROM Users WHERE Id = ?";
@@ -201,7 +211,7 @@ public class MySqlUserDAO implements IUserDAO {
             throw new DatabaseException(ex.getErrorCode(), ex.getMessage());
         }
         finally {
-            ConnectionPool.getInstance().freeConnection(connection, success);
+            connectionPool.freeConnection(connection, success);
         }
     }
 }

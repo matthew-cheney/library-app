@@ -19,7 +19,7 @@ public class LoginService implements ILoginService {
         }
     }
 
-    private IUserDAO getUserDAO() {
+    public IUserDAO getUserDAO() {
         return new MySqlUserDAO();
     }
 }

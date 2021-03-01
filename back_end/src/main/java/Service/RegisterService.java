@@ -28,7 +28,7 @@ public class RegisterService implements IRegisterService {
         }
     }
 
-    private IUserDAO getUserDAO() {
+    public IUserDAO getUserDAO() {
         return new MySqlUserDAO();
     }
 }

@@ -6,13 +6,17 @@ import DataAccess.DAO.MySql.MySqlUserDAO;
 import Entities.User;
 import Request.RegisterRequest;
 import Response.RegisterResponse;
+import TestUtils.BaseTest;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import org.mockito.Mockito;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class RegisterServiceTest {
+public class RegisterServiceTest extends BaseTest {
 
     private RegisterService service;
     private RegisterRequest request = new RegisterRequest(
@@ -30,12 +34,13 @@ public class RegisterServiceTest {
 
     @BeforeEach
     public void setUpTests() {
-        service = new RegisterService();
+        service = Mockito.spy(RegisterService.class);
+        Mockito.when(service.getUserDAO()).thenReturn(new MySqlUserDAO(connectionPool));
     }
 
     @AfterEach
     public void tearDownTests() {
-        IUserDAO dao = new MySqlUserDAO();
+        IUserDAO dao = new MySqlUserDAO(connectionPool);
         try {
             User user = dao.getUserByCredentials(request.getUsername(), request.getPassword());
             dao.deleteUser(user.getId());

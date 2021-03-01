@@ -11,9 +11,19 @@ import java.sql.SQLException;
 
 public class MySqlItemDAO implements IItemDAO {
 
+    private ConnectionPool connectionPool;
+
+    public MySqlItemDAO() {
+        connectionPool = ConnectionPool.getInstance();
+    }
+
+    public MySqlItemDAO(ConnectionPool connectionPool) {
+        this.connectionPool = connectionPool;
+    }
+
     @Override
     public Item getItem(String id) {
-        Connection connection = ConnectionPool.getInstance().getConnection();
+        Connection connection = connectionPool.getConnection();
 
         boolean success = false;
         ResultSet resultSet;
@@ -57,7 +67,7 @@ public class MySqlItemDAO implements IItemDAO {
             ex.printStackTrace();
         }
         finally {
-            ConnectionPool.getInstance().freeConnection(connection, success);
+            connectionPool.freeConnection(connection, success);
         }
 
         return null;
@@ -65,7 +75,7 @@ public class MySqlItemDAO implements IItemDAO {
 
     @Override
     public boolean addItem(Item item) {
-        Connection connection = ConnectionPool.getInstance().getConnection();
+        Connection connection = connectionPool.getConnection();
 
         boolean success = false;
         String sqlCommand = "INSERT INTO Items VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -94,7 +104,7 @@ public class MySqlItemDAO implements IItemDAO {
             ex.printStackTrace();
         }
         finally {
-            ConnectionPool.getInstance().freeConnection(connection, success);
+            connectionPool.freeConnection(connection, success);
         }
 
         return false;
@@ -102,7 +112,7 @@ public class MySqlItemDAO implements IItemDAO {
 
     @Override
     public boolean updateItem(String id, Item item) {
-        Connection connection = ConnectionPool.getInstance().getConnection();
+        Connection connection = connectionPool.getConnection();
 
         boolean success = false;
         String sqlCommand = "UPDATE Items SET "
@@ -145,7 +155,7 @@ public class MySqlItemDAO implements IItemDAO {
             ex.printStackTrace();
         }
         finally {
-            ConnectionPool.getInstance().freeConnection(connection, success);
+            connectionPool.freeConnection(connection, success);
         }
 
         return false;
@@ -153,7 +163,7 @@ public class MySqlItemDAO implements IItemDAO {
 
     @Override
     public boolean deleteItem(String id) {
-        Connection connection = ConnectionPool.getInstance().getConnection();
+        Connection connection = connectionPool.getConnection();
 
         boolean success = false;
         String sqlCommand = "DELETE FROM Items WHERE Id = ?";
@@ -169,7 +179,7 @@ public class MySqlItemDAO implements IItemDAO {
             ex.printStackTrace();
         }
         finally {
-            ConnectionPool.getInstance().freeConnection(connection, success);
+            connectionPool.freeConnection(connection, success);
         }
 
         return false;

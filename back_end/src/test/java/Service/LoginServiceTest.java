@@ -7,14 +7,17 @@ import Entities.User;
 import Request.LoginRequest;
 import Request.RegisterRequest;
 import Response.LoginResponse;
+import TestUtils.BaseTest;
 import Utilities.EntityUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
-public class LoginServiceTest {
+public class LoginServiceTest extends BaseTest {
 
     private LoginService service;
     private LoginRequest successfulRequest = new LoginRequest("dinosaursAreCool", "rossIsBest");
@@ -38,8 +41,10 @@ public class LoginServiceTest {
 
     @BeforeEach
     public void setUpTests() {
-        service = new LoginService();
-        RegisterService registerService = new RegisterService();
+        service = Mockito.spy(LoginService.class);
+        Mockito.when(service.getUserDAO()).thenReturn(new MySqlUserDAO(connectionPool));
+        RegisterService registerService = Mockito.spy(RegisterService.class);
+        Mockito.when(registerService.getUserDAO()).thenReturn(new MySqlUserDAO(connectionPool));
         RegisterRequest request = new RegisterRequest(
                 "dinosaursAreCool",
                 "rossIsBest",
@@ -54,7 +59,7 @@ public class LoginServiceTest {
 
     @AfterEach
     public void tearDownTests() {
-        IUserDAO dao = new MySqlUserDAO();
+        IUserDAO dao = new MySqlUserDAO(connectionPool);
         try {
             User user = dao.getUserByCredentials(successfulRequest.getUsername(), successfulRequest.getPassword());
             dao.deleteUser(user.getId());

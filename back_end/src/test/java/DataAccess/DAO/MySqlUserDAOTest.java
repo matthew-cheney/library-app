@@ -2,13 +2,15 @@ package DataAccess.DAO;
 
 import DataAccess.DAO.MySql.MySqlUserDAO;
 import Entities.User;
+import TestUtils.BaseTest;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class MySqlUserDAOTest {
+public class MySqlUserDAOTest extends BaseTest {
     IUserDAO dao;
     User testUser = new User(
             "TEST",
@@ -35,7 +37,7 @@ public class MySqlUserDAOTest {
 
     @BeforeEach
     public void setUpTests() {
-        dao = new MySqlUserDAO();
+        dao = new MySqlUserDAO(connectionPool);
         try {
             dao.addUser(testUser);
         }

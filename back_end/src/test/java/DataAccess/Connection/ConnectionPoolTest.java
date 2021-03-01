@@ -5,15 +5,18 @@ import org.junit.jupiter.api.Test;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+import TestUtils.BaseTest;
+import TestUtils.TestConfig;
+
 import static org.junit.jupiter.api.Assertions.*;
 
-public class ConnectionPoolTest {
+public class ConnectionPoolTest extends BaseTest {
 
     @Test
     public void openAndCloseConnection_Success() {
-        Connection connection = ConnectionPool.getInstance().getConnection();
+        Connection connection = connectionPool.getConnection();
         assertNotNull(connection);
-        ConnectionPool.getInstance().freeConnection(connection, false);
+        connectionPool.freeConnection(connection, false);
         String errorReceived = "";
         try {
 
