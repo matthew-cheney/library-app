@@ -11,9 +11,6 @@ public class Item {
 
     // region Properties
 
-    public final String BOARD_GAME = "BOARD_GAME";
-    public final String MOVIE = "MOVIE";
-    public final String BOOK = "BOOK";
     public final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss");
 
     // region Required
@@ -50,21 +47,27 @@ public class Item {
     // region Constructors
 
     /**
-     * This is a constructor to use when retrieving a board game from the client
+     * This is a constructor to use when retrieving an item from the client
      * @param title
+     * @param category
      * @param available
      * @param ownerId
      * @param imageUrl
      * @param description
      * @param numPlayers
      * @param timeToPlayInMins
+     * @param releaseYear
+     * @param genre
+     * @param itemFormat
+     * @param author
      */
-    public Item(@NotNull String title, boolean available, @NotNull String ownerId, @Nullable String imageUrl,
-                @Nullable String description, @Nullable Integer numPlayers, @Nullable Integer timeToPlayInMins) {
-        id = EntityUtils.generateId();
+    public Item(String title, String category, boolean available, String ownerId,
+                String imageUrl, String description, Integer numPlayers, Integer timeToPlayInMins, Integer releaseYear,
+                String genre, String itemFormat, String author) {
+        this.id = EntityUtils.generateId();
 
         setTitle(title);
-        setCategory(BOARD_GAME);
+        setCategory(category);
         setAvailable(available);
 
         this.dateCreated = DATE_FORMAT.format(new Date()); // readonly property, no setter available
@@ -74,67 +77,10 @@ public class Item {
         setDescription(description);
         if (numPlayers != null) setNumPlayers(numPlayers);
         if (timeToPlayInMins != null) setTimeToPlayInMins(timeToPlayInMins);
-    }
-
-    /**
-     * This is a constructor to use when retrieving a movie from the client
-     * @param title
-     * @param available
-     * @param ownerId
-     * @param imageUrl
-     * @param description
-     * @param releaseYear
-     * @param genre
-     * @param itemFormat
-     */
-    public Item(@NotNull String title, boolean available, @NotNull String ownerId, @Nullable String imageUrl,
-                @Nullable String description, @Nullable Integer releaseYear, @Nullable String genre, @Nullable String itemFormat) {
-        id = EntityUtils.generateId();
-
-        setTitle(title);
-        setCategory(MOVIE);
-        setAvailable(available);
-
-        this.dateCreated = DATE_FORMAT.format(new Date()); // readonly property, no setter available
-        this.ownerId = ownerId; // readonly property, no setter available
-
-        setImageUrl(imageUrl);
-        setDescription(description);
         if (releaseYear != null) setReleaseYear(releaseYear);
-        setGenre(genre);
-        setItemFormat(itemFormat);
-    }
-
-    /**
-     * This is a constructor to use when retrieving a book from the client
-     * @param title
-     * @param available
-     * @param ownerId
-     * @param imageUrl
-     * @param description
-     * @param releaseYear
-     * @param genre
-     * @param itemFormat
-     * @param author
-     */
-    public Item(@NotNull String title, boolean available, @NotNull String ownerId, @Nullable String imageUrl,
-                @Nullable String description, @Nullable Integer releaseYear, @Nullable String genre,
-                @Nullable String itemFormat, @Nullable String author) {
-        id = EntityUtils.generateId();
-
-        setTitle(title);
-        setCategory(BOOK);
-        setAvailable(available);
-
-        this.dateCreated = DATE_FORMAT.format(new Date()); // readonly property, no setter available
-        this.ownerId = ownerId; // readonly property, no setter available
-
-        setImageUrl(imageUrl);
-        setDescription(description);
-        if (releaseYear != null) setReleaseYear(releaseYear);
-        setGenre(genre);
-        setItemFormat(itemFormat);
-        setAuthor(author);
+        if (genre != null) setGenre(genre);
+        if (itemFormat != null) setItemFormat(itemFormat);
+        if (author != null) setAuthor(author);
     }
 
     /**
