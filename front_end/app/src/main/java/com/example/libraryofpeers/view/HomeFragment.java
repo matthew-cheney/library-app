@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.libraryofpeers.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -78,8 +79,6 @@ public class HomeFragment extends Fragment {
 
     public void AddItem() {
         System.out.println("Adding an item");
-        Intent mainIntent = new Intent(getActivity(), LoginActivity.class);
-        startActivity(mainIntent);
-//        Toast.makeText(this, "Add new item!", Toast.LENGTH_LONG);
+        Toast.makeText(getActivity(), "Add new item!", Toast.LENGTH_LONG).show();
     }
 }
