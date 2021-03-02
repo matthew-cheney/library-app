@@ -130,8 +130,11 @@ public class MySqlUserDAO extends BaseDAO implements IUserDAO {
             statement.setString(8, user.getPhoneNumber());
             statement.setString(9, user.getImageUrl());
 
+            if (statement.executeUpdate() != 1) {
+                throw new DatabaseException("Error adding user!");
+            }
             success = true;
-            return statement.executeUpdate() == 1;
+            return true;
         }
         catch (SQLException ex) {
             System.out.println(ex.getMessage());
@@ -170,8 +173,11 @@ public class MySqlUserDAO extends BaseDAO implements IUserDAO {
             statement.setString(8, user.getImageUrl());
             statement.setString(9, user.getId());
 
+            if (statement.executeUpdate() != 1) {
+                throw new DatabaseException("Error updating user!");
+            }
             success = true;
-            return statement.executeUpdate() == 1;
+            return true;
         }
         catch (SQLException ex) {
             System.out.println(ex.getMessage());
@@ -193,8 +199,11 @@ public class MySqlUserDAO extends BaseDAO implements IUserDAO {
         try (PreparedStatement statement = connection.prepareStatement(sqlCommand)) {
             statement.setString(1, id);
 
+            if (statement.executeUpdate() != 1) {
+                throw new DatabaseException("Error deleting user!");
+            }
             success = true;
-            return statement.executeUpdate() == 1;
+            return true;
         }
         catch (SQLException ex) {
             System.out.println(ex.getMessage());

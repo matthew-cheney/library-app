@@ -2,6 +2,7 @@ package DataAccess.DAO.MySql;
 
 import DataAccess.Connection.ConnectionPool;
 import DataAccess.DAO.Abstract.BaseDAO;
+import DataAccess.DAO.DatabaseException;
 import DataAccess.DAO.Interfaces.IItemDAO;
 import Entities.Item;
 
@@ -13,7 +14,7 @@ import java.sql.SQLException;
 public class MySqlItemDAO extends BaseDAO implements IItemDAO {
 
     @Override
-    public Item getItem(String id) {
+    public Item getItem(String id) throws DatabaseException {
         Connection connection = getConnectionPool().getConnection();
 
         boolean success = false;
@@ -56,16 +57,15 @@ public class MySqlItemDAO extends BaseDAO implements IItemDAO {
         catch (SQLException ex) {
             System.out.println(ex.getMessage());
             ex.printStackTrace();
+            throw new DatabaseException(ex.getErrorCode(), ex.getMessage());
         }
         finally {
             getConnectionPool().freeConnection(connection, success);
         }
-
-        return null;
     }
 
     @Override
-    public boolean addItem(Item item) {
+    public boolean addItem(Item item) throws DatabaseException {
         Connection connection = getConnectionPool().getConnection();
 
         boolean success = false;
@@ -87,22 +87,24 @@ public class MySqlItemDAO extends BaseDAO implements IItemDAO {
             statement.setString(13, item.getItemFormat());
             statement.setString(14, item.getAuthor());
 
+            if (statement.executeUpdate() != 1) {
+                throw new DatabaseException("Error adding item!");
+            }
             success = true;
-            return statement.executeUpdate() == 1;
+            return true;
         }
         catch (SQLException ex) {
             System.out.println(ex.getMessage());
             ex.printStackTrace();
+            throw new DatabaseException(ex.getErrorCode(), ex.getMessage());
         }
         finally {
             getConnectionPool().freeConnection(connection, success);
         }
-
-        return false;
     }
 
     @Override
-    public boolean updateItem(String id, Item item) {
+    public boolean updateItem(String id, Item item) throws DatabaseException {
         Connection connection = getConnectionPool().getConnection();
 
         boolean success = false;
@@ -138,22 +140,24 @@ public class MySqlItemDAO extends BaseDAO implements IItemDAO {
             statement.setString(13, item.getAuthor());
             statement.setString(14, item.getId());
 
+            if (statement.executeUpdate() != 1) {
+                throw new DatabaseException("Error updating item!");
+            }
             success = true;
-            return statement.executeUpdate() == 1;
+            return true;
         }
         catch (SQLException ex) {
             System.out.println(ex.getMessage());
             ex.printStackTrace();
+            throw new DatabaseException(ex.getErrorCode(), ex.getMessage());
         }
         finally {
             getConnectionPool().freeConnection(connection, success);
         }
-
-        return false;
     }
 
     @Override
-    public boolean deleteItem(String id) {
+    public boolean deleteItem(String id) throws DatabaseException {
         Connection connection = getConnectionPool().getConnection();
 
         boolean success = false;
@@ -162,17 +166,19 @@ public class MySqlItemDAO extends BaseDAO implements IItemDAO {
         try (PreparedStatement statement = connection.prepareStatement(sqlCommand)) {
             statement.setString(1, id);
 
+            if (statement.executeUpdate() != 1) {
+                throw new DatabaseException("Error deleting item!");
+            }
             success = true;
-            return statement.executeUpdate() == 1;
+            return true;
         }
         catch (SQLException ex) {
             System.out.println(ex.getMessage());
             ex.printStackTrace();
+            throw new DatabaseException(ex.getErrorCode(), ex.getMessage());
         }
         finally {
             getConnectionPool().freeConnection(connection, success);
         }
-
-        return false;
     }
 }
