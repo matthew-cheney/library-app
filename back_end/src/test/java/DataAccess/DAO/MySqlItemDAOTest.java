@@ -11,6 +11,7 @@ import org.mockito.Mockito;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -90,9 +91,9 @@ public class MySqlItemDAOTest {
     }
 
     @Test
-    public void getItem_Success() {
+    public void getItemById_Success() {
         try {
-            Item item = dao.getItem(boardGame.getId());
+            Item item = dao.getItemById(boardGame.getId());
             assertEquals(boardGame, item);
         }
         catch (DatabaseException ex) {
@@ -101,10 +102,33 @@ public class MySqlItemDAOTest {
     }
 
     @Test
-    public void getItem_Failure() {
+    public void getItemById_Failure() {
         try {
-            Item item = dao.getItem("BUBBLES");
+            Item item = dao.getItemById("BUBBLES");
             assertNull(item);
+        }
+        catch (DatabaseException ex) {
+            System.out.println(ex.getMessage());
+        }
+    }
+
+    @Test
+    public void getItemsByOwner_Success() {
+        try {
+            List<Item> items = dao.getItemsByOwner(boardGame.getOwnerId());
+            assertNotEquals(0, items.size());
+            assertEquals(boardGame, items.get(0));
+        }
+        catch (DatabaseException ex) {
+            System.out.println(ex.getMessage());
+        }
+    }
+
+    @Test
+    public void getItemsByOwner_Failure() {
+        try {
+            List<Item> items = dao.getItemsByOwner("BUBBLES");
+            assertEquals(0, items.size());
         }
         catch (DatabaseException ex) {
             System.out.println(ex.getMessage());
@@ -116,7 +140,7 @@ public class MySqlItemDAOTest {
         try {
             boolean success = dao.addItem(movie);
             assertTrue(success);
-            Item item = dao.getItem(movie.getId());
+            Item item = dao.getItemById(movie.getId());
             assertEquals(movie, item);
             success = dao.deleteItem(movie.getId());
             assertTrue(success);
@@ -144,7 +168,7 @@ public class MySqlItemDAOTest {
             item.setTimeToPlayInMins(10);
             boolean success = dao.updateItem(boardGame.getId(), item);
             assertTrue(success);
-            Item updatedItem = dao.getItem(boardGame.getId());
+            Item updatedItem = dao.getItemById(boardGame.getId());
             assertEquals(item, updatedItem);
         }
         catch (DatabaseException ex) {
@@ -159,7 +183,7 @@ public class MySqlItemDAOTest {
             item.setTimeToPlayInMins(10);
             boolean success = dao.updateItem(book.getId(), item);
             assertFalse(success);
-            Item notChangedItem = dao.getItem(boardGame.getId());
+            Item notChangedItem = dao.getItemById(boardGame.getId());
             assertNotEquals(item, notChangedItem);
         }
         catch (DatabaseException ex) {
@@ -174,7 +198,7 @@ public class MySqlItemDAOTest {
             assertTrue(success);
             success = dao.deleteItem(book.getId());
             assertTrue(success);
-            Item item = dao.getItem(book.getId());
+            Item item = dao.getItemById(book.getId());
             assertNull(item);
         }
         catch (DatabaseException ex) {
@@ -187,7 +211,7 @@ public class MySqlItemDAOTest {
         try {
             boolean success = dao.deleteItem(book.getId());
             assertFalse(success);
-            Item item = dao.getItem(book.getId());
+            Item item = dao.getItemById(book.getId());
             assertNull(item);
         }
         catch (DatabaseException ex) {

@@ -9,11 +9,14 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MySqlItemDAO extends BaseDAO implements IItemDAO {
 
     @Override
-    public Item getItem(String id) throws DatabaseException {
+    public Item getItemById(String id) throws DatabaseException {
         Connection connection = getConnectionPool().getConnection();
 
         boolean success = false;
@@ -52,6 +55,54 @@ public class MySqlItemDAO extends BaseDAO implements IItemDAO {
 
             success = true;
             return item;
+        }
+        catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+            ex.printStackTrace();
+            throw new DatabaseException(ex.getErrorCode(), ex.getMessage());
+        }
+        finally {
+            getConnectionPool().freeConnection(connection, success);
+        }
+    }
+
+    @Override
+    public List<Item> getItemsByOwner(String ownerId) throws DatabaseException {
+        Connection connection = getConnectionPool().getConnection();
+
+        boolean success = false;
+        ResultSet resultSet;
+        String sqlCommand = "SELECT Id, Title, Category, DateCreated, Available, "
+                + "ImageUrl, Description, NumPlayers, TimeToPlayInMins, ReleaseYear, "
+                + "Genre, ItemFormat, Author FROM Items WHERE OwnerId = ?";
+
+        try (PreparedStatement statement = connection.prepareStatement(sqlCommand)) {
+            statement.setString(1, ownerId);
+
+            resultSet = statement.executeQuery();
+            List<Item> items = new ArrayList<>();
+            while (resultSet.next()) {
+                Item item = new Item(
+                        resultSet.getString(1),
+                        resultSet.getString(2),
+                        resultSet.getString(3),
+                        resultSet.getString(4),
+                        resultSet.getBoolean(5),
+                        ownerId,
+                        resultSet.getString(6),
+                        resultSet.getString(7),
+                        resultSet.getInt(8),
+                        resultSet.getInt(9),
+                        resultSet.getInt(10),
+                        resultSet.getString(11),
+                        resultSet.getString(12),
+                        resultSet.getString(13)
+                );
+                items.add(item);
+            }
+
+            success = true;
+            return items;
         }
         catch (SQLException ex) {
             System.out.println(ex.getMessage());

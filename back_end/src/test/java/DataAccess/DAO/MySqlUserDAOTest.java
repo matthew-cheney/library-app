@@ -2,6 +2,8 @@ package DataAccess.DAO;
 
 import DataAccess.DAO.MySql.MySqlUserDAO;
 import Entities.User;
+import Request.RegisterRequest;
+import Service.RegisterService;
 import TestUtils.TestConfig;
 
 import org.junit.jupiter.api.AfterEach;
@@ -52,6 +54,8 @@ public class MySqlUserDAOTest {
     public void tearDownTests() {
         try {
             dao.deleteUser(testUser.getId());
+            User user = dao.getUserByCredentials("actingIsFun", "joey");
+            dao.deleteUser(user.getId());
         }
         catch (DatabaseException ex) {
             System.out.println(ex.getMessage());
@@ -73,6 +77,43 @@ public class MySqlUserDAOTest {
     public void getUserById_Failure() {
         try {
             User user = dao.getUserById("BUBBLES");
+            assertNull(user);
+        }
+        catch (DatabaseException ex) {
+            System.out.println(ex.getMessage());
+        }
+    }
+
+    @Test
+    public void getUserByCredentials_Success() {
+        try {
+            RegisterService registerService = Mockito.spy(RegisterService.class);
+            Mockito.when(registerService.getUserDAO()).thenReturn(dao);
+
+            RegisterRequest request = new RegisterRequest(
+                    "actingIsFun",
+                    "joey",
+                    "Joey",
+                    "Tribianni",
+                    "jt@acting.com",
+                    "8603583092",
+                    "www.google.com"
+            );
+            registerService.register(request);
+
+            User user = dao.getUserByCredentials("actingIsFun", "joey");
+            assertEquals("Joey", user.getFirstName());
+            assertEquals("Tribianni", user.getLastName());
+        }
+        catch (DatabaseException ex) {
+            System.out.println(ex.getMessage());
+        }
+    }
+
+    @Test
+    public void getUserByCredentials_Failure() {
+        try {
+            User user = dao.getUserByCredentials("BUBBLES", "BUBBLES");
             assertNull(user);
         }
         catch (DatabaseException ex) {
