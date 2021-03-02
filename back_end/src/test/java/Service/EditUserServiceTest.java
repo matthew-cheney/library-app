@@ -1,7 +1,5 @@
 package Service;
 
-import com.mchange.v2.beans.BeansUtils;
-
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,12 +9,9 @@ import DataAccess.DAO.DatabaseException;
 import DataAccess.DAO.MySql.MySqlUserDAO;
 import Entities.User;
 import Request.EditUserRequest;
-import Request.LoginRequest;
 import Request.RegisterRequest;
 import Response.EditUserResponse;
-import Response.LoginResponse;
 import TestUtils.TestConfig;
-import Utilities.EntityUtils;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -35,7 +30,7 @@ public class EditUserServiceTest {
     public void setUpTests() {
         try {
             dao = Mockito.spy(MySqlUserDAO.class);
-            Mockito.when(dao.getConnectionPool()).thenReturn(TestConfig.connectionPool);
+            Mockito.when(dao.getConnectionPool()).thenReturn(TestConfig.CONNECTION_POOL);
 
             service = Mockito.spy(EditUserService.class);
             Mockito.when(service.getUserDAO()).thenReturn(dao);

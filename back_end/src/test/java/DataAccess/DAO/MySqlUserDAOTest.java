@@ -41,7 +41,7 @@ public class MySqlUserDAOTest {
     @BeforeEach
     public void setUpTests() {
         dao = Mockito.spy(MySqlUserDAO.class);
-        Mockito.when(dao.getConnectionPool()).thenReturn(TestConfig.connectionPool);
+        Mockito.when(dao.getConnectionPool()).thenReturn(TestConfig.CONNECTION_POOL);
         try {
             dao.addUser(testUser);
         }

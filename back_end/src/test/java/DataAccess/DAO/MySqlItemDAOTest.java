@@ -72,7 +72,7 @@ public class MySqlItemDAOTest {
     public void setUpTests() {
         try {
             dao = Mockito.spy(MySqlItemDAO.class);
-            Mockito.when(dao.getConnectionPool()).thenReturn(TestConfig.connectionPool);
+            Mockito.when(dao.getConnectionPool()).thenReturn(TestConfig.CONNECTION_POOL);
             dao.addItem(boardGame);
         }
         catch (DatabaseException ex) {
@@ -115,7 +115,7 @@ public class MySqlItemDAOTest {
     @Test
     public void getItemsByOwner_Success() {
         try {
-            List<Item> items = dao.getItemsByOwner(boardGame.getOwnerId());
+            List<Item> items = dao.getItemsByOwner(boardGame.getOwnerId(), TestConfig.TEST_OFFSET);
             assertNotEquals(0, items.size());
             assertEquals(boardGame, items.get(0));
         }
@@ -127,7 +127,7 @@ public class MySqlItemDAOTest {
     @Test
     public void getItemsByOwner_Failure() {
         try {
-            List<Item> items = dao.getItemsByOwner("BUBBLES");
+            List<Item> items = dao.getItemsByOwner("BUBBLES", TestConfig.TEST_OFFSET);
             assertEquals(0, items.size());
         }
         catch (DatabaseException ex) {

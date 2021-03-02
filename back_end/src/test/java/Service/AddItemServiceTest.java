@@ -5,9 +5,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import java.sql.SQLIntegrityConstraintViolationException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 import DataAccess.DAO.DatabaseException;
@@ -15,7 +12,6 @@ import DataAccess.DAO.MySql.MySqlItemDAO;
 import Entities.Item;
 import Request.AddItemRequest;
 import Response.AddItemResponse;
-import Response.DeleteItemResponse;
 import TestUtils.TestConfig;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -52,7 +48,7 @@ public class AddItemServiceTest {
     @BeforeEach
     public void setUpTests() {
         dao = Mockito.spy(MySqlItemDAO.class);
-        Mockito.when(dao.getConnectionPool()).thenReturn(TestConfig.connectionPool);
+        Mockito.when(dao.getConnectionPool()).thenReturn(TestConfig.CONNECTION_POOL);
 
         service = Mockito.spy(AddItemService.class);
         Mockito.when(service.getItemDAO()).thenReturn(dao);
@@ -61,7 +57,7 @@ public class AddItemServiceTest {
     @AfterEach
     public void tearDownTests() {
         try {
-            List<Item> items = dao.getItemsByOwner("TEST");
+            List<Item> items = dao.getItemsByOwner("TEST", TestConfig.TEST_OFFSET);
             if (items.size() != 0) dao.deleteItem(items.get(0).getId());
         }
         catch (DatabaseException ex) {
@@ -76,7 +72,7 @@ public class AddItemServiceTest {
             AddItemResponse response = service.addItem(successfulRequest);
             assertTrue(response.isSuccess());
             responseReceived = true;
-            List<Item> items = dao.getItemsByOwner(successfulRequest.getOwnerId());
+            List<Item> items = dao.getItemsByOwner(successfulRequest.getOwnerId(), TestConfig.TEST_OFFSET);
             assertEquals(1, items.size());
             assertEquals("This game is amazing! So challenging, yet fun.", items.get(0).getDescription());
         }

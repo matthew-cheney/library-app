@@ -17,8 +17,7 @@ public class MySqlUserDAO extends BaseDAO implements IUserDAO {
 
         boolean success = false;
         ResultSet resultSet;
-        String sqlCommand = "SELECT Username, PasswordHash, PasswordSalt, FirstName, LastName, "
-                + "Email, PhoneNumber, ImageUrl FROM Users WHERE Id = ?";
+        String sqlCommand = "SELECT * FROM Users WHERE Id = ?";
 
         try (PreparedStatement statement = connection.prepareStatement(sqlCommand)) {
             statement.setString(1, id);
@@ -30,7 +29,6 @@ public class MySqlUserDAO extends BaseDAO implements IUserDAO {
                 assert(counter == 0); // Ensures only one user was returned
 
                 user = new User(
-                        id,
                         resultSet.getString(1),
                         resultSet.getString(2),
                         resultSet.getString(3),
@@ -38,7 +36,8 @@ public class MySqlUserDAO extends BaseDAO implements IUserDAO {
                         resultSet.getString(5),
                         resultSet.getString(6),
                         resultSet.getString(7),
-                        resultSet.getString(8)
+                        resultSet.getString(8),
+                        resultSet.getString(9)
                 );
 
                 counter++;
@@ -63,8 +62,7 @@ public class MySqlUserDAO extends BaseDAO implements IUserDAO {
 
         boolean success = false;
         ResultSet resultSet;
-        String sqlCommand = "SELECT Id, PasswordHash, PasswordSalt, FirstName, LastName, "
-                + "Email, PhoneNumber, ImageUrl FROM Users WHERE Username = ?";
+        String sqlCommand = "SELECT * FROM Users WHERE Username = ?";
 
         try (PreparedStatement statement = connection.prepareStatement(sqlCommand)) {
             statement.setString(1, username);
@@ -74,8 +72,8 @@ public class MySqlUserDAO extends BaseDAO implements IUserDAO {
             int counter = 0;
             while (resultSet.next()) {
                 assert(counter == 0); // Ensures only one user was returned
-                String passwordHash = resultSet.getString(2);
-                String passwordSalt = resultSet.getString(3);
+                String passwordHash = resultSet.getString(3);
+                String passwordSalt = resultSet.getString(4);
 
                 if (!EntityUtils.verifyPassword(password, passwordHash, passwordSalt)) {
                     throw new DatabaseException("Invalid Password!");
@@ -83,14 +81,14 @@ public class MySqlUserDAO extends BaseDAO implements IUserDAO {
 
                 user = new User(
                         resultSet.getString(1),
-                        username,
+                        resultSet.getString(2),
                         passwordHash,
                         passwordSalt,
-                        resultSet.getString(4),
                         resultSet.getString(5),
                         resultSet.getString(6),
                         resultSet.getString(7),
-                        resultSet.getString(8)
+                        resultSet.getString(8),
+                        resultSet.getString(9)
                 );
 
                 counter++;

@@ -82,7 +82,7 @@ public class EditItemServiceTest {
     public void setUpTests() {
         try {
             dao = Mockito.spy(MySqlItemDAO.class);
-            Mockito.when(dao.getConnectionPool()).thenReturn(TestConfig.connectionPool);
+            Mockito.when(dao.getConnectionPool()).thenReturn(TestConfig.CONNECTION_POOL);
 
             service = Mockito.spy(EditItemService.class);
             Mockito.when(service.getItemDAO()).thenReturn(dao);

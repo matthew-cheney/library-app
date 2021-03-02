@@ -41,7 +41,7 @@ public class LoginServiceTest {
     @BeforeEach
     public void setUpTests() {
         dao = Mockito.spy(MySqlUserDAO.class);
-        Mockito.when(dao.getConnectionPool()).thenReturn(TestConfig.connectionPool);
+        Mockito.when(dao.getConnectionPool()).thenReturn(TestConfig.CONNECTION_POOL);
 
         service = Mockito.spy(LoginService.class);
         Mockito.when(service.getUserDAO()).thenReturn(dao);

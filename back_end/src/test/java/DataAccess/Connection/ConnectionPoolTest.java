@@ -13,9 +13,9 @@ public class ConnectionPoolTest {
 
     @Test
     public void openAndCloseConnection_Success() {
-        Connection connection = TestConfig.connectionPool.getConnection();
+        Connection connection = TestConfig.CONNECTION_POOL.getConnection();
         assertNotNull(connection);
-        TestConfig.connectionPool.freeConnection(connection, false);
+        TestConfig.CONNECTION_POOL.freeConnection(connection, false);
         String errorReceived = "";
         try {
 

@@ -1,5 +1,6 @@
 package DataAccess.DAO.MySql;
 
+import Config.Constants;
 import DataAccess.DAO.Abstract.BaseDAO;
 import DataAccess.DAO.DatabaseException;
 import DataAccess.DAO.Interfaces.IItemDAO;
@@ -9,7 +10,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,9 +21,7 @@ public class MySqlItemDAO extends BaseDAO implements IItemDAO {
 
         boolean success = false;
         ResultSet resultSet;
-        String sqlCommand = "SELECT Title, Category, DateCreated, Available, OwnerId, "
-                + "ImageUrl, Description, NumPlayers, TimeToPlayInMins, ReleaseYear, "
-                + "Genre, ItemFormat, Author FROM Items WHERE Id = ?";
+        String sqlCommand = "SELECT * FROM Items WHERE Id = ?";
 
         try (PreparedStatement statement = connection.prepareStatement(sqlCommand)) {
             statement.setString(1, id);
@@ -34,20 +32,20 @@ public class MySqlItemDAO extends BaseDAO implements IItemDAO {
             while (resultSet.next()) {
                 assert(counter == 0); // Ensures only one user was returned
                 item = new Item(
-                        id,
                         resultSet.getString(1),
                         resultSet.getString(2),
                         resultSet.getString(3),
-                        resultSet.getBoolean(4),
-                        resultSet.getString(5),
+                        resultSet.getString(4),
+                        resultSet.getBoolean(5),
                         resultSet.getString(6),
                         resultSet.getString(7),
-                        resultSet.getInt(8),
+                        resultSet.getString(8),
                         resultSet.getInt(9),
                         resultSet.getInt(10),
-                        resultSet.getString(11),
+                        resultSet.getInt(11),
                         resultSet.getString(12),
-                        resultSet.getString(13)
+                        resultSet.getString(13),
+                        resultSet.getString(14)
                 );
 
                 counter++;
@@ -67,14 +65,14 @@ public class MySqlItemDAO extends BaseDAO implements IItemDAO {
     }
 
     @Override
-    public List<Item> getItemsByOwner(String ownerId) throws DatabaseException {
+    public List<Item> getItemsByOwner(String ownerId, int offset) throws DatabaseException {
         Connection connection = getConnectionPool().getConnection();
 
         boolean success = false;
         ResultSet resultSet;
-        String sqlCommand = "SELECT Id, Title, Category, DateCreated, Available, "
-                + "ImageUrl, Description, NumPlayers, TimeToPlayInMins, ReleaseYear, "
-                + "Genre, ItemFormat, Author FROM Items WHERE OwnerId = ?";
+        String sqlCommand = "SELECT * FROM Items WHERE OwnerId = ? "
+                + "ORDER BY Category, Title "
+                + "OFFSET " + offset + " ROWS FETCH NEXT " + Constants.BATCH_SIZE + " ROWS ONLY";
 
         try (PreparedStatement statement = connection.prepareStatement(sqlCommand)) {
             statement.setString(1, ownerId);
@@ -88,15 +86,15 @@ public class MySqlItemDAO extends BaseDAO implements IItemDAO {
                         resultSet.getString(3),
                         resultSet.getString(4),
                         resultSet.getBoolean(5),
-                        ownerId,
                         resultSet.getString(6),
                         resultSet.getString(7),
-                        resultSet.getInt(8),
+                        resultSet.getString(8),
                         resultSet.getInt(9),
                         resultSet.getInt(10),
-                        resultSet.getString(11),
+                        resultSet.getInt(11),
                         resultSet.getString(12),
-                        resultSet.getString(13)
+                        resultSet.getString(13),
+                        resultSet.getString(14)
                 );
                 items.add(item);
             }
