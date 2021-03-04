@@ -1,3 +1,40 @@
 <resources>
     <string name="app_name">Library Of Peers</string>
+    <string name="homePageTitle">Home</string>
+
+    <string name="title_activity_main">MainActivity</string>
+    <string name="loadingData">Loading More Data…</string>
+    <string name="loginTitleText">Library of Peers</string>
+    <string name="createAccountTitleText">Create an Account</string>
+    <string name="feedTabTitle">Feed</string>
+    <string name="storyTabTitle">Story</string>
+    <string name="followingTabTitle">Following</string>
+    <string name="followersTabTitle">Followers</string>
+    <string name="passwordText">Password</string>
+    <string name="confirmPasswordText">Confirm Password</string>
+    <string name="userNameText">Username</string>
+    <string name="firstNameText">FirstName</string>
+    <string name="lastNameText">LastName</string>
+    <string name="signInButton">Sign In</string>
+    <string name="registerButton">Register</string>
+    <string name="addImageButton">Add Image</string>
+
+    <string name="sampleAlias">"@UserAlias"</string>
+    <string name="sampleUserName">The User</string>
+    <string name="sampleStatusContent">This is Sample Content for a Status</string>
+    <string name="sampleStatusTimeStamp">Aug. 13</string>
+
+    <string name="profile_fragment">Here is your profile info!</string>
+    <string name="home_fragment">Welcome to the home screen!</string>
+    <string name="title_activity_login">Sign in</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="welcome">"Welcome !"</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="login_failed">"Login failed"</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
