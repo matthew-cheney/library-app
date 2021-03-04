@@ -1,6 +1,6 @@
 package DataAccess.DAO.MySql;
 
-import DataAccess.DAO.IFriendshipDAO;
+import DataAccess.DAO.Interfaces.IFriendshipDAO;
 import Entities.Friendship;
 
 public class MySqlFriendshipDAO implements IFriendshipDAO {

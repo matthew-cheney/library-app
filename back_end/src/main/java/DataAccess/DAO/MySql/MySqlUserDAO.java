@@ -1,23 +1,23 @@
 package DataAccess.DAO.MySql;
 
 import DataAccess.Connection.ConnectionPool;
+import DataAccess.DAO.Abstract.BaseDAO;
 import DataAccess.DAO.DatabaseException;
-import DataAccess.DAO.IUserDAO;
+import DataAccess.DAO.Interfaces.IUserDAO;
 import Entities.User;
 import Utilities.EntityUtils;
 
 import java.sql.*;
 
-public class MySqlUserDAO implements IUserDAO {
+public class MySqlUserDAO extends BaseDAO implements IUserDAO {
 
     @Override
     public User getUserById(String id) throws DatabaseException {
-        Connection connection = ConnectionPool.getInstance().getConnection();
+        Connection connection = getConnectionPool().getConnection();
 
         boolean success = false;
         ResultSet resultSet;
-        String sqlCommand = "SELECT Username, PasswordHash, PasswordSalt, FirstName, LastName, "
-                + "Email, PhoneNumber, ImageUrl FROM Users WHERE Id = ?";
+        String sqlCommand = "SELECT * FROM Users WHERE Id = ?";
 
         try (PreparedStatement statement = connection.prepareStatement(sqlCommand)) {
             statement.setString(1, id);
@@ -29,7 +29,6 @@ public class MySqlUserDAO implements IUserDAO {
                 assert(counter == 0); // Ensures only one user was returned
 
                 user = new User(
-                        id,
                         resultSet.getString(1),
                         resultSet.getString(2),
                         resultSet.getString(3),
@@ -37,7 +36,8 @@ public class MySqlUserDAO implements IUserDAO {
                         resultSet.getString(5),
                         resultSet.getString(6),
                         resultSet.getString(7),
-                        resultSet.getString(8)
+                        resultSet.getString(8),
+                        resultSet.getString(9)
                 );
 
                 counter++;
@@ -52,18 +52,17 @@ public class MySqlUserDAO implements IUserDAO {
             throw new DatabaseException(ex.getErrorCode(), ex.getMessage());
         }
         finally {
-            ConnectionPool.getInstance().freeConnection(connection, success);
+            getConnectionPool().freeConnection(connection, success);
         }
     }
 
     @Override
     public User getUserByCredentials(String username, String password) throws DatabaseException {
-        Connection connection = ConnectionPool.getInstance().getConnection();
+        Connection connection = getConnectionPool().getConnection();
 
         boolean success = false;
         ResultSet resultSet;
-        String sqlCommand = "SELECT Id, PasswordHash, PasswordSalt, FirstName, LastName, "
-                + "Email, PhoneNumber, ImageUrl FROM Users WHERE Username = ?";
+        String sqlCommand = "SELECT * FROM Users WHERE Username = ?";
 
         try (PreparedStatement statement = connection.prepareStatement(sqlCommand)) {
             statement.setString(1, username);
@@ -73,8 +72,8 @@ public class MySqlUserDAO implements IUserDAO {
             int counter = 0;
             while (resultSet.next()) {
                 assert(counter == 0); // Ensures only one user was returned
-                String passwordHash = resultSet.getString(2);
-                String passwordSalt = resultSet.getString(3);
+                String passwordHash = resultSet.getString(3);
+                String passwordSalt = resultSet.getString(4);
 
                 if (!EntityUtils.verifyPassword(password, passwordHash, passwordSalt)) {
                     throw new DatabaseException("Invalid Password!");
@@ -82,14 +81,14 @@ public class MySqlUserDAO implements IUserDAO {
 
                 user = new User(
                         resultSet.getString(1),
-                        username,
+                        resultSet.getString(2),
                         passwordHash,
                         passwordSalt,
-                        resultSet.getString(4),
                         resultSet.getString(5),
                         resultSet.getString(6),
                         resultSet.getString(7),
-                        resultSet.getString(8)
+                        resultSet.getString(8),
+                        resultSet.getString(9)
                 );
 
                 counter++;
@@ -107,13 +106,13 @@ public class MySqlUserDAO implements IUserDAO {
             throw new DatabaseException(ex.getErrorCode(), ex.getMessage());
         }
         finally {
-            ConnectionPool.getInstance().freeConnection(connection, success);
+            getConnectionPool().freeConnection(connection, success);
         }
     }
 
     @Override
     public boolean addUser(User user) throws DatabaseException {
-        Connection connection = ConnectionPool.getInstance().getConnection();
+        Connection connection = getConnectionPool().getConnection();
 
         boolean success = false;
         String sqlCommand = "INSERT INTO Users VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -129,8 +128,11 @@ public class MySqlUserDAO implements IUserDAO {
             statement.setString(8, user.getPhoneNumber());
             statement.setString(9, user.getImageUrl());
 
+            if (statement.executeUpdate() != 1) {
+                throw new DatabaseException("Error adding user!");
+            }
             success = true;
-            return statement.executeUpdate() == 1;
+            return true;
         }
         catch (SQLException ex) {
             System.out.println(ex.getMessage());
@@ -138,13 +140,13 @@ public class MySqlUserDAO implements IUserDAO {
             throw new DatabaseException(ex.getErrorCode(), ex.getMessage());
         }
         finally {
-            ConnectionPool.getInstance().freeConnection(connection, success);
+            getConnectionPool().freeConnection(connection, success);
         }
     }
 
     @Override
     public boolean updateUser(String id, User user) throws DatabaseException {
-        Connection connection = ConnectionPool.getInstance().getConnection();
+        Connection connection = getConnectionPool().getConnection();
 
         boolean success = false;
         String sqlCommand = "UPDATE Users SET "
@@ -169,8 +171,11 @@ public class MySqlUserDAO implements IUserDAO {
             statement.setString(8, user.getImageUrl());
             statement.setString(9, user.getId());
 
+            if (statement.executeUpdate() != 1) {
+                throw new DatabaseException("Error updating user!");
+            }
             success = true;
-            return statement.executeUpdate() == 1;
+            return true;
         }
         catch (SQLException ex) {
             System.out.println(ex.getMessage());
@@ -178,13 +183,13 @@ public class MySqlUserDAO implements IUserDAO {
             throw new DatabaseException(ex.getErrorCode(), ex.getMessage());
         }
         finally {
-            ConnectionPool.getInstance().freeConnection(connection, success);
+            getConnectionPool().freeConnection(connection, success);
         }
     }
 
     @Override
     public boolean deleteUser(String id) throws DatabaseException {
-        Connection connection = ConnectionPool.getInstance().getConnection();
+        Connection connection = getConnectionPool().getConnection();
 
         boolean success = false;
         String sqlCommand = "DELETE FROM Users WHERE Id = ?";
@@ -192,8 +197,11 @@ public class MySqlUserDAO implements IUserDAO {
         try (PreparedStatement statement = connection.prepareStatement(sqlCommand)) {
             statement.setString(1, id);
 
+            if (statement.executeUpdate() != 1) {
+                throw new DatabaseException("Error deleting user!");
+            }
             success = true;
-            return statement.executeUpdate() == 1;
+            return true;
         }
         catch (SQLException ex) {
             System.out.println(ex.getMessage());
@@ -201,7 +209,7 @@ public class MySqlUserDAO implements IUserDAO {
             throw new DatabaseException(ex.getErrorCode(), ex.getMessage());
         }
         finally {
-            ConnectionPool.getInstance().freeConnection(connection, success);
+            getConnectionPool().freeConnection(connection, success);
         }
     }
 }
