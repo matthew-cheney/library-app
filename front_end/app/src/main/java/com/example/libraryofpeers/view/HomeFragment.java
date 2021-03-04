@@ -8,13 +8,20 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.libraryofpeers.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import androidx.fragment.app.Fragment;
+
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link HomeFragment#newInstance} factory method to
+ * Use the {@link com.example.libraryofpeers.view.HomeFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
 public class HomeFragment extends Fragment {
@@ -80,6 +87,6 @@ public class HomeFragment extends Fragment {
         System.out.println("Adding an item");
         Intent mainIntent = new Intent(getActivity(), LoginActivity.class);
         startActivity(mainIntent);
-//        Toast.makeText(this, "Add new item!", Toast.LENGTH_LONG);
+        Toast.makeText(this, "Add new item!", Toast.LENGTH_LONG);
     }
 }

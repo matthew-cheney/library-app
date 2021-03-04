@@ -19,7 +19,6 @@ public class LoginPresenter {
         this.view = view;
     }
 
-
     public LoginResponse login(LoginRequest loginRequest) {
         return LoginServiceProxy.getInstance().login(loginRequest);
     }

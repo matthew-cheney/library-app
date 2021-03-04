@@ -7,7 +7,6 @@ import java.io.IOException;
 import Entities.User;
 import Request.LoginRequest;
 import Response.LoginResponse;
-import Response.RegisterResponse;
 import Service.ILoginService;
 
 public class LoginServiceProxy implements ILoginService {

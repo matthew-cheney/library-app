@@ -1,9 +1,5 @@
 package com.example.libraryofpeers.view;
 
-import Request.RegisterRequest;
-import Response.RegisterResponse;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,6 +11,10 @@ import android.widget.Toast;
 import com.example.libraryofpeers.R;
 import com.example.libraryofpeers.async_tasks.RegisterTask;
 import com.example.libraryofpeers.presenters.RegisterPresenter;
+
+import Request.RegisterRequest;
+import Response.RegisterResponse;
+import androidx.appcompat.app.AppCompatActivity;
 
 public class RegisterActivity extends AppCompatActivity implements RegisterPresenter.View, RegisterTask.RegisterRequestObserver {
     private RegisterPresenter presenter;
