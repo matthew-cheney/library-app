@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="Service.LoginServiceTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2021-02-23T17:28:24" hostname="ChaystonSurfacePro" time="7.764">
-  <properties/>
-  <testcase name="login_success()" classname="Service.LoginServiceTest" time="2.805"/>
-  <testcase name="login_failure_invalidUsername()" classname="Service.LoginServiceTest" time="2.297"/>
-  <testcase name="login_failure_invalidPassword()" classname="Service.LoginServiceTest" time="2.658"/>
-  <system-out><![CDATA[]]></system-out>
-  <system-err><![CDATA[]]></system-err>
-</testsuite>
