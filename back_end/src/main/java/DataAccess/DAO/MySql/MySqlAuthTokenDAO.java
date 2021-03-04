@@ -1,7 +1,7 @@
 package DataAccess.DAO.MySql;
 
 import DataAccess.DAO.DatabaseException;
-import DataAccess.DAO.IAuthTokenDAO;
+import DataAccess.DAO.Interfaces.IAuthTokenDAO;
 
 import java.text.SimpleDateFormat;
 

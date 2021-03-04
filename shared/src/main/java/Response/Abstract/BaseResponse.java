@@ -59,7 +59,7 @@ public abstract class BaseResponse {
             return false;
         }
 
-        final RegisterResponse other = (RegisterResponse) obj;
+        final BaseResponse other = (BaseResponse) obj;
 
         return this.isSuccess() == other.isSuccess() &&
                 EntityUtils.checkNullableObjects(this.getMessage(), other.getMessage());

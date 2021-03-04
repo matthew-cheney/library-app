@@ -1,7 +1,7 @@
 package Service;
 
 import DataAccess.DAO.DatabaseException;
-import DataAccess.DAO.IUserDAO;
+import DataAccess.DAO.Interfaces.IUserDAO;
 import DataAccess.DAO.MySql.MySqlUserDAO;
 import Entities.User;
 import Request.RegisterRequest;
@@ -28,7 +28,7 @@ public class RegisterService implements IRegisterService {
         }
     }
 
-    private IUserDAO getUserDAO() {
+    public IUserDAO getUserDAO() {
         return new MySqlUserDAO();
     }
 }

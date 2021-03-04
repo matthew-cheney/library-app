@@ -1,25 +1,27 @@
 package DataAccess.DAO.MySql;
 
-import DataAccess.Connection.ConnectionPool;
-import DataAccess.DAO.IItemDAO;
+import Config.Constants;
+import DataAccess.DAO.Abstract.BaseDAO;
+import DataAccess.DAO.DatabaseException;
+import DataAccess.DAO.Interfaces.IItemDAO;
 import Entities.Item;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
-public class MySqlItemDAO implements IItemDAO {
+public class MySqlItemDAO extends BaseDAO implements IItemDAO {
 
     @Override
-    public Item getItem(String id) {
-        Connection connection = ConnectionPool.getInstance().getConnection();
+    public Item getItemById(String id) throws DatabaseException {
+        Connection connection = getConnectionPool().getConnection();
 
         boolean success = false;
         ResultSet resultSet;
-        String sqlCommand = "SELECT Title, Category, DateCreated, Available, OwnerId, "
-                + "ImageUrl, Description, NumPlayers, TimeToPlayInMins, ReleaseYear, "
-                + "Genre, ItemFormat, Author FROM Items WHERE Id = ?";
+        String sqlCommand = "SELECT * FROM Items WHERE Id = ?";
 
         try (PreparedStatement statement = connection.prepareStatement(sqlCommand)) {
             statement.setString(1, id);
@@ -30,20 +32,20 @@ public class MySqlItemDAO implements IItemDAO {
             while (resultSet.next()) {
                 assert(counter == 0); // Ensures only one user was returned
                 item = new Item(
-                        id,
                         resultSet.getString(1),
                         resultSet.getString(2),
                         resultSet.getString(3),
-                        resultSet.getBoolean(4),
-                        resultSet.getString(5),
+                        resultSet.getString(4),
+                        resultSet.getBoolean(5),
                         resultSet.getString(6),
                         resultSet.getString(7),
-                        resultSet.getInt(8),
+                        resultSet.getString(8),
                         resultSet.getInt(9),
                         resultSet.getInt(10),
-                        resultSet.getString(11),
+                        resultSet.getInt(11),
                         resultSet.getString(12),
-                        resultSet.getString(13)
+                        resultSet.getString(13),
+                        resultSet.getString(14)
                 );
 
                 counter++;
@@ -55,17 +57,64 @@ public class MySqlItemDAO implements IItemDAO {
         catch (SQLException ex) {
             System.out.println(ex.getMessage());
             ex.printStackTrace();
+            throw new DatabaseException(ex.getErrorCode(), ex.getMessage());
         }
         finally {
-            ConnectionPool.getInstance().freeConnection(connection, success);
+            getConnectionPool().freeConnection(connection, success);
         }
-
-        return null;
     }
 
     @Override
-    public boolean addItem(Item item) {
-        Connection connection = ConnectionPool.getInstance().getConnection();
+    public List<Item> getItemsByOwner(String ownerId, int offset) throws DatabaseException {
+        Connection connection = getConnectionPool().getConnection();
+
+        boolean success = false;
+        ResultSet resultSet;
+        String sqlCommand = "SELECT * FROM Items WHERE OwnerId = ? "
+                + "ORDER BY Category, Title "
+                + "OFFSET " + offset + " ROWS FETCH NEXT " + Constants.BATCH_SIZE + " ROWS ONLY";
+
+        try (PreparedStatement statement = connection.prepareStatement(sqlCommand)) {
+            statement.setString(1, ownerId);
+
+            resultSet = statement.executeQuery();
+            List<Item> items = new ArrayList<>();
+            while (resultSet.next()) {
+                Item item = new Item(
+                        resultSet.getString(1),
+                        resultSet.getString(2),
+                        resultSet.getString(3),
+                        resultSet.getString(4),
+                        resultSet.getBoolean(5),
+                        resultSet.getString(6),
+                        resultSet.getString(7),
+                        resultSet.getString(8),
+                        resultSet.getInt(9),
+                        resultSet.getInt(10),
+                        resultSet.getInt(11),
+                        resultSet.getString(12),
+                        resultSet.getString(13),
+                        resultSet.getString(14)
+                );
+                items.add(item);
+            }
+
+            success = true;
+            return items;
+        }
+        catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+            ex.printStackTrace();
+            throw new DatabaseException(ex.getErrorCode(), ex.getMessage());
+        }
+        finally {
+            getConnectionPool().freeConnection(connection, success);
+        }
+    }
+
+    @Override
+    public boolean addItem(Item item) throws DatabaseException {
+        Connection connection = getConnectionPool().getConnection();
 
         boolean success = false;
         String sqlCommand = "INSERT INTO Items VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -86,23 +135,25 @@ public class MySqlItemDAO implements IItemDAO {
             statement.setString(13, item.getItemFormat());
             statement.setString(14, item.getAuthor());
 
+            if (statement.executeUpdate() != 1) {
+                throw new DatabaseException("Error adding item!");
+            }
             success = true;
-            return statement.executeUpdate() == 1;
+            return true;
         }
         catch (SQLException ex) {
             System.out.println(ex.getMessage());
             ex.printStackTrace();
+            throw new DatabaseException(ex.getErrorCode(), ex.getMessage());
         }
         finally {
-            ConnectionPool.getInstance().freeConnection(connection, success);
+            getConnectionPool().freeConnection(connection, success);
         }
-
-        return false;
     }
 
     @Override
-    public boolean updateItem(String id, Item item) {
-        Connection connection = ConnectionPool.getInstance().getConnection();
+    public boolean updateItem(String id, Item item) throws DatabaseException {
+        Connection connection = getConnectionPool().getConnection();
 
         boolean success = false;
         String sqlCommand = "UPDATE Items SET "
@@ -137,23 +188,25 @@ public class MySqlItemDAO implements IItemDAO {
             statement.setString(13, item.getAuthor());
             statement.setString(14, item.getId());
 
+            if (statement.executeUpdate() != 1) {
+                throw new DatabaseException("Error updating item!");
+            }
             success = true;
-            return statement.executeUpdate() == 1;
+            return true;
         }
         catch (SQLException ex) {
             System.out.println(ex.getMessage());
             ex.printStackTrace();
+            throw new DatabaseException(ex.getErrorCode(), ex.getMessage());
         }
         finally {
-            ConnectionPool.getInstance().freeConnection(connection, success);
+            getConnectionPool().freeConnection(connection, success);
         }
-
-        return false;
     }
 
     @Override
-    public boolean deleteItem(String id) {
-        Connection connection = ConnectionPool.getInstance().getConnection();
+    public boolean deleteItem(String id) throws DatabaseException {
+        Connection connection = getConnectionPool().getConnection();
 
         boolean success = false;
         String sqlCommand = "DELETE FROM Items WHERE Id = ?";
@@ -161,17 +214,19 @@ public class MySqlItemDAO implements IItemDAO {
         try (PreparedStatement statement = connection.prepareStatement(sqlCommand)) {
             statement.setString(1, id);
 
+            if (statement.executeUpdate() != 1) {
+                throw new DatabaseException("Error deleting item!");
+            }
             success = true;
-            return statement.executeUpdate() == 1;
+            return true;
         }
         catch (SQLException ex) {
             System.out.println(ex.getMessage());
             ex.printStackTrace();
+            throw new DatabaseException(ex.getErrorCode(), ex.getMessage());
         }
         finally {
-            ConnectionPool.getInstance().freeConnection(connection, success);
+            getConnectionPool().freeConnection(connection, success);
         }
-
-        return false;
     }
 }

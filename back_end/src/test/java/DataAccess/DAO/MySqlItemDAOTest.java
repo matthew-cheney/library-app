@@ -2,18 +2,22 @@ package DataAccess.DAO;
 
 import DataAccess.DAO.MySql.MySqlItemDAO;
 import Entities.Item;
+import TestUtils.TestConfig;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class MySqlItemDAOTest {
 
-    IItemDAO dao;
+    MySqlItemDAO dao;
     SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss");
     Item boardGame = new Item(
             "TEST_BOARD_GAME",
@@ -66,78 +70,152 @@ public class MySqlItemDAOTest {
 
     @BeforeEach
     public void setUpTests() {
-        dao = new MySqlItemDAO();
-        dao.addItem(boardGame);
+        try {
+            dao = Mockito.spy(MySqlItemDAO.class);
+            Mockito.when(dao.getConnectionPool()).thenReturn(TestConfig.CONNECTION_POOL);
+            dao.addItem(boardGame);
+        }
+        catch (DatabaseException ex) {
+            System.out.println(ex.getMessage());
+        }
     }
 
     @AfterEach
     public void tearDownTests() {
-        dao.deleteItem(boardGame.getId());
+        try {
+            dao.deleteItem(boardGame.getId());
+        }
+        catch (DatabaseException ex) {
+            System.out.println(ex.getMessage());
+        }
     }
 
     @Test
-    public void getItem_Success() {
-        Item item = dao.getItem(boardGame.getId());
-        assertEquals(boardGame, item);
+    public void getItemById_Success() {
+        try {
+            Item item = dao.getItemById(boardGame.getId());
+            assertEquals(boardGame, item);
+        }
+        catch (DatabaseException ex) {
+            System.out.println(ex.getMessage());
+        }
     }
 
     @Test
-    public void getItem_Failure() {
-        Item item = dao.getItem("BUBBLES");
-        assertNull(item);
+    public void getItemById_Failure() {
+        try {
+            Item item = dao.getItemById("BUBBLES");
+            assertNull(item);
+        }
+        catch (DatabaseException ex) {
+            System.out.println(ex.getMessage());
+        }
+    }
+
+    @Test
+    public void getItemsByOwner_Success() {
+        try {
+            List<Item> items = dao.getItemsByOwner(boardGame.getOwnerId(), TestConfig.TEST_OFFSET);
+            assertNotEquals(0, items.size());
+            assertEquals(boardGame, items.get(0));
+        }
+        catch (DatabaseException ex) {
+            System.out.println(ex.getMessage());
+        }
+    }
+
+    @Test
+    public void getItemsByOwner_Failure() {
+        try {
+            List<Item> items = dao.getItemsByOwner("BUBBLES", TestConfig.TEST_OFFSET);
+            assertEquals(0, items.size());
+        }
+        catch (DatabaseException ex) {
+            System.out.println(ex.getMessage());
+        }
     }
 
     @Test
     public void addItem_Success() {
-        boolean success = dao.addItem(movie);
-        assertTrue(success);
-        Item item = dao.getItem(movie.getId());
-        assertEquals(movie, item);
-        success = dao.deleteItem(movie.getId());
-        assertTrue(success);
+        try {
+            boolean success = dao.addItem(movie);
+            assertTrue(success);
+            Item item = dao.getItemById(movie.getId());
+            assertEquals(movie, item);
+            success = dao.deleteItem(movie.getId());
+            assertTrue(success);
+        }
+        catch (DatabaseException ex) {
+            System.out.println(ex.getMessage());
+        }
     }
 
     @Test
     public void addItem_Failure() {
-        boolean success = dao.addItem(boardGame);
-        assertFalse(success);
+        try {
+            boolean success = dao.addItem(boardGame);
+            assertFalse(success);
+        }
+        catch (DatabaseException ex) {
+            System.out.println(ex.getMessage());
+        }
     }
 
     @Test
     public void updateItem_Success() {
-        Item item = boardGame;
-        item.setTimeToPlayInMins(10);
-        boolean success = dao.updateItem(boardGame.getId(), item);
-        assertTrue(success);
-        Item updatedItem = dao.getItem(boardGame.getId());
-        assertEquals(item, updatedItem);
+        try {
+            Item item = boardGame;
+            item.setTimeToPlayInMins(10);
+            boolean success = dao.updateItem(boardGame.getId(), item);
+            assertTrue(success);
+            Item updatedItem = dao.getItemById(boardGame.getId());
+            assertEquals(item, updatedItem);
+        }
+        catch (DatabaseException ex) {
+            System.out.println(ex.getMessage());
+        }
     }
 
     @Test
     public void updateItem_Failure() {
-        Item item = book;
-        item.setTimeToPlayInMins(10);
-        boolean success = dao.updateItem(book.getId(), item);
-        assertFalse(success);
-        Item notChangedItem = dao.getItem(boardGame.getId());
-        assertNotEquals(item, notChangedItem);
+        try {
+            Item item = book;
+            item.setTimeToPlayInMins(10);
+            boolean success = dao.updateItem(book.getId(), item);
+            assertFalse(success);
+            Item notChangedItem = dao.getItemById(boardGame.getId());
+            assertNotEquals(item, notChangedItem);
+        }
+        catch (DatabaseException ex) {
+            System.out.println(ex.getMessage());
+        }
     }
 
     @Test
     public void deleteItem_Success() {
-        boolean success = dao.addItem(book);
-        assertTrue(success);
-        success = dao.deleteItem(book.getId());
-        assertTrue(success);
-        Item item = dao.getItem(book.getId());
-        assertNull(item);
+        try {
+            boolean success = dao.addItem(book);
+            assertTrue(success);
+            success = dao.deleteItem(book.getId());
+            assertTrue(success);
+            Item item = dao.getItemById(book.getId());
+            assertNull(item);
+        }
+        catch (DatabaseException ex) {
+            System.out.println(ex.getMessage());
+        }
     }
 
     @Test
     public void deleteItem_Failure() {
-        boolean success = dao.deleteItem(book.getId());
-        assertFalse(success);
-        Item item = dao.getItem(book.getId());
-        assertNull(item);
+        try {
+            boolean success = dao.deleteItem(book.getId());
+            assertFalse(success);
+            Item item = dao.getItemById(book.getId());
+            assertNull(item);
+        }
+        catch (DatabaseException ex) {
+            System.out.println(ex.getMessage());
+        }
     }
 }
