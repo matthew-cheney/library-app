@@ -68,8 +68,8 @@ public class ServerTest {
                 "updatedURL"
         );
         EditUserResponse editUserResponse = serverFacade.editUser(new EditUserRequest(update), EDIT_USER_URL);
+        assertTrue(editUserResponse.getMessage(), editUserResponse.isSuccess());
         LoginResponse loginResponse = serverFacade.login(new LoginRequest(request.getUsername(), request.getPassword()), LOGIN_URL);
-
-        // TODO: Assert that the updated data is passed back
+        assertEquals(update, loginResponse.getUser());
     }
 }
