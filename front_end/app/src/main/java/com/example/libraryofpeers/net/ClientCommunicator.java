@@ -31,6 +31,7 @@ class ClientCommunicator {
         void sendRequest(HttpURLConnection connection) throws IOException;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     <T> T doPost(String urlPath, final Object requestInfo, Map<String, String> headers, Class<T> returnType) throws IOException {
         RequestStrategy requestStrategy = new RequestStrategy() {
             @Override
@@ -54,6 +55,7 @@ class ClientCommunicator {
         return doRequest(urlPath, headers, returnType, requestStrategy);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     <T> T doGet(String urlPath, Map<String, String> headers, Class<T> returnType) throws IOException {
         RequestStrategy requestStrategy = new RequestStrategy() {
             @Override
@@ -70,6 +72,7 @@ class ClientCommunicator {
         return doRequest(urlPath, headers, returnType, requestStrategy);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private <T> T doRequest(String urlPath, Map<String, String> headers, Class<T> returnType, RequestStrategy requestStrategy) throws IOException {
 
         HttpURLConnection connection = null;

@@ -1,5 +1,9 @@
 package com.example.libraryofpeers.service_proxy;
 
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
+
 import com.example.libraryofpeers.net.ServerFacade;
 
 import java.io.IOException;
@@ -14,6 +18,7 @@ public class RegisterServiceProxy implements IRegisterService {
     private final ServerFacade serverFacade = new ServerFacade();
     private static final String URL_PATH = "/register";
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public RegisterResponse register(RegisterRequest request) {
         try {
