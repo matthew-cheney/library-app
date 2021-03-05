@@ -1,0 +1,37 @@
+plugins {
+    id 'java'
+}
+
+group 'org.example'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // Default
+    testImplementation group: 'junit', name: 'junit', version: '4.12'
+
+    // Maven
+    // https://mvnrepository.com/artifact/com.mchange/c3p0
+    implementation group: 'com.mchange', name: 'c3p0', version: '0.9.5.5'
+    // https://mvnrepository.com/artifact/mysql/mysql-connector-java
+    implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.23'
+    // https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api
+    testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.7.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.1'
+    // https://mvnrepository.com/artifact/com.amazonaws/aws-lambda-java-core
+    implementation group: 'com.amazonaws', name: 'aws-lambda-java-core', version: '1.2.1'
+    // https://mvnrepository.com/artifact/org.mockito/mockito-all
+    testImplementation group: 'org.mockito', name: 'mockito-all', version: '1.10.19'
+
+    // Module
+    implementation project(":shared")
+}
+
+test {
+    useJUnitPlatform()
+}
