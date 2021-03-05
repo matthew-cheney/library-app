@@ -263,4 +263,12 @@ public class Item {
     }
 
     // endregion
+
+    // region FrontEndUtils
+
+    public static Item getNullItem() {
+        return new Item(null, null, false, null, null, null, 0, 0, 0, null, null, null);
+    }
+
+    // endregion
 }

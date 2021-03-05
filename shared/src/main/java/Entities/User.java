@@ -2,9 +2,10 @@ package Entities;
 
 import Utilities.EntityUtils;
 
+import java.io.Serializable;
 import java.util.Map;
 
-public class User {
+public class User implements Serializable {
 
     // region Required Properties
 
