@@ -10,9 +10,9 @@ import Service.IEditUserService;
 
 public class EditUserServiceProxy implements IEditUserService {
     private ServerFacade serverFacade;
-    private static final String URL_PATH = "/edit/user";
+    private static final String URL_PATH = "/edituser";
 
-    EditUserServiceProxy() {
+    public EditUserServiceProxy() {
         serverFacade = new ServerFacade();
     }
 
