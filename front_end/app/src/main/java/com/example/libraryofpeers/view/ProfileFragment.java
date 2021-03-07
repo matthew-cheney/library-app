@@ -2,65 +2,196 @@ package com.example.libraryofpeers.view;
 
 import android.os.Bundle;
 
+import Entities.User;
+import Request.EditUserRequest;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import com.example.libraryofpeers.R;
+import com.example.libraryofpeers.service_proxy.LoginServiceProxy;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link ProfileFragment#newInstance} factory method to
- * create an instance of this fragment.
  */
 public class ProfileFragment extends Fragment {
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
+    View view;
+    TextView userNameTextView;
+    EditText userNameEditText;
+    TextView firstNameTextView;
+    EditText firstNameEditText;
+    TextView lastNameTextView;
+    EditText lastNameEditText;
+    TextView emailTextView;
+    EditText emailEditText;
+    TextView phoneNumberTextView;
+    EditText phoneNumberEditText;
+    TextView imageTextView;
+    EditText imageEditText;
+    TextView passwordTextView;
+    EditText passwordEditText;
+    User user;
+    String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
     public ProfileFragment() {
         // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ProfileFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static ProfileFragment newInstance(String param1, String param2) {
-        ProfileFragment fragment = new ProfileFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+        user = LoginServiceProxy.getInstance().getCurrentUser();
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_profile, container, false);
+        view = inflater.inflate(R.layout.fragment_profile, container, false);
+
+        final ToggleButton editProfileBtn = (ToggleButton) view.findViewById(R.id.editProfileBtn);
+        Button saveProfileBtn = (Button) view.findViewById(R.id.saveProfileBtn);
+
+        userNameTextView = (TextView) view.findViewById(R.id.userNameText);
+        userNameEditText = (EditText) view.findViewById(R.id.userNameEditor);
+        firstNameTextView = (TextView) view.findViewById(R.id.firstNameText);
+        firstNameEditText = (EditText) view.findViewById(R.id.firstNameEditor);
+        lastNameTextView = (TextView) view.findViewById(R.id.lastNameText);
+        lastNameEditText = (EditText) view.findViewById(R.id.lastNameEditor);
+        emailTextView = (TextView) view.findViewById(R.id.emailText);
+        emailEditText = (EditText) view.findViewById(R.id.emailEditor);
+        phoneNumberTextView = (TextView) view.findViewById(R.id.phoneNumberText);
+        phoneNumberEditText = (EditText) view.findViewById(R.id.phoneNumberEditor);
+        imageTextView = (TextView) view.findViewById(R.id.imageText);
+        imageEditText = (EditText) view.findViewById(R.id.imageEditor);
+        passwordTextView = (TextView) view.findViewById(R.id.passwordText);
+        passwordEditText = (EditText) view.findViewById(R.id.passwordEditor);
+
+        initializeFields(user);
+
+        editProfileBtn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                System.out.println(isChecked);
+                if (isChecked) {
+                    isEditingNow();
+                } else {
+                    isEditingDone();
+                }
+            }
+        });
+
+        saveProfileBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                saveUpdatedProfile();
+            }
+        });
+
+        return view;
+    }
+
+    private void initializeFields(User user) {
+        userNameTextView.setText(user.getUsername());
+        userNameEditText.setText(user.getUsername());
+        firstNameTextView.setText(user.getFirstName());
+        firstNameEditText.setText(user.getFirstName());
+        lastNameTextView.setText(user.getLastName());
+        lastNameEditText.setText(user.getLastName());
+        emailTextView.setText(user.getEmail());
+        emailEditText.setText(user.getEmail());
+        phoneNumberTextView.setText(user.getPhoneNumber());
+        phoneNumberEditText.setText(user.getPhoneNumber());
+        imageTextView.setText(user.getImageUrl());
+        imageEditText.setText(user.getImageUrl());
+        passwordTextView.setText(user.getPasswordHash());
+        passwordEditText.setText(user.getPasswordHash());
+    }
+
+    private void isEditingNow() {
+        userNameTextView.setVisibility(View.GONE);
+        userNameEditText.setVisibility(View.VISIBLE);
+        firstNameTextView.setVisibility(View.GONE);
+        firstNameEditText.setVisibility(View.VISIBLE);
+        lastNameTextView.setVisibility(View.GONE);
+        lastNameEditText.setVisibility(View.VISIBLE);
+        emailTextView.setVisibility(View.GONE);
+        emailEditText.setVisibility(View.VISIBLE);
+        phoneNumberTextView.setVisibility(View.GONE);
+        phoneNumberEditText.setVisibility(View.VISIBLE);
+        imageTextView.setVisibility(View.GONE);
+        imageEditText.setVisibility(View.VISIBLE);
+        passwordTextView.setVisibility(View.GONE);
+        passwordEditText.setVisibility(View.VISIBLE);
+    }
+
+    private void isEditingDone() {
+        userNameTextView.setVisibility(View.VISIBLE);
+        userNameEditText.setVisibility(View.GONE);
+        firstNameTextView.setVisibility(View.VISIBLE);
+        firstNameEditText.setVisibility(View.GONE);
+        lastNameTextView.setVisibility(View.VISIBLE);
+        lastNameEditText.setVisibility(View.GONE);
+        emailTextView.setVisibility(View.VISIBLE);
+        emailEditText.setVisibility(View.GONE);
+        phoneNumberTextView.setVisibility(View.VISIBLE);
+        phoneNumberEditText.setVisibility(View.GONE);
+        imageTextView.setVisibility(View.VISIBLE);
+        imageEditText.setVisibility(View.GONE);
+        passwordTextView.setVisibility(View.VISIBLE);
+        passwordEditText.setVisibility(View.GONE);
+    }
+
+    private void saveUpdatedProfile() {
+        String userName = userNameEditText.getText().toString();
+        String firstName = firstNameEditText.getText().toString();
+        String lastName = lastNameEditText.getText().toString();
+        String email = emailEditText.getText().toString();
+        String phoneNumber = phoneNumberEditText.getText().toString();
+        String imageUrl = imageEditText.getText().toString();
+        String password = passwordEditText.getText().toString();
+        boolean isUpdateValid = true;
+
+        if (!user.getUsername().equals(userName)) {
+            user.setUsername(userName);
+        }
+        if (!user.getFirstName().equals(firstName)) {
+            user.setFirstName(firstName);
+        }
+        if (!user.getLastName().equals(lastName)) {
+            user.setLastName(lastName);
+        }
+        if (!user.getEmail().equals(email)) {
+            if (!email.matches(emailPattern)) {
+                Toast.makeText(getActivity(), "Invalid Email Address", Toast.LENGTH_SHORT).show();
+                isUpdateValid = false;
+            } else {
+                user.setEmail(email);
+            }
+        }
+        if (!user.getPhoneNumber().equals(phoneNumber)) {
+            user.setPhoneNumber(phoneNumber);
+        }
+        if (!user.getImageUrl().equals(imageUrl)) {
+            user.setImageUrl(imageUrl);
+        }
+        if (!user.getPasswordHash().equals(password)) {
+            user.setPassword(password);
+        }
+
+        EditUserRequest request = new EditUserRequest(user);
+        if (isUpdateValid) {
+            Toast.makeText(getActivity(), "Profile Updated!", Toast.LENGTH_LONG).show();
+            Navigation.findNavController(view).navigate(R.id.action_menuProfile_to_menuHome);
+        }
+
     }
 }
