@@ -15,6 +15,8 @@ public class Friendship {
 
     // region Constructors
 
+    public Friendship() {}
+
     /**
      * To ensure we don't end up with duplicate friendships in the database,
      * this constructor sorts the userIds alphabetically before assigning them
@@ -23,16 +25,9 @@ public class Friendship {
      * @param userIdB
      */
     public Friendship(@NotNull String userIdA, @NotNull String userIdB) {
-        id = EntityUtils.generateId();
-
-        if (EntityUtils.idAIsLessThanIdB(userIdA, userIdB)) {
-            this.userIdA = userIdA;
-            this.userIdB = userIdB;
-        }
-        else {
-            this.userIdA = userIdB;
-            this.userIdB = userIdA;
-        }
+        setId(EntityUtils.generateId());
+        setUserIdA(userIdA);
+        setUserIdB(userIdB);
     }
 
     // endregion
@@ -49,6 +44,38 @@ public class Friendship {
 
     public String getSortedUserIdB() {
         return userIdB;
+    }
+
+    // endregion
+
+    // region Setters
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public void setUserIdA(String userIdA) {
+        if (this.userIdB != null) {
+            if (!EntityUtils.idAIsLessThanIdB(userIdA, this.userIdB)) {
+                this.userIdA = this.userIdB;
+                this.userIdB = userIdA;
+                return;
+            }
+        }
+
+        this.userIdA = userIdA;
+    }
+
+    public void setUserIdB(String userIdB) {
+        if (this.userIdA != null) {
+            if (!EntityUtils.idAIsLessThanIdB(this.userIdA, userIdB)) {
+                this.userIdB = this.userIdA;
+                this.userIdA = userIdB;
+                return;
+            }
+        }
+
+        this.userIdB = userIdB;
     }
 
     // endregion
