@@ -1,15 +1,21 @@
 package DataAccess.DAO.MySql;
 
+import Config.Constants;
 import DataAccess.Connection.ConnectionPool;
 import DataAccess.DAO.Abstract.BaseDAO;
 import DataAccess.DAO.DatabaseException;
 import DataAccess.DAO.Interfaces.IUserDAO;
+import Entities.Item;
 import Entities.User;
 import Utilities.EntityUtils;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MySqlUserDAO extends BaseDAO implements IUserDAO {
+
+    // region Get
 
     @Override
     public User getUserById(String id) throws DatabaseException {
@@ -111,6 +117,58 @@ public class MySqlUserDAO extends BaseDAO implements IUserDAO {
     }
 
     @Override
+    public List<User> getAllUsersMatchingCriteria(String searchCriteria, int offset) throws DatabaseException {
+        Connection connection = getConnectionPool().getConnection();
+
+        boolean success = false;
+        ResultSet resultSet;
+        String sqlCommand = "SET @SEARCH_CRITERIA = ? "
+                + "SELECT * FROM Users WHERE "
+                + "FirstName LIKE @SEARCH_CRITERIA OR "
+                + "LastName LIKE @SEARCH_CRITERIA OR "
+                + "Email LIKE @SEARCH_CRITERIA OR "
+                + "PhoneNumber LIKE @SEARCH_CRITERIA OR "
+                + "ORDER BY FirstName, LastName "
+                + "OFFSET " + offset + " ROWS FETCH NEXT " + Constants.BATCH_SIZE + " ROWS ONLY";
+
+        try (PreparedStatement statement = connection.prepareStatement(sqlCommand)) {
+            statement.setString(1, searchCriteria);
+
+            resultSet = statement.executeQuery();
+            List<User> users = new ArrayList<>();
+            while (resultSet.next()) {
+                User user = new User(
+                        resultSet.getString(1),
+                        resultSet.getString(2),
+                        resultSet.getString(3),
+                        resultSet.getString(4),
+                        resultSet.getString(5),
+                        resultSet.getString(6),
+                        resultSet.getString(7),
+                        resultSet.getString(8),
+                        resultSet.getString(9)
+                );
+                users.add(user);
+            }
+
+            success = true;
+            return users;
+        }
+        catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+            ex.printStackTrace();
+            throw new DatabaseException(ex.getErrorCode(), ex.getMessage());
+        }
+        finally {
+            getConnectionPool().freeConnection(connection, success);
+        }
+    }
+
+    // endregion
+
+    // region Add
+
+    @Override
     public boolean addUser(User user) throws DatabaseException {
         Connection connection = getConnectionPool().getConnection();
 
@@ -143,6 +201,10 @@ public class MySqlUserDAO extends BaseDAO implements IUserDAO {
             getConnectionPool().freeConnection(connection, success);
         }
     }
+
+    // endregion
+
+    // region Update
 
     @Override
     public boolean updateUser(String id, User user) throws DatabaseException {
@@ -187,6 +249,10 @@ public class MySqlUserDAO extends BaseDAO implements IUserDAO {
         }
     }
 
+    // endregion
+
+    // region Delete
+
     @Override
     public boolean deleteUser(String id) throws DatabaseException {
         Connection connection = getConnectionPool().getConnection();
@@ -212,4 +278,6 @@ public class MySqlUserDAO extends BaseDAO implements IUserDAO {
             getConnectionPool().freeConnection(connection, success);
         }
     }
+
+    // endregion
 }

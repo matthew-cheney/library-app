@@ -15,6 +15,8 @@ import java.util.List;
 
 public class MySqlItemDAO extends BaseDAO implements IItemDAO {
 
+    // region Get
+
     @Override
     public Item getItemById(String id) throws DatabaseException {
         Connection connection = getConnectionPool().getConnection();
@@ -112,6 +114,10 @@ public class MySqlItemDAO extends BaseDAO implements IItemDAO {
         }
     }
 
+    // endregion
+
+    // region Add
+
     @Override
     public boolean addItem(Item item) throws DatabaseException {
         Connection connection = getConnectionPool().getConnection();
@@ -150,6 +156,10 @@ public class MySqlItemDAO extends BaseDAO implements IItemDAO {
             getConnectionPool().freeConnection(connection, success);
         }
     }
+
+    // endregion
+
+    // region Update
 
     @Override
     public boolean updateItem(String id, Item item) throws DatabaseException {
@@ -204,6 +214,10 @@ public class MySqlItemDAO extends BaseDAO implements IItemDAO {
         }
     }
 
+    // endregion
+
+    // region Delete
+
     @Override
     public boolean deleteItem(String id) throws DatabaseException {
         Connection connection = getConnectionPool().getConnection();
@@ -229,4 +243,6 @@ public class MySqlItemDAO extends BaseDAO implements IItemDAO {
             getConnectionPool().freeConnection(connection, success);
         }
     }
+
+    // endregion
 }
