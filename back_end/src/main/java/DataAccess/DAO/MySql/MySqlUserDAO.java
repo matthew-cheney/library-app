@@ -117,7 +117,7 @@ public class MySqlUserDAO extends BaseDAO implements IUserDAO {
     }
 
     @Override
-    public List<User> getAllUsersMatchingCriteria(String searchCriteria, int offset) throws DatabaseException {
+    public List<User> getUsersMatchingCriteria(String searchCriteria, int offset) throws DatabaseException {
         Connection connection = getConnectionPool().getConnection();
 
         boolean success = false;
@@ -127,7 +127,7 @@ public class MySqlUserDAO extends BaseDAO implements IUserDAO {
                 + "FirstName LIKE @SEARCH_CRITERIA OR "
                 + "LastName LIKE @SEARCH_CRITERIA OR "
                 + "Email LIKE @SEARCH_CRITERIA OR "
-                + "PhoneNumber LIKE @SEARCH_CRITERIA OR "
+                + "PhoneNumber LIKE @SEARCH_CRITERIA "
                 + "ORDER BY FirstName, LastName "
                 + "OFFSET " + offset + " ROWS FETCH NEXT " + Constants.BATCH_SIZE + " ROWS ONLY";
 

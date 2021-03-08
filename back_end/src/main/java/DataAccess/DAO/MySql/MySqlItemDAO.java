@@ -114,6 +114,63 @@ public class MySqlItemDAO extends BaseDAO implements IItemDAO {
         }
     }
 
+    @Override
+    public List<Item> getItemsMatchingCriteria(String ownerId, int offset) throws DatabaseException {
+        Connection connection = getConnectionPool().getConnection();
+
+        boolean success = false;
+        ResultSet resultSet;
+        String sqlCommand = "SET @SEARCH_CRITERIA = ? "
+                + "SELECT * FROM Items WHERE "
+                + "Title LIKE @SEARCH_CRITERIA OR "
+                + "Description LIKE @SEARCH_CRITERIA OR "
+                + "NumPlayers LIKE @SEARCH_CRITERIA OR "
+                + "TimeToPlayInMins LIKE @SEARCH_CRITERIA OR "
+                + "ReleaseYear LIKE @SEARCH_CRITERIA OR "
+                + "Genre LIKE @SEARCH_CRITERIA OR "
+                + "ItemFormat LIKE @SEARCH_CRITERIA OR "
+                + "Author LIKE @SEARCH_CRITERIA "
+                + "ORDER BY FirstName, LastName "
+                + "OFFSET " + offset + " ROWS FETCH NEXT " + Constants.BATCH_SIZE + " ROWS ONLY";
+
+        try (PreparedStatement statement = connection.prepareStatement(sqlCommand)) {
+            statement.setString(1, ownerId);
+
+            resultSet = statement.executeQuery();
+            List<Item> items = new ArrayList<>();
+            while (resultSet.next()) {
+                Item item = new Item(
+                        resultSet.getString(1),
+                        resultSet.getString(2),
+                        resultSet.getString(3),
+                        resultSet.getString(4),
+                        resultSet.getBoolean(5),
+                        resultSet.getString(6),
+                        resultSet.getString(7),
+                        resultSet.getString(8),
+                        resultSet.getInt(9),
+                        resultSet.getInt(10),
+                        resultSet.getInt(11),
+                        resultSet.getString(12),
+                        resultSet.getString(13),
+                        resultSet.getString(14)
+                );
+                items.add(item);
+            }
+
+            success = true;
+            return items;
+        }
+        catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+            ex.printStackTrace();
+            throw new DatabaseException(ex.getErrorCode(), ex.getMessage());
+        }
+        finally {
+            getConnectionPool().freeConnection(connection, success);
+        }
+    }
+
     // endregion
 
     // region Add
