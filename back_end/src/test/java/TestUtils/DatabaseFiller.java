@@ -3,6 +3,7 @@ package TestUtils;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -24,7 +25,7 @@ public class DatabaseFiller {
 
     // region Properties
 
-    private static final String CURRENT_DIRECTORY = System.getProperty("user.dir") + "/src/test/java/TestUtils/MockDataFiles/";
+    public static final String CURRENT_DIRECTORY = System.getProperty("user.dir") + "/src/test/java/TestUtils/MockDataFiles/";
 
     private List<User> users;
     private List<Item> items;
@@ -43,6 +44,92 @@ public class DatabaseFiller {
 //    public void runDBFiller() {
 //        fillDatabase();
 //    }
+
+    public static void addUnitTestUsers(Integer numUsersRequested, MySqlUserDAO userDAO) {
+        int numUsers = numUsersRequested == null ? 1000 : numUsersRequested;
+        try {
+            Scanner scanner = new Scanner(new File(CURRENT_DIRECTORY + "USER_UNIT_TEST_DATA.csv"));
+            scanner.useDelimiter("\\n");
+            int counter = 0;
+
+            while (scanner.hasNext() && counter < numUsers) {
+                String line = scanner.next();
+                Scanner lineScanner = new Scanner(line);
+                lineScanner.useDelimiter(",");
+
+                String id = lineScanner.next();
+
+                User user = new User(
+                        lineScanner.next(),
+                        lineScanner.next(),
+                        lineScanner.next(),
+                        lineScanner.next(),
+                        lineScanner.next(),
+                        lineScanner.next(),
+                        lineScanner.next()
+                );
+                user.setId(id);
+
+                try {
+                    userDAO.addUser(user);
+                }
+                catch (DatabaseException ex) {
+                    System.out.println(ex.getMessage());
+                }
+
+                counter++;
+            }
+            scanner.close();
+        }
+        catch (IOException ex) {
+            System.out.println(ex.getMessage());
+        }
+    }
+
+    public static void addUnitTestItems(String ownerId, Integer numItemsRequested, MySqlItemDAO itemDAO) {
+        int numItems = numItemsRequested == null ? 1000 : numItemsRequested;
+        try {
+            Scanner scanner = new Scanner(new File(DatabaseFiller.CURRENT_DIRECTORY + "ITEM_UNIT_TEST_DATA.csv"));
+            scanner.useDelimiter("\\n");
+            int counter = 0;
+
+            while (scanner.hasNext() && counter < numItems) {
+                String line = scanner.next();
+                Scanner lineScanner = new Scanner(line);
+                lineScanner.useDelimiter(",");
+
+                Item item = new Item(
+                        lineScanner.next(),
+                        lineScanner.next(),
+                        DatabaseFiller.getCategory(),
+                        lineScanner.next(),
+                        lineScanner.nextBoolean(),
+                        ownerId,
+                        lineScanner.next(),
+                        lineScanner.next(),
+                        lineScanner.nextInt(),
+                        lineScanner.nextInt(),
+                        lineScanner.nextInt(),
+                        lineScanner.next(),
+                        lineScanner.next(),
+                        lineScanner.next()
+                );
+
+                try {
+                    itemDAO.addItem(item);
+                }
+                catch (DatabaseException ex) {
+                    System.out.println(ex.getMessage());
+                }
+
+                counter++;
+            }
+            scanner.close();
+        }
+        catch (IOException ex) {
+            System.out.println(ex.getMessage());
+        }
+    }
 
     // endregion
 
@@ -145,7 +232,7 @@ public class DatabaseFiller {
 
     // region Helper Methods
 
-    private String getCategory() {
+    private static String getCategory() {
         Random rand = new Random();
         int upperBound = 3;
         int randomValue = rand.nextInt(upperBound);
@@ -161,11 +248,10 @@ public class DatabaseFiller {
     }
 
     private String getOwnerId() {
-        Random rand = new Random();
-        int upperBound = 1000;
-        int randomValue = rand.nextInt(upperBound);
-
-        return users.get(randomValue).getId();
+//        Random rand = new Random();
+//        int upperBound = 1000;
+//        return String.valueOf(rand.nextInt(upperBound));
+        return "11";
     }
 
     // endregion

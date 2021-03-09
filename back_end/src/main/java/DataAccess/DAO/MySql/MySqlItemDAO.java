@@ -1,6 +1,7 @@
 package DataAccess.DAO.MySql;
 
 import Config.Constants;
+import DataAccess.Connection.ConnectionPool;
 import DataAccess.DAO.Abstract.BaseDAO;
 import DataAccess.DAO.DatabaseException;
 import DataAccess.DAO.Interfaces.IItemDAO;
@@ -74,7 +75,7 @@ public class MySqlItemDAO extends BaseDAO implements IItemDAO {
         ResultSet resultSet;
         String sqlCommand = "SELECT * FROM Items WHERE OwnerId = ? "
                 + "ORDER BY Category, Title "
-                + "OFFSET " + offset + " ROWS FETCH NEXT " + Constants.BATCH_SIZE + " ROWS ONLY";
+                + "LIMIT " + offset + ", " + Constants.BATCH_SIZE;
 
         try (PreparedStatement statement = connection.prepareStatement(sqlCommand)) {
             statement.setString(1, ownerId);
@@ -115,26 +116,27 @@ public class MySqlItemDAO extends BaseDAO implements IItemDAO {
     }
 
     @Override
-    public List<Item> getItemsMatchingCriteria(String ownerId, int offset) throws DatabaseException {
+    public List<Item> getItemsMatchingCriteria(String searchCriteria, int offset) throws DatabaseException {
         Connection connection = getConnectionPool().getConnection();
 
         boolean success = false;
         ResultSet resultSet;
-        String sqlCommand = "SET @SEARCH_CRITERIA = ? "
-                + "SELECT * FROM Items WHERE "
-                + "Title LIKE @SEARCH_CRITERIA OR "
-                + "Description LIKE @SEARCH_CRITERIA OR "
-                + "NumPlayers LIKE @SEARCH_CRITERIA OR "
-                + "TimeToPlayInMins LIKE @SEARCH_CRITERIA OR "
-                + "ReleaseYear LIKE @SEARCH_CRITERIA OR "
-                + "Genre LIKE @SEARCH_CRITERIA OR "
-                + "ItemFormat LIKE @SEARCH_CRITERIA OR "
-                + "Author LIKE @SEARCH_CRITERIA "
-                + "ORDER BY FirstName, LastName "
-                + "OFFSET " + offset + " ROWS FETCH NEXT " + Constants.BATCH_SIZE + " ROWS ONLY";
+        String sqlCommand = "SELECT * FROM Items WHERE "
+                + "Title LIKE ? OR "
+                + "Description LIKE ? OR "
+                + "NumPlayers LIKE ? OR "
+                + "TimeToPlayInMins LIKE ? OR "
+                + "ReleaseYear LIKE ? OR "
+                + "Genre LIKE ? OR "
+                + "ItemFormat LIKE ? OR "
+                + "Author LIKE ? "
+                + "ORDER BY Category, Title "
+                + "LIMIT " + offset + ", " + Constants.BATCH_SIZE;
 
         try (PreparedStatement statement = connection.prepareStatement(sqlCommand)) {
-            statement.setString(1, ownerId);
+            for (int i = 1; i <= 8; i++) {
+                statement.setString(i, searchCriteria);
+            }
 
             resultSet = statement.executeQuery();
             List<Item> items = new ArrayList<>();
@@ -299,6 +301,31 @@ public class MySqlItemDAO extends BaseDAO implements IItemDAO {
         finally {
             getConnectionPool().freeConnection(connection, success);
         }
+    }
+
+    @Override
+    public void clearItemsTable() {
+        String deleteTableCommand = "DROP TABLE Items";
+        String createTableCommand = "CREATE TABLE Items (\n" +
+                                        "\tId VARCHAR(36) NOT NULL,\n" +
+                                        "\tTitle VARCHAR(50) NOT NULL,\n" +
+                                        "\tCategory VARCHAR(25) NOT NULL,\n" +
+                                        "\tDateCreated VARCHAR(30) NOT NULL,\n" +
+                                        "\tAvailable BOOL NOT NULL,\n" +
+                                        "\tOwnerId VARCHAR(36) NOT NULL,\n" +
+                                        "\tImageUrl VARCHAR(50),\n" +
+                                        "\tDescription VARCHAR(255),\n" +
+                                        "\tNumPlayers INT,\n" +
+                                        "\tTimeToPlayInMins INT,\n" +
+                                        "\tReleaseYear INT,\n" +
+                                        "\tGenre VARCHAR(50),\n" +
+                                        "\tItemFormat VARCHAR(25),\n" +
+                                        "\tAuthor VARCHAR(50),\n" +
+                                        "\tPRIMARY KEY (Id),\n" +
+                                        "\tFOREIGN KEY (OwnerId) REFERENCES Users(Id)\n" +
+                                    ");";
+
+        remakeTable(deleteTableCommand, createTableCommand);
     }
 
     // endregion

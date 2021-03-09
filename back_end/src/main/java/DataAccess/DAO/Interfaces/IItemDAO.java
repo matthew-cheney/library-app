@@ -13,4 +13,5 @@ public interface IItemDAO {
     boolean addItem(Item item) throws DatabaseException;
     boolean updateItem(String id, Item item) throws DatabaseException;
     boolean deleteItem(String id) throws DatabaseException;
+    void clearItemsTable();
 }

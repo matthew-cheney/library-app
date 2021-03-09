@@ -1,9 +1,12 @@
 package DataAccess.DAO;
 
 import DataAccess.DAO.MySql.MySqlUserDAO;
+import Entities.Item;
 import Entities.User;
 import Request.RegisterRequest;
 import Service.RegisterService;
+import TestUtils.BaseTest;
+import TestUtils.DatabaseFiller;
 import TestUtils.TestConfig;
 
 import org.junit.jupiter.api.AfterEach;
@@ -11,9 +14,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
-public class MySqlUserDAOTest {
+public class MySqlUserDAOTest extends BaseTest {
     MySqlUserDAO dao;
     User testUser = new User(
             "TEST",
@@ -41,7 +46,7 @@ public class MySqlUserDAOTest {
     @BeforeEach
     public void setUpTests() {
         dao = Mockito.spy(MySqlUserDAO.class);
-        Mockito.when(dao.getConnectionPool()).thenReturn(TestConfig.CONNECTION_POOL);
+        Mockito.when(dao.getConnectionPool()).thenReturn(CONNECTION_POOL);
         try {
             dao.addUser(testUser);
         }
@@ -118,6 +123,36 @@ public class MySqlUserDAOTest {
         }
         catch (DatabaseException ex) {
             System.out.println(ex.getMessage());
+        }
+    }
+
+    @Test
+    public void getUsersMatchingCriteria_Success() {
+        try {
+            DatabaseFiller.addUnitTestUsers(25, dao);
+            List<User> users = dao.getUsersMatchingCriteria("com", TestConfig.TEST_OFFSET);
+            assertEquals(5, users.size());
+        }
+        catch (DatabaseException ex) {
+            System.out.println(ex.getMessage());
+        }
+        finally {
+            dao.clearUsersTable();
+        }
+    }
+
+    @Test
+    public void getUsersMatchingCriteria_Failure() {
+        try {
+            DatabaseFiller.addUnitTestUsers(25, dao);
+            List<User> users = dao.getUsersMatchingCriteria("ERIN", TestConfig.TEST_OFFSET);
+            assertEquals(0, users.size());
+        }
+        catch (DatabaseException ex) {
+            System.out.println(ex.getMessage());
+        }
+        finally {
+            dao.clearUsersTable();
         }
     }
 

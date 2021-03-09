@@ -1,7 +1,10 @@
 package DataAccess.DAO;
 
+import DataAccess.Connection.ConnectionPool;
 import DataAccess.DAO.MySql.MySqlItemDAO;
 import Entities.Item;
+import TestUtils.BaseTest;
+import TestUtils.DatabaseFiller;
 import TestUtils.TestConfig;
 
 import org.junit.jupiter.api.AfterEach;
@@ -9,13 +12,19 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
+import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Scanner;
+
+import javax.xml.crypto.Data;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class MySqlItemDAOTest {
+public class MySqlItemDAOTest extends BaseTest {
 
     MySqlItemDAO dao;
     SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss");
@@ -72,7 +81,7 @@ public class MySqlItemDAOTest {
     public void setUpTests() {
         try {
             dao = Mockito.spy(MySqlItemDAO.class);
-            Mockito.when(dao.getConnectionPool()).thenReturn(TestConfig.CONNECTION_POOL);
+            Mockito.when(dao.getConnectionPool()).thenReturn(CONNECTION_POOL);
             dao.addItem(boardGame);
         }
         catch (DatabaseException ex) {
@@ -132,6 +141,36 @@ public class MySqlItemDAOTest {
         }
         catch (DatabaseException ex) {
             System.out.println(ex.getMessage());
+        }
+    }
+
+    @Test
+    public void getItemsMatchingCriteria_Success() {
+        try {
+            DatabaseFiller.addUnitTestItems(boardGame.getOwnerId(), 25, dao);
+            List<Item> items = dao.getItemsMatchingCriteria("com", TestConfig.TEST_OFFSET);
+            assertEquals(10, items.size());
+        }
+        catch (DatabaseException ex) {
+            System.out.println(ex.getMessage());
+        }
+        finally {
+            dao.clearItemsTable();
+        }
+    }
+
+    @Test
+    public void getItemsMatchingCriteria_Failure() {
+        try {
+            DatabaseFiller.addUnitTestItems(boardGame.getOwnerId(), 25, dao);
+            List<Item> items = dao.getItemsMatchingCriteria("ERIN", TestConfig.TEST_OFFSET);
+            assertEquals(0, items.size());
+        }
+        catch (DatabaseException ex) {
+            System.out.println(ex.getMessage());
+        }
+        finally {
+            dao.clearItemsTable();
         }
     }
 
@@ -218,4 +257,10 @@ public class MySqlItemDAOTest {
             System.out.println(ex.getMessage());
         }
     }
+
+    // region Private
+
+
+
+    // endregion
 }

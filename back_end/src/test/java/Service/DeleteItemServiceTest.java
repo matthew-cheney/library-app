@@ -13,13 +13,14 @@ import DataAccess.DAO.MySql.MySqlItemDAO;
 import Entities.Item;
 import Request.DeleteItemRequest;
 import Response.DeleteItemResponse;
+import TestUtils.BaseTest;
 import TestUtils.TestConfig;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class DeleteItemServiceTest {
+public class DeleteItemServiceTest extends BaseTest {
 
     private DeleteItemService service;
     private MySqlItemDAO dao;
@@ -49,7 +50,7 @@ public class DeleteItemServiceTest {
     public void setUpTests() {
         try {
             dao = Mockito.spy(MySqlItemDAO.class);
-            Mockito.when(dao.getConnectionPool()).thenReturn(TestConfig.CONNECTION_POOL);
+            Mockito.when(dao.getConnectionPool()).thenReturn(CONNECTION_POOL);
 
             service = Mockito.spy(DeleteItemService.class);
             Mockito.when(service.getItemDAO()).thenReturn(dao);
