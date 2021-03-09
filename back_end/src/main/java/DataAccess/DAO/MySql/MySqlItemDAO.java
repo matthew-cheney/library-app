@@ -1,7 +1,6 @@
 package DataAccess.DAO.MySql;
 
 import Config.Constants;
-import DataAccess.Connection.ConnectionPool;
 import DataAccess.DAO.Abstract.BaseDAO;
 import DataAccess.DAO.DatabaseException;
 import DataAccess.DAO.Interfaces.IItemDAO;
