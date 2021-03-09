@@ -117,22 +117,23 @@ public class MySqlUserDAO extends BaseDAO implements IUserDAO {
     }
 
     @Override
-    public List<User> getAllUsersMatchingCriteria(String searchCriteria, int offset) throws DatabaseException {
+    public List<User> getUsersMatchingCriteria(String searchCriteria, int offset) throws DatabaseException {
         Connection connection = getConnectionPool().getConnection();
 
         boolean success = false;
         ResultSet resultSet;
-        String sqlCommand = "SET @SEARCH_CRITERIA = ? "
-                + "SELECT * FROM Users WHERE "
-                + "FirstName LIKE @SEARCH_CRITERIA OR "
-                + "LastName LIKE @SEARCH_CRITERIA OR "
-                + "Email LIKE @SEARCH_CRITERIA OR "
-                + "PhoneNumber LIKE @SEARCH_CRITERIA OR "
-                + "ORDER BY FirstName, LastName "
-                + "OFFSET " + offset + " ROWS FETCH NEXT " + Constants.BATCH_SIZE + " ROWS ONLY";
+        String sqlCommand = "SELECT * FROM Users WHERE "
+                + "FirstName LIKE ? OR "
+                + "LastName LIKE ? OR "
+                + "Email LIKE ? OR "
+                + "PhoneNumber LIKE ? "
+                + "ORDER BY LastName, FirstName "
+                + "LIMIT " + offset + ", " + Constants.BATCH_SIZE;
 
         try (PreparedStatement statement = connection.prepareStatement(sqlCommand)) {
-            statement.setString(1, searchCriteria);
+            for (int i = 1; i <= 4; i++) {
+                statement.setString(i, searchCriteria);
+            }
 
             resultSet = statement.executeQuery();
             List<User> users = new ArrayList<>();
@@ -277,6 +278,25 @@ public class MySqlUserDAO extends BaseDAO implements IUserDAO {
         finally {
             getConnectionPool().freeConnection(connection, success);
         }
+    }
+
+    @Override
+    public void clearUsersTable() {
+        String deleteTableCommand = "DROP TABLE IF EXISTS Users";
+        String createTableCommand = "CREATE TABLE IF NOT EXISTS Users (\n" +
+                                        "\tId VARCHAR(36) NOT NULL,\n" +
+                                        "\tUsername VARCHAR(50) NOT NULL UNIQUE,\n" +
+                                        "\tPasswordHash VARCHAR(255) NOT NULL,\n" +
+                                        "\tPasswordSalt VARCHAR(24) NOT NULL,\n" +
+                                        "\tFirstName VARCHAR(25) NOT NULL,\n" +
+                                        "\tLastName VARCHAR(25) NOT NULL,\n" +
+                                        "\tEmail VARCHAR(50),\n" +
+                                        "\tPhoneNumber VARCHAR(25),\n" +
+                                        "\tImageUrl VARCHAR(50),\n" +
+                                        "\tPRIMARY KEY (Id)\n" +
+                                    ");";
+
+        remakeTable(deleteTableCommand, createTableCommand);
     }
 
     // endregion

@@ -11,12 +11,13 @@ import Entities.User;
 import Request.EditUserRequest;
 import Request.RegisterRequest;
 import Response.EditUserResponse;
+import TestUtils.BaseTest;
 import TestUtils.TestConfig;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class EditUserServiceTest {
+public class EditUserServiceTest extends BaseTest {
 
     private EditUserService service;
     private MySqlUserDAO dao;
@@ -30,7 +31,7 @@ public class EditUserServiceTest {
     public void setUpTests() {
         try {
             dao = Mockito.spy(MySqlUserDAO.class);
-            Mockito.when(dao.getConnectionPool()).thenReturn(TestConfig.CONNECTION_POOL);
+            Mockito.when(dao.getConnectionPool()).thenReturn(CONNECTION_POOL);
 
             service = Mockito.spy(EditUserService.class);
             Mockito.when(service.getUserDAO()).thenReturn(dao);
