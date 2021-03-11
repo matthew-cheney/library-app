@@ -3,13 +3,9 @@ package com.example.libraryofpeers.async_tasks;
 import android.os.AsyncTask;
 
 import com.example.libraryofpeers.presenters.EditProfilePresenter;
-import com.example.libraryofpeers.presenters.LoginPresenter;
-import com.example.libraryofpeers.presenters.RegisterPresenter;
 
 import Request.EditUserRequest;
-import Request.LoginRequest;
 import Response.EditUserResponse;
-import Response.LoginResponse;
 
 public class EditProfileTask extends AsyncTask<EditUserRequest, Void, EditUserResponse> {
     private final EditProfileTask.EditProfileRequestObserver observer;
@@ -22,8 +18,8 @@ public class EditProfileTask extends AsyncTask<EditUserRequest, Void, EditUserRe
 
 
     public interface EditProfileRequestObserver {
-        void onLoginSuccess(EditUserResponse response);
-        void onLoginFailure(EditUserResponse response);
+        void onEditSuccess(EditUserResponse response);
+        void onEditFailure(EditUserResponse response);
     }
 
     @Override
@@ -34,9 +30,9 @@ public class EditProfileTask extends AsyncTask<EditUserRequest, Void, EditUserRe
     @Override
     protected void onPostExecute(EditUserResponse response) {
         if (response.isSuccess()) {
-            observer.onLoginSuccess(response);
+            observer.onEditSuccess(response);
         } else {
-            observer.onLoginFailure(response);
+            observer.onEditFailure(response);
         }
     }
 }

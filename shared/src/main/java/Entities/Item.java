@@ -11,7 +11,7 @@ public class Item {
 
     // region Properties
 
-    public final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss");
+    public transient final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss");
 
     // region Required
 
