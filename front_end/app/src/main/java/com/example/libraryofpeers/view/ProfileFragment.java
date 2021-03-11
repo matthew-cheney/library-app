@@ -200,13 +200,13 @@ public class ProfileFragment extends Fragment implements EditProfileTask.EditPro
     }
 
     @Override
-    public void onLoginSuccess(EditUserResponse response) {
+    public void onEditSuccess(EditUserResponse response) {
         Toast.makeText(getActivity(), "Profile Updated!", Toast.LENGTH_LONG).show();
         Navigation.findNavController(view).navigate(R.id.action_menuProfile_to_menuHome);
     }
 
     @Override
-    public void onLoginFailure(EditUserResponse response) {
+    public void onEditFailure(EditUserResponse response) {
         Toast.makeText(getActivity(), "Profile update failed", Toast.LENGTH_LONG).show();
     }
 }
