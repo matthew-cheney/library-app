@@ -18,6 +18,8 @@
     <string name="signInButton">Sign In</string>
     <string name="registerButton">Register</string>
     <string name="addImageButton">Add Image</string>
+    <string name="catalogTabTitle">Catalog</string>
+    <string name="friendsTabTitle">Friends</string>
 
     <string name="sampleAlias">"@UserAlias"</string>
     <string name="sampleUserName">The User</string>
