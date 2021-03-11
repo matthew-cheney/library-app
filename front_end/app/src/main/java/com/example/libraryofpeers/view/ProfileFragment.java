@@ -4,6 +4,8 @@ import android.os.Bundle;
 
 import Entities.User;
 import Request.EditUserRequest;
+import Response.EditUserResponse;
+
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
@@ -18,12 +20,14 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.example.libraryofpeers.R;
+import com.example.libraryofpeers.async_tasks.EditProfileTask;
+import com.example.libraryofpeers.presenters.EditProfilePresenter;
 import com.example.libraryofpeers.service_proxy.LoginServiceProxy;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ProfileFragment extends Fragment {
+public class ProfileFragment extends Fragment implements EditProfileTask.EditProfileRequestObserver {
     View view;
     TextView userNameTextView;
     EditText userNameEditText;
@@ -189,9 +193,20 @@ public class ProfileFragment extends Fragment {
 
         EditUserRequest request = new EditUserRequest(user);
         if (isUpdateValid) {
-            Toast.makeText(getActivity(), "Profile Updated!", Toast.LENGTH_LONG).show();
-            Navigation.findNavController(view).navigate(R.id.action_menuProfile_to_menuHome);
+            EditProfilePresenter presenter = new EditProfilePresenter();
+            EditProfileTask task = new EditProfileTask(this, presenter);
+            task.execute(request);
         }
+    }
 
+    @Override
+    public void onLoginSuccess(EditUserResponse response) {
+        Toast.makeText(getActivity(), "Profile Updated!", Toast.LENGTH_LONG).show();
+        Navigation.findNavController(view).navigate(R.id.action_menuProfile_to_menuHome);
+    }
+
+    @Override
+    public void onLoginFailure(EditUserResponse response) {
+        Toast.makeText(getActivity(), "Profile update failed", Toast.LENGTH_LONG).show();
     }
 }
