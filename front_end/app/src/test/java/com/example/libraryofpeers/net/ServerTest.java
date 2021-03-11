@@ -10,11 +10,13 @@ import java.util.UUID;
 import Entities.Item;
 import Entities.User;
 import Request.AddItemRequest;
+import Request.CatalogRequest;
 import Request.EditItemRequest;
 import Request.EditUserRequest;
 import Request.LoginRequest;
 import Request.RegisterRequest;
 import Response.AddItemResponse;
+import Response.CatalogResponse;
 import Response.EditItemResponse;
 import Response.EditUserResponse;
 import Response.LoginResponse;
@@ -29,6 +31,7 @@ public class ServerTest {
     private static final String EDIT_USER_URL = "/edituser";
     private static final String ADD_ITEM_URL = "/additem";
     private static final String EDIT_ITEM_URL = "/edititem";
+    private static final String CATALOG_URL = "/catalog";
 
 
     private RegisterRequest request;
@@ -138,5 +141,31 @@ public class ServerTest {
         ));
         EditItemResponse editItemResponse = serverFacade.editItem(editItemRequest, EDIT_ITEM_URL);
         assertTrue(editItemResponse.getMessage(),editItemResponse.isSuccess());
+    }
+
+    @Test
+    public void testGetCatalog() throws IOException {
+        RegisterResponse response = serverFacade.register(request, REGISTER_URL);
+        assertTrue(response.isSuccess());
+        LoginResponse loginResponse = serverFacade.login(new LoginRequest(request.getUsername(), request.getPassword()), LOGIN_URL);
+        assertTrue(loginResponse.isSuccess());
+        User user = loginResponse.getUser();
+        AddItemRequest addItemRequest = new AddItemRequest(
+                "testItem",
+                "Movies",
+                true,
+                user.getId(),
+                "testitem.com/pic.jpg",
+                "a test item",
+                null,
+                null
+        );
+        AddItemResponse addItemResponse = serverFacade.addItem(addItemRequest, ADD_ITEM_URL);
+        assertTrue(addItemResponse.getMessage(), addItemResponse.isSuccess());
+
+        CatalogRequest request = new CatalogRequest(user.getId(), 0);
+        CatalogResponse response1 = serverFacade.getCatalog(request, CATALOG_URL);
+        assertEquals(1, response1.getItems().size());
+        assertEquals("testItem", response1.getItems().get(0).getTitle());
     }
 }
