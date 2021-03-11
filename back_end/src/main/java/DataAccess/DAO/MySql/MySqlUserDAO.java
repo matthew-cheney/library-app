@@ -1,15 +1,21 @@
 package DataAccess.DAO.MySql;
 
+import Config.Constants;
 import DataAccess.Connection.ConnectionPool;
 import DataAccess.DAO.Abstract.BaseDAO;
 import DataAccess.DAO.DatabaseException;
 import DataAccess.DAO.Interfaces.IUserDAO;
+import Entities.Item;
 import Entities.User;
 import Utilities.EntityUtils;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MySqlUserDAO extends BaseDAO implements IUserDAO {
+
+    // region Get
 
     @Override
     public User getUserById(String id) throws DatabaseException {
@@ -111,6 +117,59 @@ public class MySqlUserDAO extends BaseDAO implements IUserDAO {
     }
 
     @Override
+    public List<User> getUsersMatchingCriteria(String searchCriteria, int offset) throws DatabaseException {
+        Connection connection = getConnectionPool().getConnection();
+
+        boolean success = false;
+        ResultSet resultSet;
+        String sqlCommand = "SELECT * FROM Users WHERE "
+                + "FirstName LIKE ? OR "
+                + "LastName LIKE ? OR "
+                + "Email LIKE ? OR "
+                + "PhoneNumber LIKE ? "
+                + "ORDER BY LastName, FirstName "
+                + "LIMIT " + offset + ", " + Constants.BATCH_SIZE;
+
+        try (PreparedStatement statement = connection.prepareStatement(sqlCommand)) {
+            for (int i = 1; i <= 4; i++) {
+                statement.setString(i, searchCriteria);
+            }
+
+            resultSet = statement.executeQuery();
+            List<User> users = new ArrayList<>();
+            while (resultSet.next()) {
+                User user = new User(
+                        resultSet.getString(1),
+                        resultSet.getString(2),
+                        resultSet.getString(3),
+                        resultSet.getString(4),
+                        resultSet.getString(5),
+                        resultSet.getString(6),
+                        resultSet.getString(7),
+                        resultSet.getString(8),
+                        resultSet.getString(9)
+                );
+                users.add(user);
+            }
+
+            success = true;
+            return users;
+        }
+        catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+            ex.printStackTrace();
+            throw new DatabaseException(ex.getErrorCode(), ex.getMessage());
+        }
+        finally {
+            getConnectionPool().freeConnection(connection, success);
+        }
+    }
+
+    // endregion
+
+    // region Add
+
+    @Override
     public boolean addUser(User user) throws DatabaseException {
         Connection connection = getConnectionPool().getConnection();
 
@@ -143,6 +202,10 @@ public class MySqlUserDAO extends BaseDAO implements IUserDAO {
             getConnectionPool().freeConnection(connection, success);
         }
     }
+
+    // endregion
+
+    // region Update
 
     @Override
     public boolean updateUser(String id, User user) throws DatabaseException {
@@ -187,6 +250,10 @@ public class MySqlUserDAO extends BaseDAO implements IUserDAO {
         }
     }
 
+    // endregion
+
+    // region Delete
+
     @Override
     public boolean deleteUser(String id) throws DatabaseException {
         Connection connection = getConnectionPool().getConnection();
@@ -212,4 +279,25 @@ public class MySqlUserDAO extends BaseDAO implements IUserDAO {
             getConnectionPool().freeConnection(connection, success);
         }
     }
+
+    @Override
+    public void clearUsersTable() {
+        String deleteTableCommand = "DROP TABLE IF EXISTS Users";
+        String createTableCommand = "CREATE TABLE IF NOT EXISTS Users (\n" +
+                                        "\tId VARCHAR(36) NOT NULL,\n" +
+                                        "\tUsername VARCHAR(50) NOT NULL UNIQUE,\n" +
+                                        "\tPasswordHash VARCHAR(255) NOT NULL,\n" +
+                                        "\tPasswordSalt VARCHAR(24) NOT NULL,\n" +
+                                        "\tFirstName VARCHAR(25) NOT NULL,\n" +
+                                        "\tLastName VARCHAR(25) NOT NULL,\n" +
+                                        "\tEmail VARCHAR(50),\n" +
+                                        "\tPhoneNumber VARCHAR(25),\n" +
+                                        "\tImageUrl VARCHAR(50),\n" +
+                                        "\tPRIMARY KEY (Id)\n" +
+                                    ");";
+
+        remakeTable(deleteTableCommand, createTableCommand);
+    }
+
+    // endregion
 }

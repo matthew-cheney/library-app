@@ -27,6 +27,8 @@ public class User {
 
     // region Constructors
 
+    public User() {}
+
     /**
      * This is a constructor to use when receiving a user from the client
      * @param username
@@ -65,12 +67,10 @@ public class User {
      */
     public User(String id, String username, String passwordHash, String passwordSalt, String firstName, String lastName,
                 String email, String phoneNumber, String imageUrl) {
-        this.id = id;
-
+        setId(id);
         setUsername(username);
-
-        this.passwordHash = passwordHash;
-        this.passwordSalt = passwordSalt;
+        setPasswordHash(passwordHash);
+        setPasswordSalt(passwordSalt);
 
         setFirstName(firstName);
         setLastName(lastName);
@@ -124,6 +124,10 @@ public class User {
 
     // region Setters
 
+    public void setId(String id) {
+        this.id = id;
+    }
+
     public void setUsername(String username) {
         this.username = username;
     }
@@ -132,9 +136,17 @@ public class User {
         Map<String, String> passwordPair = EntityUtils.hashPassword(password);
         assert(passwordPair.entrySet().size() == 1);
         for (Map.Entry<String, String> entry : passwordPair.entrySet()) {
-            this.passwordSalt = entry.getKey();
-            this.passwordHash = entry.getValue();
+            setPasswordSalt(entry.getKey());
+            setPasswordHash(entry.getValue());
         }
+    }
+
+    public void setPasswordHash(String passwordHash) {
+        this.passwordHash = passwordHash;
+    }
+
+    public void setPasswordSalt(String passwordSalt) {
+        this.passwordSalt = passwordSalt;
     }
 
     public void setFirstName(String firstName) {

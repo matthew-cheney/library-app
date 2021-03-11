@@ -12,13 +12,14 @@ import DataAccess.DAO.MySql.MySqlItemDAO;
 import Entities.Item;
 import Request.AddItemRequest;
 import Response.AddItemResponse;
+import TestUtils.BaseTest;
 import TestUtils.TestConfig;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class AddItemServiceTest {
+public class AddItemServiceTest extends BaseTest {
 
     private AddItemService service;
     private MySqlItemDAO dao;
@@ -48,7 +49,7 @@ public class AddItemServiceTest {
     @BeforeEach
     public void setUpTests() {
         dao = Mockito.spy(MySqlItemDAO.class);
-        Mockito.when(dao.getConnectionPool()).thenReturn(TestConfig.CONNECTION_POOL);
+        Mockito.when(dao.getConnectionPool()).thenReturn(CONNECTION_POOL);
 
         service = Mockito.spy(AddItemService.class);
         Mockito.when(service.getItemDAO()).thenReturn(dao);

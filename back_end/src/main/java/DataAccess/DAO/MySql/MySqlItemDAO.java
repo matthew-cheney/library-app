@@ -15,6 +15,8 @@ import java.util.List;
 
 public class MySqlItemDAO extends BaseDAO implements IItemDAO {
 
+    // region Get
+
     @Override
     public Item getItemById(String id) throws DatabaseException {
         Connection connection = getConnectionPool().getConnection();
@@ -72,7 +74,7 @@ public class MySqlItemDAO extends BaseDAO implements IItemDAO {
         ResultSet resultSet;
         String sqlCommand = "SELECT * FROM Items WHERE OwnerId = ? "
                 + "ORDER BY Category, Title "
-                + "OFFSET " + offset + " ROWS FETCH NEXT " + Constants.BATCH_SIZE + " ROWS ONLY";
+                + "LIMIT " + offset + ", " + Constants.BATCH_SIZE;
 
         try (PreparedStatement statement = connection.prepareStatement(sqlCommand)) {
             statement.setString(1, ownerId);
@@ -113,6 +115,68 @@ public class MySqlItemDAO extends BaseDAO implements IItemDAO {
     }
 
     @Override
+    public List<Item> getItemsMatchingCriteria(String searchCriteria, int offset) throws DatabaseException {
+        Connection connection = getConnectionPool().getConnection();
+
+        boolean success = false;
+        ResultSet resultSet;
+        String sqlCommand = "SELECT * FROM Items WHERE "
+                + "Title LIKE ? OR "
+                + "Description LIKE ? OR "
+                + "NumPlayers LIKE ? OR "
+                + "TimeToPlayInMins LIKE ? OR "
+                + "ReleaseYear LIKE ? OR "
+                + "Genre LIKE ? OR "
+                + "ItemFormat LIKE ? OR "
+                + "Author LIKE ? "
+                + "ORDER BY Category, Title "
+                + "LIMIT " + offset + ", " + Constants.BATCH_SIZE;
+
+        try (PreparedStatement statement = connection.prepareStatement(sqlCommand)) {
+            for (int i = 1; i <= 8; i++) {
+                statement.setString(i, searchCriteria);
+            }
+
+            resultSet = statement.executeQuery();
+            List<Item> items = new ArrayList<>();
+            while (resultSet.next()) {
+                Item item = new Item(
+                        resultSet.getString(1),
+                        resultSet.getString(2),
+                        resultSet.getString(3),
+                        resultSet.getString(4),
+                        resultSet.getBoolean(5),
+                        resultSet.getString(6),
+                        resultSet.getString(7),
+                        resultSet.getString(8),
+                        resultSet.getInt(9),
+                        resultSet.getInt(10),
+                        resultSet.getInt(11),
+                        resultSet.getString(12),
+                        resultSet.getString(13),
+                        resultSet.getString(14)
+                );
+                items.add(item);
+            }
+
+            success = true;
+            return items;
+        }
+        catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+            ex.printStackTrace();
+            throw new DatabaseException(ex.getErrorCode(), ex.getMessage());
+        }
+        finally {
+            getConnectionPool().freeConnection(connection, success);
+        }
+    }
+
+    // endregion
+
+    // region Add
+
+    @Override
     public boolean addItem(Item item) throws DatabaseException {
         Connection connection = getConnectionPool().getConnection();
 
@@ -150,6 +214,10 @@ public class MySqlItemDAO extends BaseDAO implements IItemDAO {
             getConnectionPool().freeConnection(connection, success);
         }
     }
+
+    // endregion
+
+    // region Update
 
     @Override
     public boolean updateItem(String id, Item item) throws DatabaseException {
@@ -204,6 +272,10 @@ public class MySqlItemDAO extends BaseDAO implements IItemDAO {
         }
     }
 
+    // endregion
+
+    // region Delete
+
     @Override
     public boolean deleteItem(String id) throws DatabaseException {
         Connection connection = getConnectionPool().getConnection();
@@ -229,4 +301,31 @@ public class MySqlItemDAO extends BaseDAO implements IItemDAO {
             getConnectionPool().freeConnection(connection, success);
         }
     }
+
+    @Override
+    public void clearItemsTable() {
+        String deleteTableCommand = "DROP TABLE Items";
+        String createTableCommand = "CREATE TABLE Items (\n" +
+                                        "\tId VARCHAR(36) NOT NULL,\n" +
+                                        "\tTitle VARCHAR(50) NOT NULL,\n" +
+                                        "\tCategory VARCHAR(25) NOT NULL,\n" +
+                                        "\tDateCreated VARCHAR(30) NOT NULL,\n" +
+                                        "\tAvailable BOOL NOT NULL,\n" +
+                                        "\tOwnerId VARCHAR(36) NOT NULL,\n" +
+                                        "\tImageUrl VARCHAR(50),\n" +
+                                        "\tDescription VARCHAR(255),\n" +
+                                        "\tNumPlayers INT,\n" +
+                                        "\tTimeToPlayInMins INT,\n" +
+                                        "\tReleaseYear INT,\n" +
+                                        "\tGenre VARCHAR(50),\n" +
+                                        "\tItemFormat VARCHAR(25),\n" +
+                                        "\tAuthor VARCHAR(50),\n" +
+                                        "\tPRIMARY KEY (Id),\n" +
+                                        "\tFOREIGN KEY (OwnerId) REFERENCES Users(Id)\n" +
+                                    ");";
+
+        remakeTable(deleteTableCommand, createTableCommand);
+    }
+
+    // endregion
 }
