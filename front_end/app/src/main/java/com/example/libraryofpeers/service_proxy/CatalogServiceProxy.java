@@ -17,6 +17,7 @@ public class CatalogServiceProxy implements IGetCatalogService {
     private List<Item> getRandomItems() {
         List<Item> resList = new ArrayList<>();
         resList.add(new Item("42", "War and Peace", "book", "Mar 4 2021", true, "_matvei", "https://image.flaticon.com/icons/png/512/130/130304.png", "An exciting Russian book", 0, 0, 1850, "literature", "print", "Leo Tolstoy"));
+        resList.add(new Item("43", "Anna Karenina", "book", "Mar 11 2021", true, "_matvei", "https://image.flaticon.com/icons/png/512/130/130304.png", "An exciting Russian book", 0, 0, 1850, "literature", "print", "Leo Tolstoy"));
         return resList;
         }
 }
