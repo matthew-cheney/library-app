@@ -7,10 +7,15 @@ import org.junit.Test;
 import java.io.IOException;
 import java.util.UUID;
 
+import Entities.Item;
 import Entities.User;
+import Request.AddItemRequest;
+import Request.EditItemRequest;
 import Request.EditUserRequest;
 import Request.LoginRequest;
 import Request.RegisterRequest;
+import Response.AddItemResponse;
+import Response.EditItemResponse;
 import Response.EditUserResponse;
 import Response.LoginResponse;
 import Response.RegisterResponse;
@@ -22,6 +27,9 @@ public class ServerTest {
     private static final String REGISTER_URL = "/register";
     private static final String LOGIN_URL = "/login";
     private static final String EDIT_USER_URL = "/edituser";
+    private static final String ADD_ITEM_URL = "/additem";
+    private static final String EDIT_ITEM_URL = "/edititem";
+
 
     private RegisterRequest request;
 
@@ -70,5 +78,65 @@ public class ServerTest {
         assertTrue(editUserResponse.getMessage(), editUserResponse.isSuccess());
         LoginResponse loginResponse2 = serverFacade.login(new LoginRequest(request.getUsername(), request.getPassword()), LOGIN_URL);
         assertEquals(update, loginResponse2.getUser());
+    }
+
+    @Test
+    public void testAddItem() throws IOException {
+        RegisterResponse response = serverFacade.register(request, REGISTER_URL);
+        assertTrue(response.isSuccess());
+        LoginResponse loginResponse = serverFacade.login(new LoginRequest(request.getUsername(), request.getPassword()), LOGIN_URL);
+        assertTrue(loginResponse.isSuccess());
+        User user = loginResponse.getUser();
+        AddItemRequest addItemRequest = new AddItemRequest(
+                "testItem",
+                "Movies",
+                true,
+                user.getId(),
+                "testitem.com/pic.jpg",
+                "a test item",
+                null,
+                null
+        );
+        AddItemResponse addItemResponse = serverFacade.addItem(addItemRequest, ADD_ITEM_URL);
+        assertTrue(addItemResponse.getMessage(), addItemResponse.isSuccess());
+    }
+
+    @Test
+    public void testEditItem() throws IOException {
+        RegisterResponse response = serverFacade.register(request, REGISTER_URL);
+        assertTrue(response.isSuccess());
+        LoginResponse loginResponse = serverFacade.login(new LoginRequest(request.getUsername(), request.getPassword()), LOGIN_URL);
+        assertTrue(loginResponse.isSuccess());
+        User user = loginResponse.getUser();
+        AddItemRequest addItemRequest = new AddItemRequest(
+                "testItem",
+                "Movies",
+                true,
+                user.getId(),
+                "testitem.com/pic.jpg",
+                "a test item",
+                null,
+                null
+        );
+        AddItemResponse addItemResponse = serverFacade.addItem(addItemRequest, ADD_ITEM_URL);
+        assertTrue(addItemResponse.getMessage(), addItemResponse.isSuccess());
+        EditItemRequest editItemRequest = new EditItemRequest(new Item(
+                "54524f9f-2885-40bd-8a97-48c4967ec42b",
+                "testItem",
+                "Movies",
+                "date created",
+                true,
+                user.getId(),
+                "testitem.com/pic.jpg",
+                UUID.randomUUID().toString(),
+                null,
+                null,
+                null,
+                "comedy",
+                "DVD",
+                null
+        ));
+        EditItemResponse editItemResponse = serverFacade.editItem(editItemRequest, EDIT_ITEM_URL);
+        assertTrue(editItemResponse.getMessage(),editItemResponse.isSuccess());
     }
 }
