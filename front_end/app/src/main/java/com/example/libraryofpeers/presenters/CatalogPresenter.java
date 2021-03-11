@@ -4,7 +4,7 @@ import android.os.Build;
 
 import androidx.annotation.RequiresApi;
 
-import com.example.libraryofpeers.service_proxy.CatalogServiceProxy;
+import com.example.libraryofpeers.service_proxy.GetCatalogServiceProxy;
 
 import java.io.IOException;
 
@@ -25,12 +25,12 @@ public class CatalogPresenter {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public CatalogResponse getCatalog(CatalogRequest request) throws IOException {
-        CatalogServiceProxy CatalogService = getCatalogService();
+        GetCatalogServiceProxy CatalogService = getCatalogService();
         CatalogResponse response = CatalogService.getCatalog(request);
         return response;
     }
 
-    CatalogServiceProxy getCatalogService() {
-        return new CatalogServiceProxy();
+    GetCatalogServiceProxy getCatalogService() {
+        return new GetCatalogServiceProxy();
     }
 }

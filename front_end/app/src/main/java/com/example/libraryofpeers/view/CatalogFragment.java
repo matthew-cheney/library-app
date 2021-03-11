@@ -177,10 +177,10 @@ public class CatalogFragment extends Fragment implements CatalogPresenter.View {
 
         @Override
         public void catalogRetrieved(CatalogResponse CatalogResponse) {
-            List<Item> items = CatalogResponse.getCatalog();
+            List<Item> items = CatalogResponse.getItems();
 
             lastItem = (items.size() > 0) ? items.get(items.size() -1) : null;
-            hasMorePages = CatalogResponse.getHasMorePages();
+            hasMorePages = true;
 
             isLoading = false;
             removeLoadingFooter();
