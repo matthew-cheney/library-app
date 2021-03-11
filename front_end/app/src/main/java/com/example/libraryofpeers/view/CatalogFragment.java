@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.libraryofpeers.R;
 import com.example.libraryofpeers.async_tasks.CatalogTask;
 import com.example.libraryofpeers.presenters.CatalogPresenter;
+import com.example.libraryofpeers.service_proxy.LoginServiceProxy;
 
 //import org.jetbrains.annotations.NotNull;
 
@@ -42,6 +43,8 @@ public class CatalogFragment extends Fragment implements CatalogPresenter.View {
 
     private User user;
     private CatalogPresenter presenter;
+
+    private int itemsLoaded = 0;
 
     private CatalogFragment.CatalogRecyclerViewAdapter CatalogRecyclerViewAdapter;
 
@@ -168,7 +171,7 @@ public class CatalogFragment extends Fragment implements CatalogPresenter.View {
             addLoadingFooter();
 
             CatalogTask getCatalogTask = new CatalogTask(presenter, this);
-            CatalogRequest request = new CatalogRequest();
+            CatalogRequest request = new CatalogRequest(LoginServiceProxy.getInstance().getCurrentUser().getId(), itemsLoaded);  // Eventually this will track how many items loaded so far
 //            if (lastItem != null) {
 //                request.setLastItemInCatalogId(lastItem.getId());
 //            }
@@ -181,6 +184,8 @@ public class CatalogFragment extends Fragment implements CatalogPresenter.View {
 
             lastItem = (items.size() > 0) ? items.get(items.size() -1) : null;
             hasMorePages = true;
+
+            itemsLoaded += items.size();
 
             isLoading = false;
             removeLoadingFooter();
