@@ -58,18 +58,17 @@ public class ServerTest {
     public void testEditProfile() throws IOException {
         RegisterResponse response = serverFacade.register(request, REGISTER_URL);
         assertTrue(response.isSuccess());
-        User update = new User(
-                request.getUsername(),
-                request.getPassword(),
-                "updatedFirstName",
-                "updatedLastName",
-                "updatedEmail",
-                "updatedPhone",
-                "updatedURL"
-        );
+        // Login to get the user
+        LoginResponse loginResponse = serverFacade.login(new LoginRequest(request.getUsername(), request.getPassword()), LOGIN_URL);
+        assertTrue(loginResponse.isSuccess());
+        assertEquals(request.getUsername(), loginResponse.getUser().getUsername());
+        // Change the user a bit
+        User update = loginResponse.getUser();
+        update.setPhoneNumber("updatedPhone");
+        update.setEmail("updatedEmail");
         EditUserResponse editUserResponse = serverFacade.editUser(new EditUserRequest(update), EDIT_USER_URL);
         assertTrue(editUserResponse.getMessage(), editUserResponse.isSuccess());
-        LoginResponse loginResponse = serverFacade.login(new LoginRequest(request.getUsername(), request.getPassword()), LOGIN_URL);
-        assertEquals(update, loginResponse.getUser());
+        LoginResponse loginResponse2 = serverFacade.login(new LoginRequest(request.getUsername(), request.getPassword()), LOGIN_URL);
+        assertEquals(update, loginResponse2.getUser());
     }
 }
