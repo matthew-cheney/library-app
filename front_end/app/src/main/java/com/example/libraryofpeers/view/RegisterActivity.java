@@ -65,6 +65,7 @@ public class RegisterActivity extends AppCompatActivity implements RegisterPrese
 
     @Override
     public void onRegisterFailure(RegisterResponse registerResponse) {
+        System.out.println(registerResponse.getMessage());
         Log.e("", "Error with Register");
         Toast.makeText(this, "Register failed. Try again!", Toast.LENGTH_LONG).show();
     }
