@@ -1,5 +1,6 @@
 package com.example.libraryofpeers.view.utils;
 
+import android.content.Context;
 import android.text.SpannableString;
 import android.text.method.LinkMovementMethod;
 import android.widget.ImageView;
@@ -16,7 +17,11 @@ public class ItemBindingUtils {
     public static String movieUrl = "https://cheneycreations.com/hairballs/cat2.png";
     public static String boardGameUrl = "https://cheneycreations.com/hairballs/cat3.png";
 
-    public static void bindItemToViews(Item item, TextView itemTitle, TextView itemSubtitle, ImageView itemImage) {
+    public static String bookUri = "@drawable/book";
+    public static String movieUri = "@drawable/movie";
+    public static String boardGameUri = "@drawable/board_game";
+
+    public static void bindItemToViews(Item item, TextView itemTitle, TextView itemSubtitle, ImageView itemImage, Context context) {
         itemTitle.setText(item.getTitle());
 
         if (item.getCategory() == null) {
@@ -25,15 +30,15 @@ public class ItemBindingUtils {
 
         switch (item.getCategory()) {
             case "BOOK":
-                setImageViewToUrl(itemImage, bookUrl);
+                setImageToDrawable(itemImage, bookUri, context);
                 itemSubtitle.setText(item.getCategory());
                 break;
             case "MOVIE":
-                setImageViewToUrl(itemImage, movieUrl);
+                setImageToDrawable(itemImage, movieUri, context);
                 itemSubtitle.setText(item.getCategory());
                 break;
             case "BOARD_GAME":
-                setImageViewToUrl(itemImage, boardGameUrl);
+                setImageToDrawable(itemImage, boardGameUri, context);
                 itemSubtitle.setText(item.getCategory());
                 break;
             default:

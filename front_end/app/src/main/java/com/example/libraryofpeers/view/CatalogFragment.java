@@ -101,7 +101,7 @@ public class CatalogFragment extends Fragment implements CatalogPresenter.View {
         }
 
         void bindItem(Item item) {
-            bindItemToViews(item, itemTitle, itemCategory, itemImage);
+            bindItemToViews(item, itemTitle, itemCategory, itemImage, getContext());
         }
     }
 
@@ -125,14 +125,15 @@ public class CatalogFragment extends Fragment implements CatalogPresenter.View {
         }
 
         void addItem(Item item) {
+            if (item == null)
+                return;
             items.add(item);
             this.notifyItemInserted(items.size() - 1);
         }
 
-        void removeItem(Item item) {
-//            int position = items.indexOf(item);
-//            items.remove(position);
-//            this.notifyItemRemoved(position);
+        void removeItem(int position) {
+            items.remove(position);
+            this.notifyItemRemoved(position);
         }
 
         @NonNull
@@ -206,7 +207,7 @@ public class CatalogFragment extends Fragment implements CatalogPresenter.View {
         }
 
         private void removeLoadingFooter() {
-            removeItem(items.get(items.size() - 1));
+            removeItem(items.size() - 1);
         }
     }
 
