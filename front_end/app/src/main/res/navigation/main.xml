@@ -15,11 +15,10 @@
         android:id="@+id/menuProfile"
         android:name="com.example.libraryofpeers.view.ProfileFragment"
         android:label="Profile"
-        tools:layout="@layout/fragment_profile" />
-<!--    <fragment-->
-<!--        android:id="@+id/menuFindFriend"-->
-<!--        android:name="academy.learnprogramming.temp.FindFriendFragment"-->
-<!--        android:label="Find Friend"-->
-<!--        tools:layout="@layout/fragment_find_friend" />-->
+        tools:layout="@layout/fragment_profile" >
+        <action
+            android:id="@+id/action_menuProfile_to_menuHome"
+            app:destination="@id/menuHome" />
+    </fragment>
 
 </navigation>
