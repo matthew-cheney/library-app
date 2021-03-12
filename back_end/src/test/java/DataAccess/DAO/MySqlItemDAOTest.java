@@ -140,8 +140,8 @@ public class MySqlItemDAOTest extends BaseTest {
     public void getItemsMatchingCriteria_Success() {
         try {
             DatabaseFiller.addUnitTestItems(boardGame.getOwnerId(), 25, dao);
-            List<Item> items = dao.getItemsMatchingCriteria("com", TestConfig.TEST_OFFSET);
-            assertEquals(10, items.size());
+            List<Item> items = dao.getItemsMatchingCriteria(null, "com", TestConfig.TEST_OFFSET);
+            assertEquals(9, items.size());
         }
         catch (DatabaseException ex) {
             System.out.println(ex.getMessage());
@@ -155,7 +155,37 @@ public class MySqlItemDAOTest extends BaseTest {
     public void getItemsMatchingCriteria_Failure() {
         try {
             DatabaseFiller.addUnitTestItems(boardGame.getOwnerId(), 25, dao);
-            List<Item> items = dao.getItemsMatchingCriteria("ERIN", TestConfig.TEST_OFFSET);
+            List<Item> items = dao.getItemsMatchingCriteria(null, "ERIN", TestConfig.TEST_OFFSET);
+            assertEquals(0, items.size());
+        }
+        catch (DatabaseException ex) {
+            System.out.println(ex.getMessage());
+        }
+        finally {
+            dao.clearItemsTable();
+        }
+    }
+
+    @Test
+    public void getItemsMatchingCriteriaWithOwnerId_Success() {
+        try {
+            DatabaseFiller.addUnitTestItems(boardGame.getOwnerId(), 25, dao);
+            List<Item> items = dao.getItemsMatchingCriteria(boardGame.getOwnerId(), "com", TestConfig.TEST_OFFSET);
+            assertEquals(9, items.size());
+        }
+        catch (DatabaseException ex) {
+            System.out.println(ex.getMessage());
+        }
+        finally {
+            dao.clearItemsTable();
+        }
+    }
+
+    @Test
+    public void getItemsMatchingCriteriaWithOwnerId_Failure() {
+        try {
+            DatabaseFiller.addUnitTestItems(boardGame.getOwnerId(), 25, dao);
+            List<Item> items = dao.getItemsMatchingCriteria("BUBBLES", "com", TestConfig.TEST_OFFSET);
             assertEquals(0, items.size());
         }
         catch (DatabaseException ex) {
