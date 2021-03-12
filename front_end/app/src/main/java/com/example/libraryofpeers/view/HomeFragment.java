@@ -1,8 +1,11 @@
 package com.example.libraryofpeers.view;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -16,13 +19,25 @@ import android.widget.Toast;
 
 import com.example.libraryofpeers.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.tabs.TabLayout;
 
 import androidx.fragment.app.Fragment;
+import androidx.viewpager.widget.ViewPager;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class HomeFragment extends Fragment {
+
+    // TODO: Rename parameter arguments, choose names that match
+    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+    private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_PARAM2 = "param2";
+    private SectionsPagerAdapter sectionsPagerAdapter;
+
+    // TODO: Rename and change types of parameters
+    private String mParam1;
+    private String mParam2;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -31,6 +46,13 @@ public class HomeFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            mParam1 = getArguments().getString(ARG_PARAM1);
+            mParam2 = getArguments().getString(ARG_PARAM2);
+        }
+
+
+
 
     }
 
@@ -56,5 +78,16 @@ public class HomeFragment extends Fragment {
         Intent mainIntent = new Intent(getActivity(), LoginActivity.class);
         startActivity(mainIntent);
         Toast.makeText(getContext(), "Add new item!", Toast.LENGTH_LONG);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        sectionsPagerAdapter = new SectionsPagerAdapter(getContext(), this.getFragmentManager(), null, SectionsPagerAdapter.DEFAULT_TAB_TITLES);
+        ViewPager viewPager = getView().findViewById(R.id.view_pager);
+        viewPager.setAdapter(sectionsPagerAdapter);
+//        TabLayout tabs = getView().findViewById(R.id.tabs);
+//        tabs.setupWithViewPager(viewPager);
+
     }
 }
