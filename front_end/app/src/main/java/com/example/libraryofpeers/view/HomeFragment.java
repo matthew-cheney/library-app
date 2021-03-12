@@ -53,8 +53,7 @@ public class HomeFragment extends Fragment {
 
     public void AddItem() {
         System.out.println("Adding an item");
-        Intent mainIntent = new Intent(getActivity(), LoginActivity.class);
-        startActivity(mainIntent);
-        Toast.makeText(getContext(), "Add new item!", Toast.LENGTH_LONG);
+        Intent intent = new Intent(getActivity(), NewItemActivity.class);
+        startActivity(intent);
     }
 }
