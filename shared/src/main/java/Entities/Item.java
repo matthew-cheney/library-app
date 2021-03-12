@@ -1,5 +1,6 @@
 package Entities;
 
+import Config.Constants;
 import Utilities.EntityUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -10,9 +11,7 @@ import java.util.Date;
 public class Item {
 
     // region Properties
-
-    public transient final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss");
-
+  
     // region Required
 
     private String id;
@@ -69,7 +68,7 @@ public class Item {
         setId(EntityUtils.generateId());
         setTitle(title);
         setCategory(category);
-        setDateCreated(DATE_FORMAT.format(new Date()));
+        setDateCreated(Constants.ITEM_DATE_FORMAT.format(new Date()));
         setAvailable(available);
         setOwnerId(ownerId);
         setImageUrl(imageUrl);
@@ -268,6 +267,14 @@ public class Item {
                 EntityUtils.checkNullableObjects(this.getGenre(), other.getGenre()) &&
                 EntityUtils.checkNullableObjects(this.getItemFormat(), other.getItemFormat()) &&
                 EntityUtils.checkNullableObjects(this.getAuthor(), other.getAuthor());
+    }
+
+    // endregion
+
+    // region FrontEndUtils
+
+    public static Item getNullItem() {
+        return new Item(null, null, false, null, null, null, 0, 0, 0, null, null, null);
     }
 
     // endregion

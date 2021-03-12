@@ -73,7 +73,7 @@ public class MySqlItemDAO extends BaseDAO implements IItemDAO {
         boolean success = false;
         ResultSet resultSet;
         String sqlCommand = "SELECT * FROM Items WHERE OwnerId = ? "
-                + "ORDER BY Category, Title "
+                + "ORDER BY Title "
                 + "LIMIT " + offset + ", " + Constants.BATCH_SIZE;
 
         try (PreparedStatement statement = connection.prepareStatement(sqlCommand)) {
@@ -129,7 +129,7 @@ public class MySqlItemDAO extends BaseDAO implements IItemDAO {
                 + "Genre LIKE ? OR "
                 + "ItemFormat LIKE ? OR "
                 + "Author LIKE ? "
-                + "ORDER BY Category, Title "
+                + "ORDER BY Title "
                 + "LIMIT " + offset + ", " + Constants.BATCH_SIZE;
 
         try (PreparedStatement statement = connection.prepareStatement(sqlCommand)) {

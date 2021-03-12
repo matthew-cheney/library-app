@@ -18,6 +18,7 @@ public class CatalogResponse extends BaseResponse {
 
     public CatalogResponse(boolean success, String message) {
         super(success, message);
+
     }
 
     public List<Item> getItems() {

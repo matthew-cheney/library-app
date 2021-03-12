@@ -8,6 +8,7 @@ import org.mockito.Mockito;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import Config.Constants;
 import DataAccess.DAO.DatabaseException;
 import DataAccess.DAO.MySql.MySqlItemDAO;
 import Entities.Item;
@@ -24,8 +25,7 @@ public class EditItemServiceTest extends BaseTest {
 
     private EditItemService service;
     private MySqlItemDAO dao;
-    SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss");
-    String currDate = dateFormat.format(new Date());
+    String currDate = Constants.ITEM_DATE_FORMAT.format(new Date());
     Item boardGame = new Item(
             "TEST_BOARD_GAME",
             "Pandemic",
