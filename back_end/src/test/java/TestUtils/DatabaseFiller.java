@@ -195,21 +195,36 @@ public class DatabaseFiller {
                 Scanner lineScanner = new Scanner(line);
                 lineScanner.useDelimiter(",");
 
+                String id = lineScanner.next();
+                String title = lineScanner.next();
+                String category = getCategory();
+                String dateCreated = lineScanner.next();
+                boolean available = lineScanner.nextBoolean();
+                String ownerId = getOwnerId();
+                String imageUrl = lineScanner.next();
+                String description = lineScanner.next();
+                int numPlayers = lineScanner.nextInt();
+                int timeToPlayInMins = lineScanner.nextInt();
+                int releaseYear = lineScanner.nextInt();
+                String genre = lineScanner.next();
+                String itemFormat = lineScanner.next();
+                String author = lineScanner.next();
+
                 Item item = new Item(
-                        lineScanner.next(),
-                        lineScanner.next(),
-                        getCategory(),
-                        lineScanner.next(),
-                        lineScanner.nextBoolean(),
-                        getOwnerId(),
-                        lineScanner.next(),
-                        lineScanner.next(),
-                        lineScanner.nextInt(),
-                        lineScanner.nextInt(),
-                        lineScanner.nextInt(),
-                        lineScanner.next(),
-                        lineScanner.next(),
-                        lineScanner.next()
+                        id,
+                        title,
+                        category,
+                        dateCreated,
+                        available,
+                        ownerId,
+                        shouldHaveValue() ? imageUrl : null,
+                        shouldHaveValue() ? description : null,
+                        shouldHaveValue() ? numPlayers : null,
+                        shouldHaveValue() ? timeToPlayInMins : null,
+                        shouldHaveValue() ? releaseYear : null,
+                        shouldHaveValue() ? genre : null,
+                        shouldHaveValue() ? itemFormat : null,
+                        shouldHaveValue() ? author : null
                 );
 
                 try {
@@ -252,6 +267,11 @@ public class DatabaseFiller {
 //        int upperBound = 1000;
 //        return String.valueOf(rand.nextInt(upperBound));
         return "11";
+    }
+
+    private boolean shouldHaveValue() {
+        Random rand = new Random();
+        return rand.nextBoolean();
     }
 
     // endregion
