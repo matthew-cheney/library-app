@@ -96,7 +96,7 @@ public class CatalogFragment extends Fragment implements CatalogPresenter.View {
 //            itemName = itemView.findViewById(R.id.userName);
 //            itemAlias = itemView.findViewById(R.id.userAlias);
             itemImage = itemView.findViewById(R.id.ItemImage);
-            itemCategory = itemView.findViewById(R.id.ItemCategory);
+            itemCategory = itemView.findViewById(R.id.ItemSubtitle);
             itemTitle = itemView.findViewById(R.id.ItemTitle);
         }
 

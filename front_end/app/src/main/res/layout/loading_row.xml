@@ -12,5 +12,7 @@
         android:textSize="24sp"
         android:textAlignment="center"
         android:text="@string/loadingData"
+        android:background="@color/main_blue"
+        android:textColor="@color/white"
         android:gravity="center_horizontal" />
 </RelativeLayout>
