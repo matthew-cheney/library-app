@@ -3,6 +3,7 @@ package com.example.libraryofpeers.view.utils;
 import android.content.Context;
 import android.text.SpannableString;
 import android.text.method.LinkMovementMethod;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -31,15 +32,20 @@ public class ItemBindingUtils {
         switch (item.getCategory()) {
             case "BOOK":
                 setImageToDrawable(itemImage, bookUri, context);
-                itemSubtitle.setText(item.getCategory());
+                if (item.getAuthor() != null) {
+                    itemSubtitle.setText(item.getAuthor());
+                    itemSubtitle.setVisibility(View.VISIBLE);
+                } else {
+                    itemSubtitle.setVisibility(View.GONE);
+                }
                 break;
             case "MOVIE":
                 setImageToDrawable(itemImage, movieUri, context);
-                itemSubtitle.setText(item.getCategory());
+                itemSubtitle.setVisibility(View.GONE);
                 break;
             case "BOARD_GAME":
                 setImageToDrawable(itemImage, boardGameUri, context);
-                itemSubtitle.setText(item.getCategory());
+                itemSubtitle.setVisibility(View.GONE);
                 break;
             default:
                 break;
