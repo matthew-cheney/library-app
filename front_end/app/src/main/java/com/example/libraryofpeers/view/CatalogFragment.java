@@ -185,7 +185,7 @@ public class CatalogFragment extends Fragment implements CatalogPresenter.View {
             List<Item> items = CatalogResponse.getItems();
 
             lastItem = (items.size() > 0) ? items.get(items.size() -1) : null;
-            hasMorePages = true;
+            hasMorePages = items.size() == 10;
 
             itemsLoaded += items.size();
 
