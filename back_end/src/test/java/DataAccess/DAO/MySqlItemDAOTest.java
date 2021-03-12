@@ -141,7 +141,7 @@ public class MySqlItemDAOTest extends BaseTest {
         try {
             DatabaseFiller.addUnitTestItems(boardGame.getOwnerId(), 25, dao);
             List<Item> items = dao.getItemsMatchingCriteria("com", TestConfig.TEST_OFFSET);
-            assertEquals(10, items.size());
+            assertEquals(9, items.size());
         }
         catch (DatabaseException ex) {
             System.out.println(ex.getMessage());
