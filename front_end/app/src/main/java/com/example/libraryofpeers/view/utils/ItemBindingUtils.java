@@ -7,12 +7,15 @@ import android.widget.TextView;
 
 import Entities.Item;
 
+import static com.example.libraryofpeers.view.utils.FetchImage.setImageViewToUrl;
+
 public class ItemBindingUtils {
 
-    public static void bindItemToViews(Item item, TextView itemTitle) {
-//        itemImage.setImageDrawable(ImageUtils.drawableFromByteArray(item.getAuthor().getImageBytes()));
+    public static void bindItemToViews(Item item, TextView itemTitle, TextView itemCategory, ImageView itemImage) {
+        setImageViewToUrl(itemImage, item.getImageUrl());
 //        itemAlias.setText(item.getAuthor().getAlias());
         itemTitle.setText(item.getTitle());
+        itemCategory.setText(item.getCategory());
 //        itemContent.setText(parseBody(item.getBody()));
 //        itemContent.setMovementMethod(LinkMovementMethod.getInstance());
 //        itemTimestamp.setText(item.getDateTimePosted().toString());

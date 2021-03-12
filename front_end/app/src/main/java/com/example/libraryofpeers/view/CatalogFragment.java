@@ -87,19 +87,21 @@ public class CatalogFragment extends Fragment implements CatalogPresenter.View {
 //        private final TextView itemName;
 //        private final TextView itemContent;
         private final TextView itemTitle;
+        private final TextView itemCategory;
+        private final ImageView itemImage;
 
         CatalogHolder(@NonNull View itemView) {
             super(itemView);
 
 //            itemName = itemView.findViewById(R.id.userName);
 //            itemAlias = itemView.findViewById(R.id.userAlias);
-//            itemImage = itemView.findViewById(R.id.userImage);
-//            itemContent = itemView.findViewById(R.id.ItemContent);
+            itemImage = itemView.findViewById(R.id.ItemImage);
+            itemCategory = itemView.findViewById(R.id.ItemCategory);
             itemTitle = itemView.findViewById(R.id.ItemTitle);
         }
 
         void bindItem(Item item) {
-            bindItemToViews(item, itemTitle);
+            bindItemToViews(item, itemTitle, itemCategory, itemImage);
         }
     }
 
