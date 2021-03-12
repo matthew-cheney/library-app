@@ -1,6 +1,6 @@
 package DataAccess.DAO;
 
-import DataAccess.Connection.ConnectionPool;
+import Config.Constants;
 import DataAccess.DAO.MySql.MySqlItemDAO;
 import Entities.Item;
 import TestUtils.BaseTest;
@@ -12,27 +12,19 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import java.io.File;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Scanner;
-
-import javax.xml.crypto.Data;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class MySqlItemDAOTest extends BaseTest {
 
     MySqlItemDAO dao;
-    SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss");
     Item boardGame = new Item(
             "TEST_BOARD_GAME",
             "Pandemic",
             "BOARD_GAME",
-            dateFormat.format(new Date()),
+            Constants.ITEM_DATE_FORMAT.format(new Date()),
             true,
             "TEST",
             "www.google.com",
@@ -48,7 +40,7 @@ public class MySqlItemDAOTest extends BaseTest {
             "TEST_MOVIE",
             "The Lord of the Rings 1",
             "MOVIE",
-            dateFormat.format(new Date()),
+            Constants.ITEM_DATE_FORMAT.format(new Date()),
             true,
             "TEST_OTHER",
             "www.google.com",
@@ -64,7 +56,7 @@ public class MySqlItemDAOTest extends BaseTest {
             "TEST_BOOK",
             "Harry Potter and the Sorcerer's Stone",
             "BOOK",
-            dateFormat.format(new Date()),
+            Constants.ITEM_DATE_FORMAT.format(new Date()),
             true,
             "TEST",
             "www.google.com",

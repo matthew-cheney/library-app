@@ -8,6 +8,7 @@ import org.mockito.Mockito;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import Config.Constants;
 import DataAccess.DAO.DatabaseException;
 import DataAccess.DAO.MySql.MySqlItemDAO;
 import Entities.Item;
@@ -24,12 +25,11 @@ public class DeleteItemServiceTest extends BaseTest {
 
     private DeleteItemService service;
     private MySqlItemDAO dao;
-    SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss");
     Item boardGame = new Item(
             "TEST_BOARD_GAME",
             "Pandemic",
             "BOARD_GAME",
-            dateFormat.format(new Date()),
+            Constants.ITEM_DATE_FORMAT.format(new Date()),
             true,
             "TEST",
             "www.google.com",

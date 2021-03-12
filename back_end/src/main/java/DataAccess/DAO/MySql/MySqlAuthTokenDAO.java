@@ -7,8 +7,6 @@ import java.text.SimpleDateFormat;
 
 public class MySqlAuthTokenDAO implements IAuthTokenDAO {
 
-    public final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("YYYY-MM-DD HH-MM-SS");
-
     @Override
     public boolean createAuthToken(String userId) throws DatabaseException {
         return false;
