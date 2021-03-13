@@ -5,6 +5,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.util.Random;
 import java.util.UUID;
 
 import Entities.Item;
@@ -150,8 +151,9 @@ public class ServerTest {
         LoginResponse loginResponse = serverFacade.login(new LoginRequest(request.getUsername(), request.getPassword()), LOGIN_URL);
         assertTrue(loginResponse.isSuccess());
         User user = loginResponse.getUser();
+        String itemName = UUID.randomUUID().toString();
         AddItemRequest addItemRequest = new AddItemRequest(
-                "testItem",
+                itemName,
                 "Movies",
                 true,
                 user.getId(),
@@ -166,6 +168,6 @@ public class ServerTest {
         CatalogRequest request = new CatalogRequest(user.getId(), 0);
         CatalogResponse response1 = serverFacade.getCatalog(request, CATALOG_URL);
         assertEquals(1, response1.getItems().size());
-        assertEquals("testItem", response1.getItems().get(0).getTitle());
+        assertEquals(itemName, response1.getItems().get(0).getTitle());
     }
 }
