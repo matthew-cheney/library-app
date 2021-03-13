@@ -91,10 +91,6 @@ public class AddBookItemFragment extends Fragment implements AddItemTask.AddItem
                     itemFormat,
                     author
             );
-            System.out.println(addItemRequest.getReleaseYear());
-            System.out.println(addItemRequest.getAuthor());
-            System.out.println(addItemRequest.getItemFormat());
-            System.out.println(addItemRequest.getCategory());
 
             AddItemPresenter presenter = new AddItemPresenter();
             AddItemTask task = new AddItemTask(this, presenter);
@@ -104,7 +100,6 @@ public class AddBookItemFragment extends Fragment implements AddItemTask.AddItem
 
     @Override
     public void onAddSuccess(AddItemResponse response) {
-        System.out.println(response.isSuccess());
         System.out.println("Success adding item");
         Toast.makeText(getActivity(), "Item Added!", Toast.LENGTH_LONG).show();
         Intent intent = new Intent(getActivity(), MainActivity.class);
