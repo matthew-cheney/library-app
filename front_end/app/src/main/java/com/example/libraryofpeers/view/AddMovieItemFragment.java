@@ -1,9 +1,11 @@
 package com.example.libraryofpeers.view;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import Entities.User;
 import Request.AddItemRequest;
+import Response.AddItemResponse;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -14,9 +16,11 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.libraryofpeers.R;
+import com.example.libraryofpeers.async_tasks.AddItemTask;
+import com.example.libraryofpeers.presenters.AddItemPresenter;
 import com.example.libraryofpeers.service_proxy.LoginServiceProxy;
 
-public class AddMovieItemFragment extends Fragment {
+public class AddMovieItemFragment extends Fragment implements AddItemTask.AddItemObserver {
     View view;
     EditText titleEditText;
     EditText genreEditText;
@@ -83,7 +87,23 @@ public class AddMovieItemFragment extends Fragment {
                     itemFormat
             );
 
-
+            AddItemPresenter presenter = new AddItemPresenter();
+            AddItemTask task = new AddItemTask(this, presenter);
+            task.execute(addItemRequest);
         }
+    }
+
+    @Override
+    public void onAddSuccess(AddItemResponse response) {
+        System.out.println("Success adding item");
+        Toast.makeText(getActivity(), "Item Added!", Toast.LENGTH_LONG).show();
+        Intent intent = new Intent(getActivity(), MainActivity.class);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onAddFailure(AddItemResponse response) {
+        System.out.println("Failed to add item");
+        Toast.makeText(getActivity(), "Failed To Add Item", Toast.LENGTH_LONG).show();
     }
 }

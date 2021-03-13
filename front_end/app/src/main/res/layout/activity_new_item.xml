@@ -44,15 +44,19 @@
 
         <Spinner
             android:layout_width="180dp"
-            android:layout_height="50dp"
-            android:layout_marginTop="65dp"
+            android:layout_height="?attr/dropdownListPreferredItemHeight"            android:layout_marginTop="65dp"
             android:layout_gravity="center_horizontal"
-            android:background="@color/main_orange"
             android:id="@+id/itemDropdownMenu"
             android:spinnerMode="dropdown"
             android:gravity="center"
-            style="@style/SpinnerTheme"
+            android:background="@drawable/spinner_bg"
+            android:dropDownVerticalOffset="?attr/dropdownListPreferredItemHeight"
+            android:dropDownWidth="180dp"
             android:popupBackground="@color/main_orange"
+            android:popupElevation="3dp"
+            android:stateListAnimator="@drawable/spinner_sla"
+            style="@style/Widget.AppCompat.Spinner"
+
             />
 
         <FrameLayout

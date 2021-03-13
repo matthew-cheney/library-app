@@ -5,7 +5,6 @@ import android.os.Bundle;
 
 import Entities.User;
 import Request.AddItemRequest;
-import Request.EditUserRequest;
 import Response.AddItemResponse;
 import androidx.fragment.app.Fragment;
 
@@ -14,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.libraryofpeers.R;
@@ -109,6 +107,6 @@ public class AddBookItemFragment extends Fragment implements AddItemTask.AddItem
     @Override
     public void onAddFailure(AddItemResponse response) {
         System.out.println("Failed to add item");
-        Toast.makeText(getActivity(), "Adding item failed", Toast.LENGTH_LONG).show();
+        Toast.makeText(getActivity(), "Failed To Add Item", Toast.LENGTH_LONG).show();
     }
 }

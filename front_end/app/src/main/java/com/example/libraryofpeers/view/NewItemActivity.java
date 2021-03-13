@@ -3,7 +3,6 @@ package com.example.libraryofpeers.view;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -49,8 +48,8 @@ public class NewItemActivity extends AppCompatActivity {
             }
         });
 
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(NewItemActivity.this, R.layout.new_item, itemNames);
-        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(NewItemActivity.this, R.layout.new_item_selected, itemNames);
+        arrayAdapter.setDropDownViewResource(R.layout.new_item_dropdown);
         spinner.setAdapter(arrayAdapter);
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
