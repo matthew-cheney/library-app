@@ -45,9 +45,6 @@ public class ProfileFragment extends Fragment implements EditProfileTask.EditPro
     EditText passwordEditText;
     User user;
     String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
-    public ProfileFragment() {
-        // Required empty public constructor
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
