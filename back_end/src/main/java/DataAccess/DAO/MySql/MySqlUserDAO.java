@@ -1,7 +1,7 @@
 package DataAccess.DAO.MySql;
 
 import Config.Constants;
-import DataAccess.DAO.Abstract.BaseDAO;
+import DataAccess.DAO.MySql.Abstract.BaseMySqlDAO;
 import DataAccess.DAO.DatabaseException;
 import DataAccess.DAO.Interfaces.IUserDAO;
 import Entities.User;
@@ -11,7 +11,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MySqlUserDAO extends BaseDAO implements IUserDAO {
+public class MySqlUserDAO extends BaseMySqlDAO implements IUserDAO {
 
     // region Get
 

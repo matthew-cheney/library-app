@@ -1,7 +1,7 @@
 package DataAccess.DAO.MySql;
 
 import Config.Constants;
-import DataAccess.DAO.Abstract.BaseDAO;
+import DataAccess.DAO.MySql.Abstract.BaseMySqlDAO;
 import DataAccess.DAO.DatabaseException;
 import DataAccess.DAO.Interfaces.IItemDAO;
 import Entities.Item;
@@ -13,7 +13,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MySqlItemDAO extends BaseDAO implements IItemDAO {
+public class MySqlItemDAO extends BaseMySqlDAO implements IItemDAO {
 
     // region Get
 
