@@ -42,11 +42,15 @@ public class DatabaseFiller {
 //        fillDatabase();
 //    }
 
-    public static void addUnitTestUsers(Integer numUsersRequested, MySqlUserDAO userDAO) {
-        int numUsers = numUsersRequested == null ? 1000 : numUsersRequested;
+    public static void addUnitTestUsers(Integer startingPosition, Integer numUsersRequested, MySqlUserDAO userDAO) {
+        int startingPos = startingPosition == null ? 0 : startingPosition;
+        int numUsers = numUsersRequested == null ? 1000 - startingPos : numUsersRequested;
         try {
             Scanner scanner = new Scanner(new File(CURRENT_DIRECTORY + "USER_UNIT_TEST_DATA.csv"));
             scanner.useDelimiter("\\n");
+            for (int i = 0; i < startingPos; i++) {
+                scanner.next();
+            }
             int counter = 0;
 
             while (scanner.hasNext() && counter < numUsers) {
@@ -83,11 +87,15 @@ public class DatabaseFiller {
         }
     }
 
-    public static void addUnitTestItems(String ownerId, Integer numItemsRequested, MySqlItemDAO itemDAO) {
-        int numItems = numItemsRequested == null ? 1000 : numItemsRequested;
+    public static void addUnitTestItems(String ownerId, Integer startingPosition, Integer numItemsRequested, MySqlItemDAO itemDAO) {
+        int startingPos = startingPosition == null ? 0 : startingPosition;
+        int numItems = numItemsRequested == null ? 1000 - startingPos : numItemsRequested;
         try {
             Scanner scanner = new Scanner(new File(DatabaseFiller.CURRENT_DIRECTORY + "ITEM_UNIT_TEST_DATA.csv"));
             scanner.useDelimiter("\\n");
+            for (int i = 0; i < startingPos; i++) {
+                scanner.next();
+            }
             int counter = 0;
 
             while (scanner.hasNext() && counter < numItems) {

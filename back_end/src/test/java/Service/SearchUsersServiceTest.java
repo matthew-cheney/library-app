@@ -29,7 +29,7 @@ public class SearchUsersServiceTest extends BaseTest {
         service = Mockito.spy(SearchUsersService.class);
         Mockito.when(service.getUserDAO()).thenReturn(dao);
 
-        DatabaseFiller.addUnitTestUsers(25, dao);
+        DatabaseFiller.addUnitTestUsers(0, 25, dao);
     }
 
     @AfterEach

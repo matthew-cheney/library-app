@@ -139,7 +139,7 @@ public class MySqlItemDAOTest extends BaseTest {
     @Test
     public void getItemsMatchingCriteria_Success() {
         try {
-            DatabaseFiller.addUnitTestItems(boardGame.getOwnerId(), 25, dao);
+            DatabaseFiller.addUnitTestItems(boardGame.getOwnerId(), 0, 25, dao);
             List<Item> items = dao.getItemsMatchingCriteria(null, "com", TestConfig.TEST_OFFSET);
             assertEquals(9, items.size());
         }
@@ -154,7 +154,7 @@ public class MySqlItemDAOTest extends BaseTest {
     @Test
     public void getItemsMatchingCriteria_Failure() {
         try {
-            DatabaseFiller.addUnitTestItems(boardGame.getOwnerId(), 25, dao);
+            DatabaseFiller.addUnitTestItems(boardGame.getOwnerId(), 0, 25, dao);
             List<Item> items = dao.getItemsMatchingCriteria(null, "ERIN", TestConfig.TEST_OFFSET);
             assertEquals(0, items.size());
         }
@@ -169,7 +169,7 @@ public class MySqlItemDAOTest extends BaseTest {
     @Test
     public void getItemsMatchingCriteriaWithOwnerId_Success() {
         try {
-            DatabaseFiller.addUnitTestItems(boardGame.getOwnerId(), 25, dao);
+            DatabaseFiller.addUnitTestItems(boardGame.getOwnerId(), 0, 25, dao);
             List<Item> items = dao.getItemsMatchingCriteria(boardGame.getOwnerId(), "com", TestConfig.TEST_OFFSET);
             assertEquals(9, items.size());
         }
@@ -184,7 +184,7 @@ public class MySqlItemDAOTest extends BaseTest {
     @Test
     public void getItemsMatchingCriteriaWithOwnerId_Failure() {
         try {
-            DatabaseFiller.addUnitTestItems(boardGame.getOwnerId(), 25, dao);
+            DatabaseFiller.addUnitTestItems(boardGame.getOwnerId(), 0, 25, dao);
             List<Item> items = dao.getItemsMatchingCriteria("BUBBLES", "com", TestConfig.TEST_OFFSET);
             assertEquals(0, items.size());
         }

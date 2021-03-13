@@ -30,6 +30,18 @@ public class Friendship {
         setUserIdB(userIdB);
     }
 
+    /**
+     * To use when getting a friendship from the database.
+     * @param id
+     * @param userIdA
+     * @param userIdB
+     */
+    public Friendship(String id, String userIdA, String userIdB) {
+        setId(id);
+        setUserIdA(userIdA);
+        setUserIdB(userIdB);
+    }
+
     // endregion
 
     // region Getters
