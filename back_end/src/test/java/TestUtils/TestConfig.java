@@ -1,7 +1,5 @@
 package TestUtils;
 
-import DataAccess.Connection.ConnectionPool;
-
 public class TestConfig {
 
     public static final String TEST_USER = "tadhgcra_loptest";

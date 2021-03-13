@@ -1,7 +1,6 @@
 package DataAccess.DAO;
 
 import DataAccess.DAO.MySql.MySqlUserDAO;
-import Entities.Item;
 import Entities.User;
 import Request.RegisterRequest;
 import Service.RegisterService;

@@ -1,7 +1,6 @@
 package Response;
 
 import Response.Abstract.BaseResponse;
-import Utilities.EntityUtils;
 
 public class RegisterResponse extends BaseResponse {
 

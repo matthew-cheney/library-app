@@ -4,7 +4,6 @@ import java.util.List;
 
 import DataAccess.DAO.DatabaseException;
 import Entities.Item;
-import Entities.User;
 
 public interface IItemDAO {
     Item getItemById(String id) throws DatabaseException;
