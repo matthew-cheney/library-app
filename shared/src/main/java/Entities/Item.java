@@ -11,7 +11,7 @@ import java.util.Date;
 public class Item {
 
     // region Properties
-
+  
     // region Required
 
     private String id;
@@ -267,6 +267,14 @@ public class Item {
                 EntityUtils.checkNullableObjects(this.getGenre(), other.getGenre()) &&
                 EntityUtils.checkNullableObjects(this.getItemFormat(), other.getItemFormat()) &&
                 EntityUtils.checkNullableObjects(this.getAuthor(), other.getAuthor());
+    }
+
+    // endregion
+
+    // region FrontEndUtils
+
+    public static Item getNullItem() {
+        return new Item(null, null, false, null, null, null, 0, 0, 0, null, null, null);
     }
 
     // endregion
