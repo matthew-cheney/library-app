@@ -13,7 +13,7 @@ public class MySqlDAOFactory implements IDAOFactory {
     }
 
     @Override
-    public IItemDAO makeNodeDAO() {
+    public IItemDAO makeItemDAO() {
         return new MySqlItemDAO();
     }
 
