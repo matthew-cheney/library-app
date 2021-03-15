@@ -7,7 +7,6 @@ public class Friendship {
 
     // region Properties
 
-    private String id;
     private String userIdA;
     private String userIdB;
 
@@ -26,19 +25,6 @@ public class Friendship {
      * @param userIdB
      */
     public Friendship(@NotNull String userIdA, @NotNull String userIdB) {
-        setId(EntityUtils.generateId());
-        setUserIdA(userIdA);
-        setUserIdB(userIdB);
-    }
-
-    /**
-     * To use when getting a friendship from the database.
-     * @param id
-     * @param userIdA
-     * @param userIdB
-     */
-    public Friendship(String id, String userIdA, String userIdB) {
-        setId(id);
         setUserIdA(userIdA);
         setUserIdB(userIdB);
     }
@@ -46,10 +32,6 @@ public class Friendship {
     // endregion
 
     // region Getters
-
-    public String getId() {
-        return id;
-    }
 
     public String getSortedUserIdA() {
         return userIdA;
@@ -62,10 +44,6 @@ public class Friendship {
     // endregion
 
     // region Setters
-
-    public void setId(String id) {
-        this.id = id;
-    }
 
     public void setUserIdA(String userIdA) {
         if (this.userIdB != null) {

@@ -1,20 +1,20 @@
 package TestUtils;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
 import DataAccess.DAO.DatabaseException;
+import DataAccess.DAO.Interfaces.IFriendshipDAO;
 import DataAccess.DAO.Interfaces.IItemDAO;
 import DataAccess.DAO.Interfaces.IUserDAO;
+import DataAccess.DAO.MySql.MySqlFriendshipDAO;
 import DataAccess.DAO.MySql.MySqlItemDAO;
 import DataAccess.DAO.MySql.MySqlUserDAO;
+import Entities.Friendship;
 import Entities.Item;
 import Entities.User;
 
@@ -24,18 +24,9 @@ public class DatabaseFiller {
 
     public static final String CURRENT_DIRECTORY = System.getProperty("user.dir") + "/src/test/java/TestUtils/MockDataFiles/";
 
-    private List<User> users;
-    private List<Item> items;
-
     // endregion
 
     // region Public
-
-    @BeforeEach
-    public void setUp() {
-        users = new ArrayList<>();
-        items = new ArrayList<>();
-    }
 
 //    @Test
 //    public void runDBFiller() {
@@ -136,6 +127,19 @@ public class DatabaseFiller {
         }
     }
 
+    public static void addUnitTestFriendships(String userId, Integer numFriendsRequested, MySqlFriendshipDAO friendshipDAO) {
+        int numFriends = numFriendsRequested == null ? 1000 : numFriendsRequested;
+        for (int i = 1; i < numFriends; i++) {
+            Friendship friendship = new Friendship(userId, String.valueOf(i));
+            try {
+                friendshipDAO.addFriendship(friendship);
+            }
+            catch (DatabaseException ex) {
+                System.out.println(ex.getMessage());
+            }
+        }
+    }
+
     // endregion
 
     // region Private
@@ -143,6 +147,7 @@ public class DatabaseFiller {
     private void fillDatabase() {
         addUsers();
         addItems();
+        addFriendships();
     }
 
     // region Table Fillers
@@ -178,8 +183,6 @@ public class DatabaseFiller {
                 catch (DatabaseException ex) {
                     System.out.println(ex.getMessage());
                 }
-
-                users.add(user);
             }
             scanner.close();
         }
@@ -238,13 +241,27 @@ public class DatabaseFiller {
                 catch (DatabaseException ex) {
                     System.out.println(ex.getMessage());
                 }
-
-                items.add(item);
             }
             scanner.close();
         }
         catch (IOException ex) {
             System.out.println(ex.getMessage());
+        }
+    }
+
+    private void addFriendships() {
+        IFriendshipDAO friendshipDAO = new MySqlFriendshipDAO();
+        final int OWNER_ID = 11;
+        final int MAX_FRIENDS = 900;
+
+        for (int i = OWNER_ID + 1; i < MAX_FRIENDS + OWNER_ID; i++) {
+            Friendship friendship = new Friendship(String.valueOf(OWNER_ID), String.valueOf(i));
+            try {
+                friendshipDAO.addFriendship(friendship);
+            }
+            catch (DatabaseException ex) {
+                System.out.println(ex.getMessage());
+            }
         }
     }
 

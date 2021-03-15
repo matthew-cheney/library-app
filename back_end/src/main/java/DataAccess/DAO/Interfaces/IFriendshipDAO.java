@@ -10,4 +10,5 @@ public interface IFriendshipDAO {
     List<Friendship> getFriendsOfUser(String userId, int offset) throws DatabaseException;
     boolean addFriendship(Friendship friendship) throws DatabaseException;
     boolean deleteFriendship(Friendship friendship) throws DatabaseException;
+    void clearFriendshipsTable();
 }

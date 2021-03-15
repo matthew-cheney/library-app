@@ -12,6 +12,7 @@ import DataAccess.DAO.DatabaseException;
 import DataAccess.DAO.Interfaces.IFriendshipDAO;
 import DataAccess.DAO.MySql.Abstract.BaseMySqlDAO;
 import Entities.Friendship;
+import Utilities.EntityUtils;
 
 public class MySqlFriendshipDAO extends BaseMySqlDAO implements IFriendshipDAO {
 
@@ -35,7 +36,6 @@ public class MySqlFriendshipDAO extends BaseMySqlDAO implements IFriendshipDAO {
             Friendship retrievedFriendship = null;
             while (resultSet.next()) {
                 retrievedFriendship = new Friendship(
-                        resultSet.getString(1),
                         resultSet.getString(2),
                         resultSet.getString(3)
                 );
@@ -74,7 +74,6 @@ public class MySqlFriendshipDAO extends BaseMySqlDAO implements IFriendshipDAO {
             List<Friendship> friendships = new ArrayList<>();
             while (resultSet.next()) {
                 Friendship friendship = new Friendship(
-                        resultSet.getString(1),
                         resultSet.getString(2),
                         resultSet.getString(3)
                 );
@@ -105,12 +104,15 @@ public class MySqlFriendshipDAO extends BaseMySqlDAO implements IFriendshipDAO {
         if (friendshipExists(friendship)) {
             throw new DatabaseException("Friendship already exists!");
         }
+        if (friendship.getSortedUserIdA().equals(friendship.getSortedUserIdB())) {
+            throw new DatabaseException("You cannot befriend yourself!");
+        }
 
         boolean success = false;
         String sqlCommand = "INSERT INTO Friendships VALUES(?, ?, ?)";
 
         try (PreparedStatement statement = connection.prepareStatement(sqlCommand)) {
-            statement.setString(1, friendship.getId());
+            statement.setString(1, EntityUtils.generateId());
             statement.setString(2, friendship.getSortedUserIdA());
             statement.setString(3, friendship.getSortedUserIdB());
 
@@ -161,6 +163,21 @@ public class MySqlFriendshipDAO extends BaseMySqlDAO implements IFriendshipDAO {
         finally {
             getConnectionPool().freeConnection(connection, success);
         }
+    }
+
+    @Override
+    public void clearFriendshipsTable() {
+        String deleteTableCommand = "DROP TABLE Friendships";
+        String createTableCommand = "CREATE TABLE IF NOT EXISTS Friendships (\n" +
+                                        "\tId VARCHAR(36) NOT NULL,\n" +
+                                        "\tUserIdA VARCHAR(36) NOT NULL,\n" +
+                                        "\tUserIdB VARCHAR(36) NOT NULL,\n" +
+                                        "\tPRIMARY KEY (Id),\n" +
+                                        "\tFOREIGN KEY (UserIdA) REFERENCES Users(Id),\n" +
+                                        "\tFOREIGN KEY (UserIdB) REFERENCES Users(Id)\n" +
+                                    ");";
+
+        remakeTable(deleteTableCommand, createTableCommand);
     }
 
     // endregion

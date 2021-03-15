@@ -1,30 +1,13 @@
 package Request;
 
-public class AddFriendRequest {
+import Entities.Friendship;
+import Request.Abstract.FriendRequest;
 
-    private String userIdA;
-    private String userIdB;
+public class AddFriendRequest extends FriendRequest {
 
     public AddFriendRequest() {}
 
-    public AddFriendRequest(String userIdA, String userIdB) {
-        setUserIdA(userIdA);
-        setUserIdB(userIdB);
-    }
-
-    public String getUserIdA() {
-        return userIdA;
-    }
-
-    public String getUserIdB() {
-        return userIdB;
-    }
-
-    public void setUserIdA(String userIdA) {
-        this.userIdA = userIdA;
-    }
-
-    public void setUserIdB(String userIdB) {
-        this.userIdB = userIdB;
+    public AddFriendRequest(Friendship friendship) {
+        setFriendship(friendship);
     }
 }
