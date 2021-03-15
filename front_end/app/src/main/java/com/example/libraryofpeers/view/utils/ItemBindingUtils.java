@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+
 import Entities.Item;
 
 import static com.example.libraryofpeers.view.utils.FetchImage.setImageToDrawable;

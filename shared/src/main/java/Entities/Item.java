@@ -2,9 +2,11 @@ package Entities;
 
 import Config.Constants;
 import Utilities.EntityUtils;
+
+import java.io.Serializable;
 import java.util.Date;
 
-public class Item {
+public class Item implements Serializable {
 
     // region Properties
   
