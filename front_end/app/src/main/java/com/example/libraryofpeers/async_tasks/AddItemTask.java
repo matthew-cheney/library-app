@@ -23,11 +23,15 @@ public class AddItemTask extends AsyncTask<AddItemRequest, Void, AddItemResponse
 
     @Override
     protected AddItemResponse doInBackground(AddItemRequest... addItemRequests) {
-        return null;
+        return presenter.addItem(addItemRequests[0]);
     }
 
     @Override
     protected void onPostExecute(AddItemResponse addItemResponse) {
-        super.onPostExecute(addItemResponse);
+        if(addItemResponse.isSuccess()) {
+            observer.onAddSuccess(addItemResponse);
+        } else {
+            observer.onAddFailure(addItemResponse);
+        }
     }
 }

@@ -22,12 +22,16 @@ public class EditItemTask extends AsyncTask<EditItemRequest, Void, EditItemRespo
     }
 
     @Override
-    protected EditItemResponse doInBackground(EditItemRequest... EditItemRequests) {
-        return null;
+    protected EditItemResponse doInBackground(EditItemRequest... editItemRequests) {
+        return presenter.EditItem(editItemRequests[0]);
     }
 
     @Override
-    protected void onPostExecute(EditItemResponse EditItemResponse) {
-        super.onPostExecute(EditItemResponse);
+    protected void onPostExecute(EditItemResponse editItemResponse) {
+       if(editItemResponse.isSuccess()) {
+           observer.onEditSuccess(editItemResponse);
+       } else {
+           observer.onEditFailure(editItemResponse);
+       }
     }
 }
