@@ -5,10 +5,11 @@ import Utilities.EntityUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class Item {
+public class Item implements Serializable {
 
     // region Properties
   
