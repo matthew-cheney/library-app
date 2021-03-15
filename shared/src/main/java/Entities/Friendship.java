@@ -18,9 +18,10 @@ public class Friendship {
     public Friendship() {}
 
     /**
+     * To use when creating a friendship in the app.
      * To ensure we don't end up with duplicate friendships in the database,
-     * this constructor sorts the userIds alphabetically before assigning them
-     * to their interior properties.
+     * this constructor uses the setters to sort the userIds alphabetically
+     * before assigning them to their interior properties.
      * @param userIdA
      * @param userIdB
      */

@@ -279,10 +279,4 @@ public class MySqlItemDAOTest extends BaseTest {
             System.out.println(ex.getMessage());
         }
     }
-
-    // region Private
-
-
-
-    // endregion
 }

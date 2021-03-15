@@ -4,14 +4,18 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
+import Config.Constants;
 import DataAccess.DAO.DatabaseException;
 import DataAccess.DAO.Interfaces.IFriendshipDAO;
 import DataAccess.DAO.MySql.Abstract.BaseMySqlDAO;
 import Entities.Friendship;
-import Entities.Item;
 
 public class MySqlFriendshipDAO extends BaseMySqlDAO implements IFriendshipDAO {
+
+    // region Get
 
     @Override
     public boolean friendshipExists(Friendship friendship) throws DatabaseException {
@@ -20,8 +24,8 @@ public class MySqlFriendshipDAO extends BaseMySqlDAO implements IFriendshipDAO {
         boolean success = false;
         ResultSet resultSet;
         String sqlCommand = "SELECT * FROM Friendships WHERE "
-                + " UserIdA = ? AND "
-                + " UserIdB = ?";
+                + "UserIdA = ? AND "
+                + "UserIdB = ?";
 
         try (PreparedStatement statement = connection.prepareStatement(sqlCommand)) {
             statement.setString(1, friendship.getSortedUserIdA());
@@ -38,7 +42,7 @@ public class MySqlFriendshipDAO extends BaseMySqlDAO implements IFriendshipDAO {
             }
 
             success = true;
-            return retrievedFriendship == null;
+            return retrievedFriendship != null;
         }
         catch (SQLException ex) {
             System.out.println(ex.getMessage());
@@ -51,12 +55,113 @@ public class MySqlFriendshipDAO extends BaseMySqlDAO implements IFriendshipDAO {
     }
 
     @Override
-    public boolean addFriendship(Friendship friendship) throws DatabaseException {
-        return false;
+    public List<Friendship> getFriendsOfUser(String userId, int offset) throws DatabaseException {
+        Connection connection = getConnectionPool().getConnection();
+
+        boolean success = false;
+        ResultSet resultSet;
+        String sqlCommand = "SELECT * FROM Friendships WHERE "
+                + "(UserIdA = ? OR "
+                + "UserIdB = ?) "
+                + "ORDER BY UserIdA "
+                + "LIMIT " + offset + ", " + Constants.BATCH_SIZE;
+
+        try (PreparedStatement statement = connection.prepareStatement(sqlCommand)) {
+            statement.setString(1, userId);
+            statement.setString(2, userId);
+
+            resultSet = statement.executeQuery();
+            List<Friendship> friendships = new ArrayList<>();
+            while (resultSet.next()) {
+                Friendship friendship = new Friendship(
+                        resultSet.getString(1),
+                        resultSet.getString(2),
+                        resultSet.getString(3)
+                );
+                friendships.add(friendship);
+            }
+
+            success = true;
+            return friendships;
+        }
+        catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+            ex.printStackTrace();
+            throw new DatabaseException(ex.getErrorCode(), ex.getMessage());
+        }
+        finally {
+            getConnectionPool().freeConnection(connection, success);
+        }
     }
 
+    // endregion
+
+    // region Add
+
     @Override
-    public boolean deleteFriendship(Friendship friendship) {
-        return false;
+    public boolean addFriendship(Friendship friendship) throws DatabaseException {
+        Connection connection = getConnectionPool().getConnection();
+
+        if (friendshipExists(friendship)) {
+            throw new DatabaseException("Friendship already exists!");
+        }
+
+        boolean success = false;
+        String sqlCommand = "INSERT INTO Friendships VALUES(?, ?, ?)";
+
+        try (PreparedStatement statement = connection.prepareStatement(sqlCommand)) {
+            statement.setString(1, friendship.getId());
+            statement.setString(2, friendship.getSortedUserIdA());
+            statement.setString(3, friendship.getSortedUserIdB());
+
+            if (statement.executeUpdate() != 1) {
+                throw new DatabaseException("Error adding friendship!");
+            }
+            success = true;
+            return true;
+        }
+        catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+            ex.printStackTrace();
+            throw new DatabaseException(ex.getErrorCode(), ex.getMessage());
+        }
+        finally {
+            getConnectionPool().freeConnection(connection, success);
+        }
     }
+
+    // endregion
+
+    // region Delete
+
+    @Override
+    public boolean deleteFriendship(Friendship friendship) throws DatabaseException {
+        Connection connection = getConnectionPool().getConnection();
+
+        boolean success = false;
+        String sqlCommand = "DELETE FROM Friendships WHERE "
+                + "UserIdA = ? AND "
+                + "UserIdB = ?";
+
+        try (PreparedStatement statement = connection.prepareStatement(sqlCommand)) {
+            statement.setString(1, friendship.getSortedUserIdA());
+            statement.setString(2, friendship.getSortedUserIdB());
+
+            if (statement.executeUpdate() != 1) {
+                throw new DatabaseException("Error deleting friendship!");
+            }
+            success = true;
+            return true;
+        }
+        catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+            ex.printStackTrace();
+            throw new DatabaseException(ex.getErrorCode(), ex.getMessage());
+        }
+        finally {
+            getConnectionPool().freeConnection(connection, success);
+        }
+    }
+
+    // endregion
 }
