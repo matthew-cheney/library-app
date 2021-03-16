@@ -55,7 +55,7 @@ public class MySqlFriendshipDAO extends BaseMySqlDAO implements IFriendshipDAO {
     }
 
     @Override
-    public List<Friendship> getFriendsOfUser(String userId, int offset) throws DatabaseException {
+    public List<String> getFriendIdsOfUser(String userId, int offset) throws DatabaseException {
         Connection connection = getConnectionPool().getConnection();
 
         boolean success = false;
@@ -71,17 +71,21 @@ public class MySqlFriendshipDAO extends BaseMySqlDAO implements IFriendshipDAO {
             statement.setString(2, userId);
 
             resultSet = statement.executeQuery();
-            List<Friendship> friendships = new ArrayList<>();
+            List<String> friendIds = new ArrayList<>();
             while (resultSet.next()) {
-                Friendship friendship = new Friendship(
-                        resultSet.getString(2),
-                        resultSet.getString(3)
-                );
-                friendships.add(friendship);
+                String userIdA = resultSet.getString(2);
+                String userIdB = resultSet.getString(3);
+
+                if (userIdA.equals(userId)) {
+                    friendIds.add(userIdB);
+                }
+                else {
+                    friendIds.add(userIdA);
+                }
             }
 
             success = true;
-            return friendships;
+            return friendIds;
         }
         catch (SQLException ex) {
             System.out.println(ex.getMessage());
@@ -99,14 +103,14 @@ public class MySqlFriendshipDAO extends BaseMySqlDAO implements IFriendshipDAO {
 
     @Override
     public boolean addFriendship(Friendship friendship) throws DatabaseException {
-        Connection connection = getConnectionPool().getConnection();
-
         if (friendshipExists(friendship)) {
             throw new DatabaseException("Friendship already exists!");
         }
         if (friendship.getSortedUserIdA().equals(friendship.getSortedUserIdB())) {
             throw new DatabaseException("You cannot befriend yourself!");
         }
+
+        Connection connection = getConnectionPool().getConnection();
 
         boolean success = false;
         String sqlCommand = "INSERT INTO Friendships VALUES(?, ?, ?)";

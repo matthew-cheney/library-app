@@ -10,8 +10,10 @@ import java.util.List;
 import DataAccess.DAO.DatabaseException;
 import DataAccess.DAO.MySql.MySqlFriendshipDAO;
 import Entities.Friendship;
-import Request.RemoveFriendRequest;
-import Response.RemoveFriendResponse;
+import Request.AddFriendRequest;
+import Request.CheckFriendshipExistsRequest;
+import Response.AddFriendResponse;
+import Response.CheckFriendshipExistsResponse;
 import TestUtils.BaseTest;
 import TestUtils.TestConfig;
 
@@ -19,21 +21,21 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class RemoveFriendServiceTest extends BaseTest {
+public class CheckFriendshipExistsServiceTest extends BaseTest {
 
-    private RemoveFriendService service;
+    private CheckFriendshipExistsService service;
     private MySqlFriendshipDAO dao;
     private String userIdA = "APPLES";
     private String userIdB = "BUBBLES";
-    private RemoveFriendResponse successResponse = new RemoveFriendResponse(true);
-    private RemoveFriendResponse failureResponse = new RemoveFriendResponse(false, "Error deleting friendship!");
+    private CheckFriendshipExistsResponse successResponse = new CheckFriendshipExistsResponse(true, true);
+    private CheckFriendshipExistsResponse failureResponse = new CheckFriendshipExistsResponse(true, false);
 
     @BeforeEach
     public void setUpTests() {
         dao = Mockito.spy(MySqlFriendshipDAO.class);
         Mockito.when(dao.getConnectionPool()).thenReturn(CONNECTION_POOL);
 
-        service = Mockito.spy(RemoveFriendService.class);
+        service = Mockito.spy(CheckFriendshipExistsService.class);
         Mockito.when(service.getFriendshipDAO()).thenReturn(dao);
 
         try {
@@ -56,17 +58,18 @@ public class RemoveFriendServiceTest extends BaseTest {
     }
 
     @Test
-    public void removeFriend_success() {
-        RemoveFriendRequest request = new RemoveFriendRequest(new Friendship(userIdA, userIdB));
-        RemoveFriendResponse response = service.removeFriend(request);
+    public void checkFriendshipExists_success() {
+        CheckFriendshipExistsRequest request = new CheckFriendshipExistsRequest(new Friendship(userIdA, userIdB));
+        CheckFriendshipExistsResponse response = service.friendshipExists(request);
         assertTrue(response.isSuccess());
+        assertTrue(response.isFriendshipExists());
     }
 
     @Test
-    public void removeFriend_failure() {
-        RemoveFriendRequest request = new RemoveFriendRequest(new Friendship("ERIN", userIdB));
-        RemoveFriendResponse response = service.removeFriend(request);
-        assertFalse(response.isSuccess());
-        assertEquals(failureResponse.getMessage(), response.getMessage());
+    public void checkFriendshipExists_failure() {
+        CheckFriendshipExistsRequest request = new CheckFriendshipExistsRequest(new Friendship("ERIN", userIdB));
+        CheckFriendshipExistsResponse response = service.friendshipExists(request);
+        assertTrue(response.isSuccess());
+        assertFalse(response.isFriendshipExists());
     }
 }

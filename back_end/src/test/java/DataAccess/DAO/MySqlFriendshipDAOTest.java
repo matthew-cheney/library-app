@@ -8,6 +8,7 @@ import org.mockito.Mockito;
 import java.util.List;
 
 import DataAccess.DAO.MySql.MySqlFriendshipDAO;
+import DataAccess.DAO.MySql.MySqlUserDAO;
 import Entities.Friendship;
 import TestUtils.BaseTest;
 import TestUtils.TestConfig;
@@ -25,6 +26,7 @@ public class MySqlFriendshipDAOTest extends BaseTest {
         try {
             dao = Mockito.spy(MySqlFriendshipDAO.class);
             Mockito.when(dao.getConnectionPool()).thenReturn(CONNECTION_POOL);
+
             dao.addFriendship(friendship);
         }
         catch (DatabaseException ex) {
@@ -65,9 +67,8 @@ public class MySqlFriendshipDAOTest extends BaseTest {
     @Test
     public void getFriendsOfUser_Success() {
         try {
-            List<Friendship> friendships = dao.getFriendsOfUser("TEST", TestConfig.TEST_OFFSET);
-            assertEquals(1, friendships.size());
-            assertEquals("APPLES", friendships.get(0).getSortedUserIdA());
+            List<String> friendIds = dao.getFriendIdsOfUser("TEST", TestConfig.TEST_OFFSET);
+            assertEquals("APPLES", friendIds.get(0));
         }
         catch (DatabaseException ex) {
             System.out.println(ex.getMessage());
@@ -77,8 +78,8 @@ public class MySqlFriendshipDAOTest extends BaseTest {
     @Test
     public void getFriendsOfUser_Failure() {
         try {
-            List<Friendship> friendships = dao.getFriendsOfUser("BUBBLES", TestConfig.TEST_OFFSET);
-            assertEquals(0, friendships.size());
+            List<String> friendIds = dao.getFriendIdsOfUser("BUBBLES", TestConfig.TEST_OFFSET);
+            assertEquals(0, friendIds.size());
         }
         catch (DatabaseException ex) {
             System.out.println(ex.getMessage());

@@ -5,17 +5,17 @@ import java.util.List;
 import DataAccess.DAO.DAOFactorySingleton;
 import DataAccess.DAO.DatabaseException;
 import DataAccess.DAO.Interfaces.IFriendshipDAO;
-import Entities.Friendship;
+import DataAccess.DAO.Interfaces.IUserDAO;
 import Request.FriendsRequest;
 import Response.FriendsResponse;
 
 public class GetFriendsService implements IGetFriendsService {
     @Override
-    public FriendsResponse getFriends(FriendsRequest request){
+    public FriendsResponse getFriends(FriendsRequest request) {
         try {
-            List<Friendship> friendships = getFriendshipDAO().getFriendsOfUser(
+            List<String> friendIds = getFriendshipDAO().getFriendIdsOfUser(
                     request.getUserId(), request.getOffset());
-            return new FriendsResponse(true, friendships);
+            return new FriendsResponse(true, getUserDAO().getUsersByIds(friendIds, 0));
         }
         catch (DatabaseException ex) {
             return new FriendsResponse(false, ex.getMessage());
@@ -24,5 +24,9 @@ public class GetFriendsService implements IGetFriendsService {
 
     public IFriendshipDAO getFriendshipDAO() {
         return DAOFactorySingleton.getInstance().makeFriendshipDAO();
+    }
+
+    public IUserDAO getUserDAO() {
+        return DAOFactorySingleton.getInstance().makeUserDAO();
     }
 }
