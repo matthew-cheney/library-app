@@ -18,6 +18,7 @@ import com.example.libraryofpeers.R;
 import com.example.libraryofpeers.async_tasks.CatalogTask;
 import com.example.libraryofpeers.presenters.CatalogPresenter;
 import com.example.libraryofpeers.service_proxy.LoginServiceProxy;
+import com.example.libraryofpeers.view.utils.ItemClickListener;
 
 //import org.jetbrains.annotations.NotNull;
 
@@ -89,6 +90,8 @@ public class CatalogFragment extends Fragment implements CatalogPresenter.View {
         private final TextView itemTitle;
         private final TextView itemCategory;
         private final ImageView itemImage;
+        public Item currentItem;
+        private View itemView;
 
         CatalogHolder(@NonNull View itemView) {
             super(itemView);
@@ -98,10 +101,13 @@ public class CatalogFragment extends Fragment implements CatalogPresenter.View {
             itemImage = itemView.findViewById(R.id.ItemImage);
             itemCategory = itemView.findViewById(R.id.ItemSubtitle);
             itemTitle = itemView.findViewById(R.id.ItemTitle);
+            this.itemView = itemView;
         }
 
         void bindItem(Item item) {
             bindItemToViews(item, itemTitle, itemCategory, itemImage, getContext());
+            currentItem = item;
+            itemView.setOnClickListener(new ItemClickListener(currentItem));
         }
     }
 
