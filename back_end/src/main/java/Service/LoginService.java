@@ -1,5 +1,6 @@
 package Service;
 
+import DataAccess.DAO.DAOFactorySingleton;
 import DataAccess.DAO.DatabaseException;
 import DataAccess.DAO.Interfaces.IUserDAO;
 import DataAccess.DAO.MySql.MySqlUserDAO;
@@ -20,6 +21,6 @@ public class LoginService implements ILoginService {
     }
 
     public IUserDAO getUserDAO() {
-        return new MySqlUserDAO();
+        return DAOFactorySingleton.getInstance().makeUserDAO();
     }
 }

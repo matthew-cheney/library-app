@@ -1,7 +1,6 @@
 package Response.Abstract;
 
 import Entities.User;
-import Response.Abstract.BaseResponse;
 
 public abstract class UserResponse extends BaseResponse {
 

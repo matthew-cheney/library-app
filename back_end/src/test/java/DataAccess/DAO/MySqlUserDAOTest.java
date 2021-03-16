@@ -1,7 +1,6 @@
 package DataAccess.DAO;
 
 import DataAccess.DAO.MySql.MySqlUserDAO;
-import Entities.Item;
 import Entities.User;
 import Request.RegisterRequest;
 import Service.RegisterService;
@@ -129,7 +128,7 @@ public class MySqlUserDAOTest extends BaseTest {
     @Test
     public void getUsersMatchingCriteria_Success() {
         try {
-            DatabaseFiller.addUnitTestUsers(25, dao);
+            DatabaseFiller.addUnitTestUsers(0, 25, dao);
             List<User> users = dao.getUsersMatchingCriteria("com", TestConfig.TEST_OFFSET);
             assertEquals(5, users.size());
         }
@@ -144,7 +143,7 @@ public class MySqlUserDAOTest extends BaseTest {
     @Test
     public void getUsersMatchingCriteria_Failure() {
         try {
-            DatabaseFiller.addUnitTestUsers(25, dao);
+            DatabaseFiller.addUnitTestUsers(0, 25, dao);
             List<User> users = dao.getUsersMatchingCriteria("ERIN", TestConfig.TEST_OFFSET);
             assertEquals(0, users.size());
         }

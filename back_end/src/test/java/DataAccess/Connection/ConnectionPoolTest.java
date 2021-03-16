@@ -6,7 +6,6 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 import TestUtils.BaseTest;
-import TestUtils.TestConfig;
 
 import static org.junit.jupiter.api.Assertions.*;
 

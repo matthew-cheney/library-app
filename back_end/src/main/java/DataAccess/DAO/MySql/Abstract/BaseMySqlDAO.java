@@ -1,4 +1,4 @@
-package DataAccess.DAO.Abstract;
+package DataAccess.DAO.MySql.Abstract;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import DataAccess.Connection.ConnectionPool;
 import DataAccess.DAO.DatabaseException;
 
-public abstract class BaseDAO {
+public abstract class BaseMySqlDAO {
 
     public ConnectionPool getConnectionPool() {
         return ConnectionPool.getInstance();

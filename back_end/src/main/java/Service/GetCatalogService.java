@@ -2,6 +2,7 @@ package Service;
 
 import java.util.List;
 
+import DataAccess.DAO.DAOFactorySingleton;
 import DataAccess.DAO.DatabaseException;
 import DataAccess.DAO.Interfaces.IItemDAO;
 import DataAccess.DAO.MySql.MySqlItemDAO;
@@ -22,6 +23,6 @@ public class GetCatalogService implements IGetCatalogService {
     }
 
     public IItemDAO getItemDAO() {
-        return new MySqlItemDAO();
+        return DAOFactorySingleton.getInstance().makeItemDAO();
     }
 }

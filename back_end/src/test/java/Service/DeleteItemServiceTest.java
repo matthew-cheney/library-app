@@ -5,7 +5,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import Config.Constants;
@@ -15,7 +14,6 @@ import Entities.Item;
 import Request.DeleteItemRequest;
 import Response.DeleteItemResponse;
 import TestUtils.BaseTest;
-import TestUtils.TestConfig;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;

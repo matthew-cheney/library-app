@@ -7,7 +7,6 @@ import Request.LoginRequest;
 import Request.RegisterRequest;
 import Response.LoginResponse;
 import TestUtils.BaseTest;
-import TestUtils.TestConfig;
 import Utilities.EntityUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;

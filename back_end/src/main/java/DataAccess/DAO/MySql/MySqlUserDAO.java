@@ -1,11 +1,9 @@
 package DataAccess.DAO.MySql;
 
 import Config.Constants;
-import DataAccess.Connection.ConnectionPool;
-import DataAccess.DAO.Abstract.BaseDAO;
+import DataAccess.DAO.MySql.Abstract.BaseMySqlDAO;
 import DataAccess.DAO.DatabaseException;
 import DataAccess.DAO.Interfaces.IUserDAO;
-import Entities.Item;
 import Entities.User;
 import Utilities.EntityUtils;
 
@@ -13,7 +11,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MySqlUserDAO extends BaseDAO implements IUserDAO {
+public class MySqlUserDAO extends BaseMySqlDAO implements IUserDAO {
 
     // region Get
 
@@ -51,6 +49,55 @@ public class MySqlUserDAO extends BaseDAO implements IUserDAO {
 
             success = true;
             return user;
+        }
+        catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+            ex.printStackTrace();
+            throw new DatabaseException(ex.getErrorCode(), ex.getMessage());
+        }
+        finally {
+            getConnectionPool().freeConnection(connection, success);
+        }
+    }
+
+    @Override
+    public List<User> getUsersByIds(List<String> ids, int offset) throws DatabaseException {
+
+        if (ids.isEmpty()) {
+            return new ArrayList<>();
+        }
+
+        Connection connection = getConnectionPool().getConnection();
+
+        boolean success = false;
+        ResultSet resultSet;
+        String sqlCommand = buildGetUsersByIdsQuery(ids, offset);
+
+        try (PreparedStatement statement = connection.prepareStatement(sqlCommand)) {
+            for (int i = 1; i <= ids.size(); i++) {
+                statement.setString(i, ids.get(i - 1));
+            }
+
+            resultSet = statement.executeQuery();
+            List<User> users = new ArrayList<>();
+            while (resultSet.next()) {
+                User user = new User(
+                        resultSet.getString(1),
+                        resultSet.getString(2),
+                        resultSet.getString(3),
+                        resultSet.getString(4),
+                        resultSet.getString(5),
+                        resultSet.getString(6),
+                        resultSet.getString(7),
+                        resultSet.getString(8),
+                        resultSet.getString(9)
+                );
+
+                users.add(user);
+            }
+
+            success = true;
+            return users;
         }
         catch (SQLException ex) {
             System.out.println(ex.getMessage());
@@ -123,15 +170,14 @@ public class MySqlUserDAO extends BaseDAO implements IUserDAO {
         boolean success = false;
         ResultSet resultSet;
         String sqlCommand = "SELECT * FROM Users WHERE "
+                + "Username LIKE ? OR "
                 + "FirstName LIKE ? OR "
-                + "LastName LIKE ? OR "
-                + "Email LIKE ? OR "
-                + "PhoneNumber LIKE ? "
+                + "LastName LIKE ? "
                 + "ORDER BY LastName, FirstName "
                 + "LIMIT " + offset + ", " + Constants.BATCH_SIZE;
 
         try (PreparedStatement statement = connection.prepareStatement(sqlCommand)) {
-            for (int i = 1; i <= 4; i++) {
+            for (int i = 1; i <= 3; i++) {
                 statement.setString(i, searchCriteria);
             }
 
@@ -300,4 +346,19 @@ public class MySqlUserDAO extends BaseDAO implements IUserDAO {
     }
 
     // endregion
+
+    private String buildGetUsersByIdsQuery(List<String> ids, int offset) {
+        StringBuilder sqlCommand = new StringBuilder("SELECT * FROM Users WHERE Id = ");
+        for (String id : ids) {
+            if (id.equals(ids.get(0))) {
+                sqlCommand.append(" ?");
+            }
+            else {
+                sqlCommand.append(" OR ?");
+            }
+        }
+
+        sqlCommand.append("LIMIT ").append(offset).append(", ").append(Constants.BATCH_SIZE);
+        return sqlCommand.toString();
+    }
 }

@@ -7,7 +7,6 @@ public class Friendship {
 
     // region Properties
 
-    private String id;
     private String userIdA;
     private String userIdB;
 
@@ -18,14 +17,14 @@ public class Friendship {
     public Friendship() {}
 
     /**
+     * To use when creating a friendship in the app.
      * To ensure we don't end up with duplicate friendships in the database,
-     * this constructor sorts the userIds alphabetically before assigning them
-     * to their interior properties.
+     * this constructor uses the setters to sort the userIds alphabetically
+     * before assigning them to their interior properties.
      * @param userIdA
      * @param userIdB
      */
     public Friendship(@NotNull String userIdA, @NotNull String userIdB) {
-        setId(EntityUtils.generateId());
         setUserIdA(userIdA);
         setUserIdB(userIdB);
     }
@@ -33,10 +32,6 @@ public class Friendship {
     // endregion
 
     // region Getters
-
-    public String getId() {
-        return id;
-    }
 
     public String getSortedUserIdA() {
         return userIdA;
@@ -49,10 +44,6 @@ public class Friendship {
     // endregion
 
     // region Setters
-
-    public void setId(String id) {
-        this.id = id;
-    }
 
     public void setUserIdA(String userIdA) {
         if (this.userIdB != null) {

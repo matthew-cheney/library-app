@@ -1,5 +1,6 @@
 package Service;
 
+import DataAccess.DAO.DAOFactorySingleton;
 import DataAccess.DAO.DatabaseException;
 import DataAccess.DAO.Interfaces.IItemDAO;
 import DataAccess.DAO.MySql.MySqlItemDAO;
@@ -18,6 +19,6 @@ public class EditItemService implements IEditItemService {
     }
 
     public IItemDAO getItemDAO() {
-        return new MySqlItemDAO();
+        return DAOFactorySingleton.getInstance().makeItemDAO();
     }
 }

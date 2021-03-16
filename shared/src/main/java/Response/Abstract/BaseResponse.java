@@ -1,6 +1,5 @@
 package Response.Abstract;
 
-import Response.RegisterResponse;
 import Utilities.EntityUtils;
 
 public abstract class BaseResponse {

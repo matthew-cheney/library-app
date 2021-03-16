@@ -29,7 +29,7 @@ public class GetCatalogServiceTest extends BaseTest {
         service = Mockito.spy(GetCatalogService.class);
         Mockito.when(service.getItemDAO()).thenReturn(dao);
 
-        DatabaseFiller.addUnitTestItems("TEST", 25, dao);
+        DatabaseFiller.addUnitTestItems("TEST", 0, 25, dao);
     }
 
     @AfterEach

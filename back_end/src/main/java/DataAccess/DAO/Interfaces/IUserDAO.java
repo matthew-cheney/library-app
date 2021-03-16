@@ -7,6 +7,7 @@ import Entities.User;
 
 public interface IUserDAO {
     User getUserById(String id) throws DatabaseException;
+    List<User> getUsersByIds(List<String> ids, int offset) throws DatabaseException;
     User getUserByCredentials(String username, String password) throws DatabaseException;
     List<User> getUsersMatchingCriteria(String searchCriteria, int offset) throws DatabaseException;
     boolean addUser(User user) throws DatabaseException;

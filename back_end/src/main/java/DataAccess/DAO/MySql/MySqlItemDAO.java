@@ -1,7 +1,7 @@
 package DataAccess.DAO.MySql;
 
 import Config.Constants;
-import DataAccess.DAO.Abstract.BaseDAO;
+import DataAccess.DAO.MySql.Abstract.BaseMySqlDAO;
 import DataAccess.DAO.DatabaseException;
 import DataAccess.DAO.Interfaces.IItemDAO;
 import Entities.Item;
@@ -13,7 +13,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MySqlItemDAO extends BaseDAO implements IItemDAO {
+public class MySqlItemDAO extends BaseMySqlDAO implements IItemDAO {
 
     // region Get
 
@@ -115,25 +115,31 @@ public class MySqlItemDAO extends BaseDAO implements IItemDAO {
     }
 
     @Override
-    public List<Item> getItemsMatchingCriteria(String searchCriteria, int offset) throws DatabaseException {
+    public List<Item> getItemsMatchingCriteria(String ownerId, String searchCriteria, int offset) throws DatabaseException {
         Connection connection = getConnectionPool().getConnection();
 
         boolean success = false;
         ResultSet resultSet;
         String sqlCommand = "SELECT * FROM Items WHERE "
-                + "Title LIKE ? OR "
+                + getOwnerIdCommandChunk(ownerId)
+                + "(Title LIKE ? OR "
                 + "Description LIKE ? OR "
                 + "NumPlayers LIKE ? OR "
                 + "TimeToPlayInMins LIKE ? OR "
                 + "ReleaseYear LIKE ? OR "
                 + "Genre LIKE ? OR "
                 + "ItemFormat LIKE ? OR "
-                + "Author LIKE ? "
+                + "Author LIKE ? )"
                 + "ORDER BY Title "
                 + "LIMIT " + offset + ", " + Constants.BATCH_SIZE;
 
         try (PreparedStatement statement = connection.prepareStatement(sqlCommand)) {
-            for (int i = 1; i <= 8; i++) {
+            int startingInt = 1;
+            if (!getOwnerIdCommandChunk(ownerId).equals("")) {
+                statement.setString(startingInt, ownerId);
+                startingInt++;
+            }
+            for (int i = startingInt; i < 8 + startingInt; i++) {
                 statement.setString(i, searchCriteria);
             }
 
@@ -328,4 +334,8 @@ public class MySqlItemDAO extends BaseDAO implements IItemDAO {
     }
 
     // endregion
+
+    private String getOwnerIdCommandChunk(String ownerId) {
+        return ownerId == null ? "" : "OwnerId = ? AND ";
+    }
 }

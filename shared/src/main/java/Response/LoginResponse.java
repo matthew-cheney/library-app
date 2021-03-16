@@ -1,6 +1,5 @@
 package Response;
 
-
 import Entities.User;
 import Response.Abstract.UserResponse;
 import Utilities.EntityUtils;

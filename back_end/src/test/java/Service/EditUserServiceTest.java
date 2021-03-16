@@ -12,7 +12,6 @@ import Request.EditUserRequest;
 import Request.RegisterRequest;
 import Response.EditUserResponse;
 import TestUtils.BaseTest;
-import TestUtils.TestConfig;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
