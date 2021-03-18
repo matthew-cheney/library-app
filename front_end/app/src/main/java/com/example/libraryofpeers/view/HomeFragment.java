@@ -82,7 +82,7 @@ public class HomeFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        sectionsPagerAdapter = new SectionsPagerAdapter(getContext(), this.getFragmentManager(), null, SectionsPagerAdapter.DEFAULT_TAB_TITLES);
+        sectionsPagerAdapter = new SectionsPagerAdapter(getContext(), this.getChildFragmentManager(), null, SectionsPagerAdapter.DEFAULT_TAB_TITLES);
         ViewPager viewPager = getView().findViewById(R.id.view_pager);
         viewPager.setAdapter(sectionsPagerAdapter);
 //        TabLayout tabs = getView().findViewById(R.id.tabs);
