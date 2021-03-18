@@ -16,9 +16,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.libraryofpeers.R;
 import com.example.libraryofpeers.async_tasks.CatalogTask;
+import com.example.libraryofpeers.async_tasks.PseudoSearchTask;
 import com.example.libraryofpeers.presenters.CatalogPresenter;
 import com.example.libraryofpeers.service_proxy.LoginServiceProxy;
 import com.example.libraryofpeers.view.utils.ItemClickListener;
+import com.example.libraryofpeers.view.utils.SearchCache;
 
 //import org.jetbrains.annotations.NotNull;
 
@@ -42,15 +44,26 @@ public class CatalogFragment extends Fragment implements CatalogPresenter.View {
 
     private static final int PAGE_SIZE = 10;
 
+    private String query;
+
     private User user;
     private CatalogPresenter presenter;
 
-    private int itemsLoaded = 0;
+//    private int itemsLoaded = 0;
 
     private CatalogFragment.CatalogRecyclerViewAdapter CatalogRecyclerViewAdapter;
 
+    public CatalogFragment(String query) {
+        this.query = query;
+    }
+
     public static CatalogFragment newInstance(User user) {
-        CatalogFragment fragment = new CatalogFragment();
+        return newInstance(user, "");
+    }
+
+    public static CatalogFragment newInstance(User user, String query) {
+
+        CatalogFragment fragment = new CatalogFragment(query);
 
         Bundle args = new Bundle(2);
         args.putSerializable(ITEM_KEY, user);
@@ -58,6 +71,7 @@ public class CatalogFragment extends Fragment implements CatalogPresenter.View {
         fragment.setArguments(args);
         return fragment;
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -120,6 +134,8 @@ public class CatalogFragment extends Fragment implements CatalogPresenter.View {
         private boolean hasMorePages;
         private boolean isLoading = false;
 
+        private int itemsLoaded = 0;
+
         CatalogRecyclerViewAdapter() {
             loadMoreItems();
         }
@@ -179,12 +195,23 @@ public class CatalogFragment extends Fragment implements CatalogPresenter.View {
             isLoading = true;
             addLoadingFooter();
 
-            CatalogTask getCatalogTask = new CatalogTask(presenter, this);
-            CatalogRequest request = new CatalogRequest(LoginServiceProxy.getInstance().getCurrentUser().getId(), itemsLoaded);  // Eventually this will track how many items loaded so far
-//            if (lastItem != null) {
-//                request.setLastItemInCatalogId(lastItem.getId());
-//            }
-            getCatalogTask.execute(request);
+            if (SearchCache.getCatalogQuery().equals("")) {
+                CatalogTask getCatalogTask = new CatalogTask(presenter, this);
+                CatalogRequest request = new CatalogRequest(LoginServiceProxy.getInstance().getCurrentUser().getId(), itemsLoaded);  // Eventually this will track how many items loaded so far
+    //            if (lastItem != null) {
+    //                request.setLastItemInCatalogId(lastItem.getId());
+    //            }
+                getCatalogTask.execute(request);
+            } else {
+                // This will be a search task once that's available
+                Toast.makeText(getContext(), "Using search mode", Toast.LENGTH_LONG).show();
+                PseudoSearchTask searchTask = new PseudoSearchTask(presenter, this, SearchCache.getCatalogQuery());
+                CatalogRequest request = new CatalogRequest(LoginServiceProxy.getInstance().getCurrentUser().getId(), itemsLoaded);  // Eventually this will track how many items loaded so far
+                //            if (lastItem != null) {
+                //                request.setLastItemInCatalogId(lastItem.getId());
+                //            }
+                searchTask.execute(request);
+            }
         }
 
         @Override

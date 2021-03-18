@@ -24,20 +24,26 @@ class SectionsPagerAdapter extends FragmentPagerAdapter {
     public int[] TAB_TITLES;
     private final Context mContext;
     private final User user;
+    private String query;
 
     public SectionsPagerAdapter(Context context, FragmentManager fm, User user, int[] tab_titles) {
         super(fm);
         mContext = context;
         this.user = user;
         this.TAB_TITLES = tab_titles;
+        this.query = "";
+    }
+
+    public void setQuery(String query) {
+        this.query = query;
     }
 
     @Override
     public Fragment getItem(int position) {
         if (position == CATALOG_FRAGMENT_POSITION) {
-            return CatalogFragment.newInstance(user);
+            return CatalogFragment.newInstance(user, query);
         } else if (position == FRIENDS_FRAGMENT_POSITION) {
-            return CatalogFragment.newInstance(user);  // will change to FriendsFragment
+            return CatalogFragment.newInstance(user, query);  // will change to FriendsFragment
         }
         else {
             return PlaceholderFragment.newInstance(position + 1);
