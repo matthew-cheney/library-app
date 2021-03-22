@@ -1,11 +1,16 @@
 package DataAccess.DAO.MySql;
 
+import com.sun.net.httpserver.HttpsExchange;
+
+import java.net.HttpURLConnection;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.xml.ws.spi.http.HttpExchange;
 
 import Config.Constants;
 import DataAccess.DAO.DatabaseException;
@@ -154,7 +159,7 @@ public class MySqlFriendshipDAO extends BaseMySqlDAO implements IFriendshipDAO {
             statement.setString(2, friendship.getSortedUserIdB());
 
             if (statement.executeUpdate() != 1) {
-                throw new DatabaseException("Error deleting friendship!");
+                throw new DatabaseException(HttpURLConnection.HTTP_BAD_REQUEST, "Error deleting friendship!");
             }
             success = true;
             return true;
