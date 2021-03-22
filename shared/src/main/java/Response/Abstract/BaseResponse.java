@@ -5,6 +5,7 @@ import Utilities.EntityUtils;
 public abstract class BaseResponse {
 
     private boolean success;
+    private int errorCode;
     private String message;
 
     /**
@@ -38,12 +39,20 @@ public abstract class BaseResponse {
         return message;
     }
 
+    public int getErrorCode() {
+        return errorCode;
+    }
+
     public void setSuccess(boolean success) {
         this.success = success;
     }
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public void setErrorCode(int errorCode) {
+        this.errorCode = errorCode;
     }
 
     // region Overrides

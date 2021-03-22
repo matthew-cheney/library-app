@@ -44,9 +44,7 @@ public class AddFriendServiceTest extends BaseTest {
             List<String> friendIds = dao.getFriendIdsOfUser(userIdA, TestConfig.TEST_OFFSET);
             if (friendIds.size() != 0) dao.deleteFriendship(new Friendship(userIdA, friendIds.get(0)));
         }
-        catch (DatabaseException ex) {
-            System.out.println(ex.getMessage());
-        }
+        catch (DatabaseException ignored) {}
     }
 
     @Test

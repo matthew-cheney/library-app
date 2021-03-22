@@ -6,20 +6,23 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import DataAccess.DAO.MySql.MySqlItemDAO;
+import Entities.Item;
 import Request.CatalogRequest;
 import Response.CatalogResponse;
 import TestUtils.BaseTest;
 import TestUtils.DatabaseFiller;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class GetCatalogServiceTest extends BaseTest {
 
     private GetCatalogService service;
     private MySqlItemDAO dao;
-    private CatalogRequest successfulRequest = new CatalogRequest("TEST", 3);
-    private CatalogRequest failureRequest = new CatalogRequest("BUBBLES", 0);
+    private CatalogRequest successfulRequest = new CatalogRequest("TEST", null, 3);
+    private CatalogRequest successfulCategoryFilterRequest = new CatalogRequest("TEST", "BOOK", 0);
+    private CatalogRequest failureRequest = new CatalogRequest("BUBBLES", null, 0);
 
     @BeforeEach
     public void setUpTests() {
@@ -42,6 +45,15 @@ public class GetCatalogServiceTest extends BaseTest {
         CatalogResponse response = service.getCatalog(successfulRequest);
         assertTrue(response.isSuccess());
         assertEquals(10, response.getItems().size());
+    }
+
+    @Test
+    public void getCatalogWithCategoryFilter_success() {
+        CatalogResponse response = service.getCatalog(successfulCategoryFilterRequest);
+        assertTrue(response.isSuccess());
+        for (Item item : response.getItems()) {
+            assertEquals("BOOK", item.getCategory());
+        }
     }
 
     @Test

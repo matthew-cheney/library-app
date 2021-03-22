@@ -49,9 +49,7 @@ public class MySqlUserDAOTest extends BaseTest {
         try {
             dao.addUser(testUser);
         }
-        catch (DatabaseException ex) {
-            System.out.println(ex.getMessage());
-        }
+        catch (DatabaseException ignored) {}
     }
 
     @AfterEach
@@ -61,9 +59,7 @@ public class MySqlUserDAOTest extends BaseTest {
             User user = dao.getUserByCredentials("actingIsFun", "joey");
             dao.deleteUser(user.getId());
         }
-        catch (DatabaseException ex) {
-            System.out.println(ex.getMessage());
-        }
+        catch (DatabaseException ignored) {}
     }
 
     @Test
@@ -72,9 +68,7 @@ public class MySqlUserDAOTest extends BaseTest {
             User user = dao.getUserById(testUser.getId());
             assertEquals(testUser, user);
         }
-        catch (DatabaseException ex) {
-            System.out.println(ex.getMessage());
-        }
+        catch (DatabaseException ignored) {}
     }
 
     @Test
@@ -83,9 +77,7 @@ public class MySqlUserDAOTest extends BaseTest {
             User user = dao.getUserById("BUBBLES");
             assertNull(user);
         }
-        catch (DatabaseException ex) {
-            System.out.println(ex.getMessage());
-        }
+        catch (DatabaseException ignored) {}
     }
 
     @Test
@@ -109,9 +101,7 @@ public class MySqlUserDAOTest extends BaseTest {
             assertEquals("Joey", user.getFirstName());
             assertEquals("Tribianni", user.getLastName());
         }
-        catch (DatabaseException ex) {
-            System.out.println(ex.getMessage());
-        }
+        catch (DatabaseException ignored) {}
     }
 
     @Test
@@ -120,9 +110,7 @@ public class MySqlUserDAOTest extends BaseTest {
             User user = dao.getUserByCredentials("BUBBLES", "BUBBLES");
             assertNull(user);
         }
-        catch (DatabaseException ex) {
-            System.out.println(ex.getMessage());
-        }
+        catch (DatabaseException ignored) {}
     }
 
     @Test
@@ -132,9 +120,7 @@ public class MySqlUserDAOTest extends BaseTest {
             List<User> users = dao.getUsersMatchingCriteria("com", TestConfig.TEST_OFFSET);
             assertEquals(5, users.size());
         }
-        catch (DatabaseException ex) {
-            System.out.println(ex.getMessage());
-        }
+        catch (DatabaseException ignored) {}
         finally {
             dao.clearUsersTable();
         }
@@ -147,9 +133,7 @@ public class MySqlUserDAOTest extends BaseTest {
             List<User> users = dao.getUsersMatchingCriteria("ERIN", TestConfig.TEST_OFFSET);
             assertEquals(0, users.size());
         }
-        catch (DatabaseException ex) {
-            System.out.println(ex.getMessage());
-        }
+        catch (DatabaseException ignored) {}
         finally {
             dao.clearUsersTable();
         }
@@ -165,9 +149,7 @@ public class MySqlUserDAOTest extends BaseTest {
             success = dao.deleteUser(otherTestUser.getId());
             assertTrue(success);
         }
-        catch (DatabaseException ex) {
-            System.out.println(ex.getMessage());
-        }
+        catch (DatabaseException ignored) {}
     }
 
     @Test
@@ -192,9 +174,7 @@ public class MySqlUserDAOTest extends BaseTest {
             User updatedUser = dao.getUserById(testUser.getId());
             assertEquals(user, updatedUser);
         }
-        catch (DatabaseException ex) {
-            System.out.println(ex.getMessage());
-        }
+        catch (DatabaseException ignored) {}
     }
 
     @Test
@@ -207,9 +187,7 @@ public class MySqlUserDAOTest extends BaseTest {
             User notChangedUser = dao.getUserById(testUser.getId());
             assertNotEquals(user, notChangedUser);
         }
-        catch (DatabaseException ex) {
-            System.out.println(ex.getMessage());
-        }
+        catch (DatabaseException ignored) {}
     }
 
     @Test
@@ -222,9 +200,7 @@ public class MySqlUserDAOTest extends BaseTest {
             User user = dao.getUserById(otherTestUser.getId());
             assertNull(user);
         }
-        catch (DatabaseException ex) {
-            System.out.println(ex.getMessage());
-        }
+        catch (DatabaseException ignored) {}
     }
 
     @Test
@@ -235,8 +211,6 @@ public class MySqlUserDAOTest extends BaseTest {
             User user = dao.getUserById(otherTestUser.getId());
             assertNull(user);
         }
-        catch (DatabaseException ex) {
-            System.out.println(ex.getMessage());
-        }
+        catch (DatabaseException ignored) {}
     }
 }

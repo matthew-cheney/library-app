@@ -58,8 +58,6 @@ public class MySqlItemDAO extends BaseMySqlDAO implements IItemDAO {
             return item;
         }
         catch (SQLException ex) {
-            System.out.println(ex.getMessage());
-            ex.printStackTrace();
             throw new DatabaseException(HttpURLConnection.HTTP_BAD_REQUEST, ex.getMessage());
         }
         finally {
@@ -68,17 +66,19 @@ public class MySqlItemDAO extends BaseMySqlDAO implements IItemDAO {
     }
 
     @Override
-    public List<Item> getItemsByOwner(String ownerId, int offset) throws DatabaseException {
+    public List<Item> getItemsByOwner(String ownerId, String categoryFilter, int offset) throws DatabaseException {
         Connection connection = getConnectionPool().getConnection();
 
         boolean success = false;
         ResultSet resultSet;
         String sqlCommand = "SELECT * FROM Items WHERE OwnerId = ? "
+                + getCategoryFilterCommandChunk(categoryFilter)
                 + "ORDER BY Title "
                 + "LIMIT " + offset + ", " + Constants.BATCH_SIZE;
 
         try (PreparedStatement statement = connection.prepareStatement(sqlCommand)) {
             statement.setString(1, ownerId);
+            if (categoryFilter != null) statement.setString(2, categoryFilter);
 
             resultSet = statement.executeQuery();
             List<Item> items = new ArrayList<>();
@@ -106,8 +106,6 @@ public class MySqlItemDAO extends BaseMySqlDAO implements IItemDAO {
             return items;
         }
         catch (SQLException ex) {
-            System.out.println(ex.getMessage());
-            ex.printStackTrace();
             throw new DatabaseException(HttpURLConnection.HTTP_BAD_REQUEST, ex.getMessage());
         }
         finally {
@@ -170,8 +168,6 @@ public class MySqlItemDAO extends BaseMySqlDAO implements IItemDAO {
             return items;
         }
         catch (SQLException ex) {
-            System.out.println(ex.getMessage());
-            ex.printStackTrace();
             throw new DatabaseException(HttpURLConnection.HTTP_BAD_REQUEST, ex.getMessage());
         }
         finally {
@@ -213,8 +209,6 @@ public class MySqlItemDAO extends BaseMySqlDAO implements IItemDAO {
             return true;
         }
         catch (SQLException ex) {
-            System.out.println(ex.getMessage());
-            ex.printStackTrace();
             throw new DatabaseException(HttpURLConnection.HTTP_BAD_REQUEST, ex.getMessage());
         }
         finally {
@@ -270,8 +264,6 @@ public class MySqlItemDAO extends BaseMySqlDAO implements IItemDAO {
             return true;
         }
         catch (SQLException ex) {
-            System.out.println(ex.getMessage());
-            ex.printStackTrace();
             throw new DatabaseException(HttpURLConnection.HTTP_BAD_REQUEST, ex.getMessage());
         }
         finally {
@@ -300,8 +292,6 @@ public class MySqlItemDAO extends BaseMySqlDAO implements IItemDAO {
             return true;
         }
         catch (SQLException ex) {
-            System.out.println(ex.getMessage());
-            ex.printStackTrace();
             throw new DatabaseException(HttpURLConnection.HTTP_BAD_REQUEST, ex.getMessage());
         }
         finally {
@@ -338,5 +328,9 @@ public class MySqlItemDAO extends BaseMySqlDAO implements IItemDAO {
 
     private String getOwnerIdCommandChunk(String ownerId) {
         return ownerId == null ? "" : "OwnerId = ? AND ";
+    }
+
+    private String getCategoryFilterCommandChunk(String categoryFilter) {
+        return categoryFilter == null ? "" : "AND Category LIKE ? ";
     }
 }

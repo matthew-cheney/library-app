@@ -52,8 +52,6 @@ public class MySqlUserDAO extends BaseMySqlDAO implements IUserDAO {
             return user;
         }
         catch (SQLException ex) {
-            System.out.println(ex.getMessage());
-            ex.printStackTrace();
             throw new DatabaseException(HttpURLConnection.HTTP_BAD_REQUEST, ex.getMessage());
         }
         finally {
@@ -101,8 +99,6 @@ public class MySqlUserDAO extends BaseMySqlDAO implements IUserDAO {
             return users;
         }
         catch (SQLException ex) {
-            System.out.println(ex.getMessage());
-            ex.printStackTrace();
             throw new DatabaseException(HttpURLConnection.HTTP_BAD_REQUEST, ex.getMessage());
         }
         finally {
@@ -155,8 +151,6 @@ public class MySqlUserDAO extends BaseMySqlDAO implements IUserDAO {
             return user;
         }
         catch (SQLException ex) {
-            System.out.println(ex.getMessage());
-            ex.printStackTrace();
             throw new DatabaseException(HttpURLConnection.HTTP_BAD_REQUEST, ex.getMessage());
         }
         finally {
@@ -203,8 +197,6 @@ public class MySqlUserDAO extends BaseMySqlDAO implements IUserDAO {
             return users;
         }
         catch (SQLException ex) {
-            System.out.println(ex.getMessage());
-            ex.printStackTrace();
             throw new DatabaseException(HttpURLConnection.HTTP_BAD_REQUEST, ex.getMessage());
         }
         finally {
@@ -241,8 +233,6 @@ public class MySqlUserDAO extends BaseMySqlDAO implements IUserDAO {
             return true;
         }
         catch (SQLException ex) {
-            System.out.println(ex.getMessage());
-            ex.printStackTrace();
             throw new DatabaseException(HttpURLConnection.HTTP_BAD_REQUEST, ex.getMessage());
         }
         finally {
@@ -288,8 +278,6 @@ public class MySqlUserDAO extends BaseMySqlDAO implements IUserDAO {
             return true;
         }
         catch (SQLException ex) {
-            System.out.println(ex.getMessage());
-            ex.printStackTrace();
             throw new DatabaseException(HttpURLConnection.HTTP_BAD_REQUEST, ex.getMessage());
         }
         finally {
@@ -318,8 +306,6 @@ public class MySqlUserDAO extends BaseMySqlDAO implements IUserDAO {
             return true;
         }
         catch (SQLException ex) {
-            System.out.println(ex.getMessage());
-            ex.printStackTrace();
             throw new DatabaseException(HttpURLConnection.HTTP_BAD_REQUEST, ex.getMessage());
         }
         finally {

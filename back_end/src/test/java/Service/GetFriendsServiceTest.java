@@ -43,6 +43,7 @@ public class GetFriendsServiceTest extends BaseTest {
 
         service = Mockito.spy(GetFriendsService.class);
         Mockito.when(service.getFriendshipDAO()).thenReturn(dao);
+        Mockito.when(service.getUserDAO()).thenReturn(userDao);
 
         DatabaseFiller.addUnitTestUsers(0, 25, userDao);
         DatabaseFiller.addUnitTestFriendships(testUser.getId(), 25, dao);

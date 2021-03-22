@@ -180,7 +180,7 @@ public class CatalogFragment extends Fragment implements CatalogPresenter.View {
             addLoadingFooter();
 
             CatalogTask getCatalogTask = new CatalogTask(presenter, this);
-            CatalogRequest request = new CatalogRequest(LoginServiceProxy.getInstance().getCurrentUser().getId(), itemsLoaded);  // Eventually this will track how many items loaded so far
+            CatalogRequest request = new CatalogRequest(LoginServiceProxy.getInstance().getCurrentUser().getId(), null, itemsLoaded);  // Eventually this will track how many items loaded so far
 //            if (lastItem != null) {
 //                request.setLastItemInCatalogId(lastItem.getId());
 //            }

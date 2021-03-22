@@ -13,7 +13,7 @@ public class RemoveFriendService implements IRemoveFriendService {
             return new RemoveFriendResponse(getFriendshipDAO().deleteFriendship(request.getFriendship()));
         }
         catch (DatabaseException ex) {
-            return new RemoveFriendResponse(false, ex.getErrorCodeAndMessage());
+            return new RemoveFriendResponse(false, ex.getMessage());
         }
     }
 

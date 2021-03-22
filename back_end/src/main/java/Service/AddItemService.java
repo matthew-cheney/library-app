@@ -30,7 +30,7 @@ public class AddItemService implements IAddItemService {
             return new AddItemResponse(getItemDAO().addItem(item));
         }
         catch (DatabaseException ex) {
-            return new AddItemResponse(false, ex.getErrorCodeAndMessage());
+            return new AddItemResponse(false, ex.getMessage());
         }
     }
 

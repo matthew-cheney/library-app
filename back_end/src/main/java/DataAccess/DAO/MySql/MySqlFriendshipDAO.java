@@ -46,8 +46,6 @@ public class MySqlFriendshipDAO extends BaseMySqlDAO implements IFriendshipDAO {
             return retrievedFriendship != null;
         }
         catch (SQLException ex) {
-            System.out.println(ex.getMessage());
-            ex.printStackTrace();
             throw new DatabaseException(HttpURLConnection.HTTP_BAD_REQUEST, ex.getMessage());
         }
         finally {
@@ -89,8 +87,6 @@ public class MySqlFriendshipDAO extends BaseMySqlDAO implements IFriendshipDAO {
             return friendIds;
         }
         catch (SQLException ex) {
-            System.out.println(ex.getMessage());
-            ex.printStackTrace();
             throw new DatabaseException(HttpURLConnection.HTTP_BAD_REQUEST, ex.getMessage());
         }
         finally {
@@ -128,8 +124,6 @@ public class MySqlFriendshipDAO extends BaseMySqlDAO implements IFriendshipDAO {
             return true;
         }
         catch (SQLException ex) {
-            System.out.println(ex.getMessage());
-            ex.printStackTrace();
             throw new DatabaseException(HttpURLConnection.HTTP_BAD_REQUEST, ex.getMessage());
         }
         finally {
@@ -161,8 +155,6 @@ public class MySqlFriendshipDAO extends BaseMySqlDAO implements IFriendshipDAO {
             return true;
         }
         catch (SQLException ex) {
-            System.out.println(ex.getMessage());
-            ex.printStackTrace();
             throw new DatabaseException(HttpURLConnection.HTTP_BAD_REQUEST, ex.getMessage());
         }
         finally {

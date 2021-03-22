@@ -18,17 +18,11 @@ public abstract class BaseMySqlDAO {
         try {
             alterTable(deleteTableCommand);
         }
-        catch (DatabaseException ex) {
-            System.out.println(ex.getMessage());
-            ex.printStackTrace();
-        }
+        catch (DatabaseException ignored) {}
         try {
             alterTable(createTableCommand);
         }
-        catch (DatabaseException ex) {
-            System.out.println(ex.getMessage());
-            ex.printStackTrace();
-        }
+        catch (DatabaseException ignored) {}
     }
 
     public void alterTable(String sqlCommand) throws DatabaseException {
@@ -41,8 +35,6 @@ public abstract class BaseMySqlDAO {
             success = true;
         }
         catch (SQLException ex) {
-            System.out.println(ex.getMessage());
-            ex.printStackTrace();
             throw new DatabaseException(HttpURLConnection.HTTP_BAD_REQUEST, ex.getMessage());
         }
         finally {

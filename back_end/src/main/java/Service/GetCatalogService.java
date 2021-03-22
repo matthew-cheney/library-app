@@ -14,11 +14,12 @@ public class GetCatalogService implements IGetCatalogService {
     @Override
     public CatalogResponse getCatalog(CatalogRequest request) {
         try {
-            List<Item> items = getItemDAO().getItemsByOwner(request.getOwnerId(), request.getOffset());
+            List<Item> items = getItemDAO().getItemsByOwner(request.getOwnerId(),
+                    request.getCategoryFilter(), request.getOffset());
             return new CatalogResponse(true, items);
         }
         catch (DatabaseException ex) {
-            return new CatalogResponse(false, ex.getErrorCodeAndMessage());
+            return new CatalogResponse(false, ex.getMessage());
         }
     }
 
