@@ -14,7 +14,7 @@ public class EditItemService implements IEditItemService {
             return new EditItemResponse(getItemDAO().updateItem(request.getItem().getId(), request.getItem()));
         }
         catch (DatabaseException ex) {
-            return new EditItemResponse(false, ex.getMessage());
+            return new EditItemResponse(false, ex.getErrorCode(), ex.getMessage());
         }
     }
 

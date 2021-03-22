@@ -20,6 +20,10 @@ public class SearchUsersResponse extends BaseResponse {
         super(success, message);
     }
 
+    public SearchUsersResponse(boolean success, int errorCode, String message) {
+        super(success, errorCode, message);
+    }
+
     public List<User> getUsers() {
         return users;
     }

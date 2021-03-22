@@ -13,4 +13,8 @@ public class AddFriendResponse extends BaseResponse {
     public AddFriendResponse(boolean success, String message) {
         super(success, message);
     }
+
+    public AddFriendResponse(boolean success, int errorCode, String message) {
+        super(success, errorCode, message);
+    }
 }

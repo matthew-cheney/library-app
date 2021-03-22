@@ -1,5 +1,6 @@
 package DataAccess.DAO.MySql;
 
+import java.net.HttpURLConnection;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -45,9 +46,7 @@ public class MySqlFriendshipDAO extends BaseMySqlDAO implements IFriendshipDAO {
             return retrievedFriendship != null;
         }
         catch (SQLException ex) {
-            System.out.println(ex.getMessage());
-            ex.printStackTrace();
-            throw new DatabaseException(ex.getErrorCode(), ex.getMessage());
+            throw new DatabaseException(HttpURLConnection.HTTP_BAD_REQUEST, ex.getMessage());
         }
         finally {
             getConnectionPool().freeConnection(connection, success);
@@ -88,9 +87,7 @@ public class MySqlFriendshipDAO extends BaseMySqlDAO implements IFriendshipDAO {
             return friendIds;
         }
         catch (SQLException ex) {
-            System.out.println(ex.getMessage());
-            ex.printStackTrace();
-            throw new DatabaseException(ex.getErrorCode(), ex.getMessage());
+            throw new DatabaseException(HttpURLConnection.HTTP_BAD_REQUEST, ex.getMessage());
         }
         finally {
             getConnectionPool().freeConnection(connection, success);
@@ -104,10 +101,10 @@ public class MySqlFriendshipDAO extends BaseMySqlDAO implements IFriendshipDAO {
     @Override
     public boolean addFriendship(Friendship friendship) throws DatabaseException {
         if (friendshipExists(friendship)) {
-            throw new DatabaseException("Friendship already exists!");
+            throw new DatabaseException(HttpURLConnection.HTTP_BAD_REQUEST, "Friendship already exists!");
         }
         if (friendship.getSortedUserIdA().equals(friendship.getSortedUserIdB())) {
-            throw new DatabaseException("You cannot befriend yourself!");
+            throw new DatabaseException(HttpURLConnection.HTTP_BAD_REQUEST, "You cannot befriend yourself!");
         }
 
         Connection connection = getConnectionPool().getConnection();
@@ -121,15 +118,13 @@ public class MySqlFriendshipDAO extends BaseMySqlDAO implements IFriendshipDAO {
             statement.setString(3, friendship.getSortedUserIdB());
 
             if (statement.executeUpdate() != 1) {
-                throw new DatabaseException("Error adding friendship!");
+                throw new DatabaseException(HttpURLConnection.HTTP_BAD_REQUEST, "Error adding friendship!");
             }
             success = true;
             return true;
         }
         catch (SQLException ex) {
-            System.out.println(ex.getMessage());
-            ex.printStackTrace();
-            throw new DatabaseException(ex.getErrorCode(), ex.getMessage());
+            throw new DatabaseException(HttpURLConnection.HTTP_BAD_REQUEST, ex.getMessage());
         }
         finally {
             getConnectionPool().freeConnection(connection, success);
@@ -154,15 +149,13 @@ public class MySqlFriendshipDAO extends BaseMySqlDAO implements IFriendshipDAO {
             statement.setString(2, friendship.getSortedUserIdB());
 
             if (statement.executeUpdate() != 1) {
-                throw new DatabaseException("Error deleting friendship!");
+                throw new DatabaseException(HttpURLConnection.HTTP_BAD_REQUEST, "Error deleting friendship!");
             }
             success = true;
             return true;
         }
         catch (SQLException ex) {
-            System.out.println(ex.getMessage());
-            ex.printStackTrace();
-            throw new DatabaseException(ex.getErrorCode(), ex.getMessage());
+            throw new DatabaseException(HttpURLConnection.HTTP_BAD_REQUEST, ex.getMessage());
         }
         finally {
             getConnectionPool().freeConnection(connection, success);

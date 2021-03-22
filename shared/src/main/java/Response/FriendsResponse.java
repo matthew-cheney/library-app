@@ -21,6 +21,10 @@ public class FriendsResponse extends BaseResponse {
         super(success, message);
     }
 
+    public FriendsResponse(boolean success, int errorCode, String message) {
+        super(success, errorCode, message);
+    }
+
     public List<User> getFriends() {
         return friends;
     }

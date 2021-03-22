@@ -29,9 +29,7 @@ public class MySqlFriendshipDAOTest extends BaseTest {
 
             dao.addFriendship(friendship);
         }
-        catch (DatabaseException ex) {
-            System.out.println(ex.getMessage());
-        }
+        catch (DatabaseException ignored) {}
     }
 
     @AfterEach
@@ -39,9 +37,7 @@ public class MySqlFriendshipDAOTest extends BaseTest {
         try {
             dao.deleteFriendship(friendship);
         }
-        catch (DatabaseException ex) {
-            System.out.println(ex.getMessage());
-        }
+        catch (DatabaseException ignored) {}
     }
 
     @Test
@@ -49,9 +45,7 @@ public class MySqlFriendshipDAOTest extends BaseTest {
         try {
             assertTrue(dao.friendshipExists(friendship));
         }
-        catch (DatabaseException ex) {
-            System.out.println(ex.getMessage());
-        }
+        catch (DatabaseException ignored) {}
     }
 
     @Test
@@ -70,9 +64,7 @@ public class MySqlFriendshipDAOTest extends BaseTest {
             List<String> friendIds = dao.getFriendIdsOfUser("TEST", TestConfig.TEST_OFFSET);
             assertEquals("APPLES", friendIds.get(0));
         }
-        catch (DatabaseException ex) {
-            System.out.println(ex.getMessage());
-        }
+        catch (DatabaseException ignored) {}
     }
 
     @Test
@@ -81,9 +73,7 @@ public class MySqlFriendshipDAOTest extends BaseTest {
             List<String> friendIds = dao.getFriendIdsOfUser("BUBBLES", TestConfig.TEST_OFFSET);
             assertEquals(0, friendIds.size());
         }
-        catch (DatabaseException ex) {
-            System.out.println(ex.getMessage());
-        }
+        catch (DatabaseException ignored) {}
     }
 
     @Test
@@ -93,9 +83,7 @@ public class MySqlFriendshipDAOTest extends BaseTest {
             assertTrue(dao.addFriendship(newFriendship));
             dao.deleteFriendship(newFriendship);
         }
-        catch (DatabaseException ex) {
-            System.out.println(ex.getMessage());
-        }
+        catch (DatabaseException ignored) {}
     }
 
     @Test
@@ -116,9 +104,7 @@ public class MySqlFriendshipDAOTest extends BaseTest {
         try {
             assertTrue(dao.deleteFriendship(friendship));
         }
-        catch (DatabaseException ex) {
-            System.out.println(ex.getMessage());
-        }
+        catch (DatabaseException ignored) {}
     }
 
     @Test

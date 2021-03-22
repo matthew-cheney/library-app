@@ -62,9 +62,7 @@ public class EditUserServiceTest extends BaseTest {
             );
             failureRequest = new EditUserRequest(invalidUser);
         }
-        catch (DatabaseException ex) {
-            System.out.println(ex.getMessage());
-        }
+        catch (DatabaseException ignored) {}
     }
 
     @AfterEach
@@ -72,9 +70,7 @@ public class EditUserServiceTest extends BaseTest {
         try {
             dao.deleteUser(user.getId());
         }
-        catch (DatabaseException ex) {
-            System.out.println(ex.getMessage());
-        }
+        catch (DatabaseException ignored) {}
     }
 
     @Test
@@ -85,9 +81,7 @@ public class EditUserServiceTest extends BaseTest {
             User resultingUser = dao.getUserById(user.getId());
             assertEquals(user, resultingUser);
         }
-        catch (DatabaseException ex) {
-            System.out.println(ex.getMessage());
-        }
+        catch (DatabaseException ignored) {}
     }
 
     @Test

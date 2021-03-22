@@ -67,9 +67,7 @@ public class LoginServiceTest extends BaseTest {
             User user = dao.getUserByCredentials(successfulRequest.getUsername(), successfulRequest.getPassword());
             dao.deleteUser(user.getId());
         }
-        catch (DatabaseException ex) {
-            System.out.println(ex.getMessage());
-        }
+        catch (DatabaseException ignored) {}
     }
 
     @Test

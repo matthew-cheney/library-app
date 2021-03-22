@@ -14,7 +14,7 @@ public class EditUserService implements IEditUserService {
             return new EditUserResponse(getUserDAO().updateUser(request.getUser().getId(), request.getUser()));
         }
         catch (DatabaseException ex) {
-            return new EditUserResponse(false, ex.getMessage());
+            return new EditUserResponse(false, ex.getErrorCode(), ex.getMessage());
         }
     }
 

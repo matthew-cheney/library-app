@@ -46,9 +46,7 @@ public class RegisterServiceTest extends BaseTest {
             User user = dao.getUserByCredentials(request.getUsername(), request.getPassword());
             dao.deleteUser(user.getId());
         }
-        catch (DatabaseException ex) {
-            System.out.println(ex.getMessage());
-        }
+        catch (DatabaseException ignored) {}
     }
 
     @Test

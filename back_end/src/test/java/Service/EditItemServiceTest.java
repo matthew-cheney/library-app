@@ -87,9 +87,7 @@ public class EditItemServiceTest extends BaseTest {
 
             dao.addItem(boardGame);
         }
-        catch (DatabaseException ex) {
-            System.out.println(ex.getMessage());
-        }
+        catch (DatabaseException ignored) {}
     }
 
     @AfterEach
@@ -97,9 +95,7 @@ public class EditItemServiceTest extends BaseTest {
         try {
             dao.deleteItem(boardGame.getId());
         }
-        catch (DatabaseException ex) {
-            System.out.println(ex.getMessage());
-        }
+        catch (DatabaseException ignored) {}
     }
 
     @Test
@@ -112,9 +108,7 @@ public class EditItemServiceTest extends BaseTest {
             Item item = dao.getItemById(successfulRequest.getItem().getId());
             assertEquals(editedBoardGame, item);
         }
-        catch (DatabaseException ex) {
-            System.out.println(ex.getMessage());
-        }
+        catch (DatabaseException ignored) {}
         finally {
             assertTrue(responseReceived);
         }
