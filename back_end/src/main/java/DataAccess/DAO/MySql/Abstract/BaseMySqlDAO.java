@@ -1,5 +1,6 @@
 package DataAccess.DAO.MySql.Abstract;
 
+import java.net.HttpURLConnection;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -42,7 +43,7 @@ public abstract class BaseMySqlDAO {
         catch (SQLException ex) {
             System.out.println(ex.getMessage());
             ex.printStackTrace();
-            throw new DatabaseException(ex.getErrorCode(), ex.getMessage());
+            throw new DatabaseException(HttpURLConnection.HTTP_BAD_REQUEST, ex.getMessage());
         }
         finally {
             getConnectionPool().freeConnection(connection, success);

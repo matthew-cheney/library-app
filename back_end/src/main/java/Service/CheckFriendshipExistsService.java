@@ -13,7 +13,7 @@ public class CheckFriendshipExistsService implements ICheckFriendshipExistsServi
             return new CheckFriendshipExistsResponse(true, getFriendshipDAO().friendshipExists(request.getFriendship()));
         }
         catch (DatabaseException ex) {
-            return new CheckFriendshipExistsResponse(false, ex.getMessage());
+            return new CheckFriendshipExistsResponse(false, ex.getErrorCodeAndMessage());
         }
     }
 

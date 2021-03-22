@@ -14,7 +14,7 @@ public class DeleteItemService implements IDeleteItemService {
             return new DeleteItemResponse(getItemDAO().deleteItem(request.getId()));
         }
         catch (DatabaseException ex) {
-            return new DeleteItemResponse(false, ex.getMessage());
+            return new DeleteItemResponse(false, ex.getErrorCodeAndMessage());
         }
     }
 

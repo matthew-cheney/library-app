@@ -18,7 +18,7 @@ public class SearchUsersService implements ISearchUsersService {
             return new SearchUsersResponse(true, users);
         }
         catch (DatabaseException ex) {
-            return new SearchUsersResponse(false, ex.getMessage());
+            return new SearchUsersResponse(false, ex.getErrorCodeAndMessage());
         }
     }
 

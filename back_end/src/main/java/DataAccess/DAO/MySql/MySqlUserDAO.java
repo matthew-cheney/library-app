@@ -7,6 +7,7 @@ import DataAccess.DAO.Interfaces.IUserDAO;
 import Entities.User;
 import Utilities.EntityUtils;
 
+import java.net.HttpURLConnection;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -53,7 +54,7 @@ public class MySqlUserDAO extends BaseMySqlDAO implements IUserDAO {
         catch (SQLException ex) {
             System.out.println(ex.getMessage());
             ex.printStackTrace();
-            throw new DatabaseException(ex.getErrorCode(), ex.getMessage());
+            throw new DatabaseException(HttpURLConnection.HTTP_BAD_REQUEST, ex.getMessage());
         }
         finally {
             getConnectionPool().freeConnection(connection, success);
@@ -102,7 +103,7 @@ public class MySqlUserDAO extends BaseMySqlDAO implements IUserDAO {
         catch (SQLException ex) {
             System.out.println(ex.getMessage());
             ex.printStackTrace();
-            throw new DatabaseException(ex.getErrorCode(), ex.getMessage());
+            throw new DatabaseException(HttpURLConnection.HTTP_BAD_REQUEST, ex.getMessage());
         }
         finally {
             getConnectionPool().freeConnection(connection, success);
@@ -129,7 +130,7 @@ public class MySqlUserDAO extends BaseMySqlDAO implements IUserDAO {
                 String passwordSalt = resultSet.getString(4);
 
                 if (!EntityUtils.verifyPassword(password, passwordHash, passwordSalt)) {
-                    throw new DatabaseException("Invalid Password!");
+                    throw new DatabaseException(HttpURLConnection.HTTP_BAD_REQUEST, "Invalid Password!");
                 }
 
                 user = new User(
@@ -148,7 +149,7 @@ public class MySqlUserDAO extends BaseMySqlDAO implements IUserDAO {
             }
 
             if (user == null) {
-                throw new DatabaseException("Invalid Username!");
+                throw new DatabaseException(HttpURLConnection.HTTP_BAD_REQUEST, "Invalid Username!");
             }
             success = true;
             return user;
@@ -156,7 +157,7 @@ public class MySqlUserDAO extends BaseMySqlDAO implements IUserDAO {
         catch (SQLException ex) {
             System.out.println(ex.getMessage());
             ex.printStackTrace();
-            throw new DatabaseException(ex.getErrorCode(), ex.getMessage());
+            throw new DatabaseException(HttpURLConnection.HTTP_BAD_REQUEST, ex.getMessage());
         }
         finally {
             getConnectionPool().freeConnection(connection, success);
@@ -204,7 +205,7 @@ public class MySqlUserDAO extends BaseMySqlDAO implements IUserDAO {
         catch (SQLException ex) {
             System.out.println(ex.getMessage());
             ex.printStackTrace();
-            throw new DatabaseException(ex.getErrorCode(), ex.getMessage());
+            throw new DatabaseException(HttpURLConnection.HTTP_BAD_REQUEST, ex.getMessage());
         }
         finally {
             getConnectionPool().freeConnection(connection, success);
@@ -234,7 +235,7 @@ public class MySqlUserDAO extends BaseMySqlDAO implements IUserDAO {
             statement.setString(9, user.getImageUrl());
 
             if (statement.executeUpdate() != 1) {
-                throw new DatabaseException("Error adding user!");
+                throw new DatabaseException(HttpURLConnection.HTTP_BAD_REQUEST, "Error adding user!");
             }
             success = true;
             return true;
@@ -242,7 +243,7 @@ public class MySqlUserDAO extends BaseMySqlDAO implements IUserDAO {
         catch (SQLException ex) {
             System.out.println(ex.getMessage());
             ex.printStackTrace();
-            throw new DatabaseException(ex.getErrorCode(), ex.getMessage());
+            throw new DatabaseException(HttpURLConnection.HTTP_BAD_REQUEST, ex.getMessage());
         }
         finally {
             getConnectionPool().freeConnection(connection, success);
@@ -281,7 +282,7 @@ public class MySqlUserDAO extends BaseMySqlDAO implements IUserDAO {
             statement.setString(9, user.getId());
 
             if (statement.executeUpdate() != 1) {
-                throw new DatabaseException("Error updating user!");
+                throw new DatabaseException(HttpURLConnection.HTTP_BAD_REQUEST, "Error updating user!");
             }
             success = true;
             return true;
@@ -289,7 +290,7 @@ public class MySqlUserDAO extends BaseMySqlDAO implements IUserDAO {
         catch (SQLException ex) {
             System.out.println(ex.getMessage());
             ex.printStackTrace();
-            throw new DatabaseException(ex.getErrorCode(), ex.getMessage());
+            throw new DatabaseException(HttpURLConnection.HTTP_BAD_REQUEST, ex.getMessage());
         }
         finally {
             getConnectionPool().freeConnection(connection, success);
@@ -311,7 +312,7 @@ public class MySqlUserDAO extends BaseMySqlDAO implements IUserDAO {
             statement.setString(1, id);
 
             if (statement.executeUpdate() != 1) {
-                throw new DatabaseException("Error deleting user!");
+                throw new DatabaseException(HttpURLConnection.HTTP_BAD_REQUEST, "Error deleting user!");
             }
             success = true;
             return true;
@@ -319,7 +320,7 @@ public class MySqlUserDAO extends BaseMySqlDAO implements IUserDAO {
         catch (SQLException ex) {
             System.out.println(ex.getMessage());
             ex.printStackTrace();
-            throw new DatabaseException(ex.getErrorCode(), ex.getMessage());
+            throw new DatabaseException(HttpURLConnection.HTTP_BAD_REQUEST, ex.getMessage());
         }
         finally {
             getConnectionPool().freeConnection(connection, success);

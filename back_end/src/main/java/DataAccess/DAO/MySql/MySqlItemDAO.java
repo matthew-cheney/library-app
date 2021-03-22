@@ -6,6 +6,7 @@ import DataAccess.DAO.DatabaseException;
 import DataAccess.DAO.Interfaces.IItemDAO;
 import Entities.Item;
 
+import java.net.HttpURLConnection;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -59,7 +60,7 @@ public class MySqlItemDAO extends BaseMySqlDAO implements IItemDAO {
         catch (SQLException ex) {
             System.out.println(ex.getMessage());
             ex.printStackTrace();
-            throw new DatabaseException(ex.getErrorCode(), ex.getMessage());
+            throw new DatabaseException(HttpURLConnection.HTTP_BAD_REQUEST, ex.getMessage());
         }
         finally {
             getConnectionPool().freeConnection(connection, success);
@@ -107,7 +108,7 @@ public class MySqlItemDAO extends BaseMySqlDAO implements IItemDAO {
         catch (SQLException ex) {
             System.out.println(ex.getMessage());
             ex.printStackTrace();
-            throw new DatabaseException(ex.getErrorCode(), ex.getMessage());
+            throw new DatabaseException(HttpURLConnection.HTTP_BAD_REQUEST, ex.getMessage());
         }
         finally {
             getConnectionPool().freeConnection(connection, success);
@@ -171,7 +172,7 @@ public class MySqlItemDAO extends BaseMySqlDAO implements IItemDAO {
         catch (SQLException ex) {
             System.out.println(ex.getMessage());
             ex.printStackTrace();
-            throw new DatabaseException(ex.getErrorCode(), ex.getMessage());
+            throw new DatabaseException(HttpURLConnection.HTTP_BAD_REQUEST, ex.getMessage());
         }
         finally {
             getConnectionPool().freeConnection(connection, success);
@@ -193,7 +194,7 @@ public class MySqlItemDAO extends BaseMySqlDAO implements IItemDAO {
             statement.setString(1, item.getId());
             statement.setString(2, item.getTitle());
             statement.setString(3, item.getCategory());
-            statement.setString(4, item.getDateCreated().toString());
+            statement.setString(4, item.getDateCreated());
             statement.setBoolean(5, item.isAvailable());
             statement.setString(6, item.getOwnerId());
             statement.setString(7, item.getImageUrl());
@@ -206,7 +207,7 @@ public class MySqlItemDAO extends BaseMySqlDAO implements IItemDAO {
             statement.setString(14, item.getAuthor());
 
             if (statement.executeUpdate() != 1) {
-                throw new DatabaseException("Error adding item!");
+                throw new DatabaseException(HttpURLConnection.HTTP_BAD_REQUEST, "Error adding item!");
             }
             success = true;
             return true;
@@ -214,7 +215,7 @@ public class MySqlItemDAO extends BaseMySqlDAO implements IItemDAO {
         catch (SQLException ex) {
             System.out.println(ex.getMessage());
             ex.printStackTrace();
-            throw new DatabaseException(ex.getErrorCode(), ex.getMessage());
+            throw new DatabaseException(HttpURLConnection.HTTP_BAD_REQUEST, ex.getMessage());
         }
         finally {
             getConnectionPool().freeConnection(connection, success);
@@ -263,7 +264,7 @@ public class MySqlItemDAO extends BaseMySqlDAO implements IItemDAO {
             statement.setString(14, item.getId());
 
             if (statement.executeUpdate() != 1) {
-                throw new DatabaseException("Error updating item!");
+                throw new DatabaseException(HttpURLConnection.HTTP_BAD_REQUEST, "Error updating item!");
             }
             success = true;
             return true;
@@ -271,7 +272,7 @@ public class MySqlItemDAO extends BaseMySqlDAO implements IItemDAO {
         catch (SQLException ex) {
             System.out.println(ex.getMessage());
             ex.printStackTrace();
-            throw new DatabaseException(ex.getErrorCode(), ex.getMessage());
+            throw new DatabaseException(HttpURLConnection.HTTP_BAD_REQUEST, ex.getMessage());
         }
         finally {
             getConnectionPool().freeConnection(connection, success);
@@ -293,7 +294,7 @@ public class MySqlItemDAO extends BaseMySqlDAO implements IItemDAO {
             statement.setString(1, id);
 
             if (statement.executeUpdate() != 1) {
-                throw new DatabaseException("Error deleting item!");
+                throw new DatabaseException(HttpURLConnection.HTTP_BAD_REQUEST, "Error deleting item!");
             }
             success = true;
             return true;
@@ -301,7 +302,7 @@ public class MySqlItemDAO extends BaseMySqlDAO implements IItemDAO {
         catch (SQLException ex) {
             System.out.println(ex.getMessage());
             ex.printStackTrace();
-            throw new DatabaseException(ex.getErrorCode(), ex.getMessage());
+            throw new DatabaseException(HttpURLConnection.HTTP_BAD_REQUEST, ex.getMessage());
         }
         finally {
             getConnectionPool().freeConnection(connection, success);

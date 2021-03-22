@@ -18,7 +18,7 @@ public class SearchItemsService implements ISearchItemsService {
             return new SearchItemsResponse(true, items);
         }
         catch (DatabaseException ex) {
-            return new SearchItemsResponse(false, ex.getMessage());
+            return new SearchItemsResponse(false, ex.getErrorCodeAndMessage());
         }
     }
 
