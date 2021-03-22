@@ -20,6 +20,8 @@
     <string name="addImageButton">Add Image</string>
     <string name="catalogTabTitle">Catalog</string>
     <string name="friendsTabTitle">Friends</string>
+    <string name="viewItemTitle"><u>Title</u></string>
+    <string name="viewItemDate"><u>Date Added</u></string>
 
     <string name="sampleAlias">"@UserAlias"</string>
     <string name="sampleUserName">The User</string>
