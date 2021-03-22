@@ -9,10 +9,12 @@ import TestUtils.DatabaseFiller;
 import TestUtils.TestConfig;
 
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -76,6 +78,33 @@ public class MySqlUserDAOTest extends BaseTest {
         try {
             User user = dao.getUserById("BUBBLES");
             assertNull(user);
+        }
+        catch (DatabaseException ignored) {}
+    }
+
+    @Test
+    public void getUsersByIds_Success() {
+        try {
+            dao.addUser(otherTestUser);
+            List<String> ids = new ArrayList<>();
+            ids.add("TEST");
+            ids.add("TEST_OTHER");
+
+            List<User> users = dao.getUsersByIds(ids, 0);
+            assertEquals(2, users.size());
+        }
+        catch (DatabaseException ignored) {}
+    }
+
+    @Test
+    public void getUsersByIds_Failure() {
+        try {
+            List<String> ids = new ArrayList<>();
+            ids.add("ERIN");
+            ids.add("WOOD");
+
+            List<User> users = dao.getUsersByIds(ids, 0);
+            assertEquals(0, users.size());
         }
         catch (DatabaseException ignored) {}
     }

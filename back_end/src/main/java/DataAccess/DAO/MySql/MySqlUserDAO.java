@@ -172,8 +172,10 @@ public class MySqlUserDAO extends BaseMySqlDAO implements IUserDAO {
                 + "LIMIT " + offset + ", " + Constants.BATCH_SIZE;
 
         try (PreparedStatement statement = connection.prepareStatement(sqlCommand)) {
+            String containsSearchCriteria = "%" + searchCriteria + "%";
+
             for (int i = 1; i <= 3; i++) {
-                statement.setString(i, searchCriteria);
+                statement.setString(i, containsSearchCriteria);
             }
 
             resultSet = statement.executeQuery();
@@ -338,10 +340,10 @@ public class MySqlUserDAO extends BaseMySqlDAO implements IUserDAO {
         StringBuilder sqlCommand = new StringBuilder("SELECT * FROM Users WHERE Id = ");
         for (String id : ids) {
             if (id.equals(ids.get(0))) {
-                sqlCommand.append(" ?");
+                sqlCommand.append(" ? ");
             }
             else {
-                sqlCommand.append(" OR ?");
+                sqlCommand.append("OR ? ");
             }
         }
 

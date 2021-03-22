@@ -82,7 +82,7 @@ public class SearchItemsServiceTest extends BaseTest {
     public void searchItemsNoOwner_success() {
         SearchItemsResponse response = service.searchItems(successfulRequestNoOwner);
         assertTrue(response.isSuccess());
-        assertEquals(6, response.getItems().size());
+        assertEquals(7, response.getItems().size());
     }
 
     @Test

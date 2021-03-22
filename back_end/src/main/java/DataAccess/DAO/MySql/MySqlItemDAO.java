@@ -134,13 +134,15 @@ public class MySqlItemDAO extends BaseMySqlDAO implements IItemDAO {
                 + "LIMIT " + offset + ", " + Constants.BATCH_SIZE;
 
         try (PreparedStatement statement = connection.prepareStatement(sqlCommand)) {
+            String containsSearchCriteria = "%" + searchCriteria + "%";
+
             int startingInt = 1;
             if (!getOwnerIdCommandChunk(ownerId).equals("")) {
                 statement.setString(startingInt, ownerId);
                 startingInt++;
             }
             for (int i = startingInt; i < 8 + startingInt; i++) {
-                statement.setString(i, searchCriteria);
+                statement.setString(i, containsSearchCriteria);
             }
 
             resultSet = statement.executeQuery();
@@ -332,6 +334,6 @@ public class MySqlItemDAO extends BaseMySqlDAO implements IItemDAO {
     }
 
     private String getCategoryFilterCommandChunk(String categoryFilter) {
-        return categoryFilter == null ? "" : "AND Category LIKE ? ";
+        return categoryFilter == null ? "" : "AND Category = ? ";
     }
 }

@@ -129,7 +129,7 @@ public class MySqlItemDAOTest extends BaseTest {
         try {
             DatabaseFiller.addUnitTestItems(boardGame.getOwnerId(), 0, 25, dao);
             List<Item> items = dao.getItemsMatchingCriteria(null, "com", TestConfig.TEST_OFFSET);
-            assertEquals(9, items.size());
+            assertEquals(10, items.size());
         }
         catch (DatabaseException ignored) {}
         finally {
@@ -155,7 +155,7 @@ public class MySqlItemDAOTest extends BaseTest {
         try {
             DatabaseFiller.addUnitTestItems(boardGame.getOwnerId(), 0, 25, dao);
             List<Item> items = dao.getItemsMatchingCriteria(boardGame.getOwnerId(), "com", TestConfig.TEST_OFFSET);
-            assertEquals(9, items.size());
+            assertEquals(10, items.size());
         }
         catch (DatabaseException ignored) {}
         finally {
