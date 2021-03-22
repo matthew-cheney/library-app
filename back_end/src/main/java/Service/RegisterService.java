@@ -25,7 +25,7 @@ public class RegisterService implements IRegisterService {
             return new RegisterResponse(getUserDAO().addUser(user));
         }
         catch (DatabaseException ex) {
-            return new RegisterResponse(false, ex.getMessage());
+            return new RegisterResponse(false, ex.getErrorCode(), ex.getMessage());
         }
     }
 

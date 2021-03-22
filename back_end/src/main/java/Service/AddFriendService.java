@@ -13,7 +13,7 @@ public class AddFriendService implements IAddFriendService {
             return new AddFriendResponse(getFriendshipDAO().addFriendship(request.getFriendship()));
         }
         catch (DatabaseException ex) {
-            return new AddFriendResponse(false, ex.getMessage());
+            return new AddFriendResponse(false, ex.getErrorCode(), ex.getMessage());
         }
     }
 

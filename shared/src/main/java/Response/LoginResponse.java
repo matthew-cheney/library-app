@@ -16,6 +16,10 @@ public class LoginResponse extends UserResponse {
         super(success, message);
     }
 
+    public LoginResponse(boolean success, int errorCode, String message) {
+        super(success, errorCode, message);
+    }
+
     // region Overrides
 
     @Override

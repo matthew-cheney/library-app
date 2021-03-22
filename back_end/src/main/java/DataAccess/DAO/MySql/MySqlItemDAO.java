@@ -5,6 +5,7 @@ import DataAccess.DAO.MySql.Abstract.BaseMySqlDAO;
 import DataAccess.DAO.DatabaseException;
 import DataAccess.DAO.Interfaces.IItemDAO;
 import Entities.Item;
+import Entities.User;
 
 import java.net.HttpURLConnection;
 import java.sql.Connection;

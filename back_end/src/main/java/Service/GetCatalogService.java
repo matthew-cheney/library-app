@@ -19,7 +19,7 @@ public class GetCatalogService implements IGetCatalogService {
             return new CatalogResponse(true, items);
         }
         catch (DatabaseException ex) {
-            return new CatalogResponse(false, ex.getMessage());
+            return new CatalogResponse(false, ex.getErrorCode(), ex.getMessage());
         }
     }
 

@@ -20,6 +20,10 @@ public class SearchItemsResponse extends BaseResponse {
         super(success, message);
     }
 
+    public SearchItemsResponse(boolean success, int errorCode, String message) {
+        super(success, errorCode, message);
+    }
+
     public List<Item> getItems() {
         return items;
     }
