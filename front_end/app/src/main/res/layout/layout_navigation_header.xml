@@ -7,7 +7,7 @@
     android:padding="20dp">
 
     <ImageView
-        android:id="@+id/imageProfile"
+        android:id="@+id/navImageProfile"
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:src="@drawable/ic_profile"
@@ -22,12 +22,13 @@
         android:id="@+id/viewSupporter"
         android:layout_width="1dp"
         android:layout_height="1dp"
-        app:layout_constraintBottom_toBottomOf="@id/imageProfile"
-        app:layout_constraintEnd_toEndOf="@id/imageProfile"
-        app:layout_constraintStart_toStartOf="@id/imageProfile"
-        app:layout_constraintTop_toTopOf="@id/imageProfile" />
+        app:layout_constraintBottom_toBottomOf="@id/navImageProfile"
+        app:layout_constraintEnd_toEndOf="@id/navImageProfile"
+        app:layout_constraintStart_toStartOf="@id/navImageProfile"
+        app:layout_constraintTop_toTopOf="@id/navImageProfile" />
 
     <TextView
+        android:id="@+id/navUserName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="John Doe"
@@ -35,7 +36,7 @@
         android:textStyle="bold"
         android:textSize="18dp"
         app:layout_constraintBottom_toTopOf="@id/viewSupporter"
-        app:layout_constraintStart_toEndOf="@id/imageProfile"
+        app:layout_constraintStart_toEndOf="@id/navImageProfile"
         android:layout_marginLeft="10dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
