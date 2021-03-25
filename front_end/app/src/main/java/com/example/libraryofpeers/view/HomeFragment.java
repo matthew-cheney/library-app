@@ -78,7 +78,7 @@ public class HomeFragment extends Fragment {
 
     public void AddItem() {
         System.out.println("Adding an item");
-        Intent intent = new Intent(getActivity(), ViewItemActivity.class);
+        Intent intent = new Intent(getActivity(), NewItemActivity.class);
         startActivity(intent);
     }
 
