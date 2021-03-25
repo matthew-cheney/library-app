@@ -8,12 +8,14 @@ import java.io.IOException;
 
 import Request.AddItemRequest;
 import Request.CatalogRequest;
+import Request.DeleteItemRequest;
 import Request.EditItemRequest;
 import Request.EditUserRequest;
 import Request.LoginRequest;
 import Request.RegisterRequest;
 import Response.AddItemResponse;
 import Response.CatalogResponse;
+import Response.DeleteItemResponse;
 import Response.EditItemResponse;
 import Response.EditUserResponse;
 import Response.LoginResponse;
@@ -56,5 +58,11 @@ public class ServerFacade {
     public CatalogResponse getCatalog(CatalogRequest request, String urlPath) throws IOException {
         ClientCommunicator communicator = new ClientCommunicator(SERVER_URL);
         return communicator.doPost(urlPath, request, null, CatalogResponse.class);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    public DeleteItemResponse deleteItem(DeleteItemRequest request, String urlPath) throws IOException {
+        ClientCommunicator communicator = new ClientCommunicator(SERVER_URL);
+        return communicator.doPost(urlPath, request, null, DeleteItemResponse.class);
     }
 }

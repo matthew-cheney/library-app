@@ -17,6 +17,10 @@ public class CheckFriendshipExistsResponse extends BaseResponse {
         super(success, message);
     }
 
+    public CheckFriendshipExistsResponse(boolean success, int errorCode, String message) {
+        super(success, errorCode, message);
+    }
+
     public boolean isFriendshipExists() {
         return friendshipExists;
     }

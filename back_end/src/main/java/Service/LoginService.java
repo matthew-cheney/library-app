@@ -16,7 +16,7 @@ public class LoginService implements ILoginService {
             return new LoginResponse(true, user);
         }
         catch (DatabaseException ex) {
-            return new LoginResponse(false, ex.getMessage());
+            return new LoginResponse(false, ex.getErrorCode(), ex.getMessage());
         }
     }
 

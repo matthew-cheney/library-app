@@ -10,6 +10,7 @@ import android.widget.SearchView.OnQueryTextListener;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.os.Bundle;
@@ -21,7 +22,9 @@ import android.widget.Toast;
 
 import com.example.libraryofpeers.R;
 import com.example.libraryofpeers.view.utils.SearchCache;
+import com.example.libraryofpeers.service_proxy.LoginServiceProxy;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
 
 import androidx.fragment.app.Fragment;

@@ -2,11 +2,8 @@ package com.example.libraryofpeers.view.utils;
 
 import android.content.Intent;
 import android.view.View;
-import android.widget.Toast;
 
-import com.example.libraryofpeers.view.EditItemActivity;
-
-import java.io.Serializable;
+import com.example.libraryofpeers.view.ViewItemActivity;
 
 import Entities.Item;
 
@@ -21,7 +18,7 @@ public class ItemClickListener implements View.OnClickListener {
 
     @Override
     public void onClick(View view) {
-        Intent intent = new Intent(view.getContext(), EditItemActivity.class);
+        Intent intent = new Intent(view.getContext(), ViewItemActivity.class);
         intent.putExtra("item", item);
         view.getContext().startActivity(intent);
     }

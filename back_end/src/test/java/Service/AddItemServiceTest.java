@@ -57,12 +57,10 @@ public class AddItemServiceTest extends BaseTest {
     @AfterEach
     public void tearDownTests() {
         try {
-            List<Item> items = dao.getItemsByOwner("TEST", TestConfig.TEST_OFFSET);
+            List<Item> items = dao.getItemsByOwner("TEST", null, TestConfig.TEST_OFFSET);
             if (items.size() != 0) dao.deleteItem(items.get(0).getId());
         }
-        catch (DatabaseException ex) {
-            System.out.println(ex.getMessage());
-        }
+        catch (DatabaseException ignored) {}
     }
 
     @Test
@@ -72,13 +70,11 @@ public class AddItemServiceTest extends BaseTest {
             AddItemResponse response = service.addItem(successfulRequest);
             assertTrue(response.isSuccess());
             responseReceived = true;
-            List<Item> items = dao.getItemsByOwner(successfulRequest.getOwnerId(), TestConfig.TEST_OFFSET);
+            List<Item> items = dao.getItemsByOwner(successfulRequest.getOwnerId(), null, TestConfig.TEST_OFFSET);
             assertEquals(1, items.size());
             assertEquals("This game is amazing! So challenging, yet fun.", items.get(0).getDescription());
         }
-        catch (DatabaseException ex) {
-            System.out.println(ex.getMessage());
-        }
+        catch (DatabaseException ignored) {}
         finally {
             assertTrue(responseReceived);
         }

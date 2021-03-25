@@ -55,9 +55,7 @@ public class DeleteItemServiceTest extends BaseTest {
 
             dao.addItem(boardGame);
         }
-        catch (DatabaseException ex) {
-            System.out.println(ex.getMessage());
-        }
+        catch (DatabaseException ignored) {}
     }
 
     @AfterEach
@@ -65,9 +63,7 @@ public class DeleteItemServiceTest extends BaseTest {
         try {
             dao.deleteItem(boardGame.getId());
         }
-        catch (DatabaseException ex) {
-            System.out.println(ex.getMessage());
-        }
+        catch (DatabaseException ignored) {}
     }
 
     @Test
@@ -80,9 +76,7 @@ public class DeleteItemServiceTest extends BaseTest {
             Item item = dao.getItemById(successfulRequest.getId());
             assertNull(item);
         }
-        catch (DatabaseException ex) {
-            System.out.println(ex.getMessage());
-        }
+        catch (DatabaseException ignored) {}
         finally {
             assertTrue(responseReceived);
         }

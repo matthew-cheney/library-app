@@ -18,7 +18,7 @@ public class GetFriendsService implements IGetFriendsService {
             return new FriendsResponse(true, getUserDAO().getUsersByIds(friendIds, 0));
         }
         catch (DatabaseException ex) {
-            return new FriendsResponse(false, ex.getMessage());
+            return new FriendsResponse(false, ex.getErrorCode(), ex.getMessage());
         }
     }
 
