@@ -1,7 +1,9 @@
 package com.example.libraryofpeers.view;
 
 import Entities.Item;
+import Request.DeleteItemRequest;
 import Request.EditItemRequest;
+import Response.DeleteItemResponse;
 import Response.EditItemResponse;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -18,10 +20,12 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.example.libraryofpeers.R;
+import com.example.libraryofpeers.async_tasks.DeleteItemTask;
 import com.example.libraryofpeers.async_tasks.EditItemTask;
+import com.example.libraryofpeers.presenters.DeleteItemPresenter;
 import com.example.libraryofpeers.presenters.EditItemPresenter;
 
-public class ViewItemActivity extends AppCompatActivity implements EditItemTask.EditItemObserver {
+public class ViewItemActivity extends AppCompatActivity implements EditItemTask.EditItemObserver, DeleteItemTask.DeleteItemObserver {
     ImageView returnHomeArrow;
     TextView titleTextView;
     EditText titleEditText;
@@ -197,7 +201,10 @@ public class ViewItemActivity extends AppCompatActivity implements EditItemTask.
     }
 
     private void deleteItem() {
-
+        DeleteItemRequest request = new DeleteItemRequest(item.getId());
+        DeleteItemPresenter presenter = new DeleteItemPresenter();
+        DeleteItemTask task = new DeleteItemTask(this, presenter);
+        task.execute(request);
     }
 
     private void editingNow(String category) {
@@ -266,5 +273,19 @@ public class ViewItemActivity extends AppCompatActivity implements EditItemTask.
     public void onEditFailure(EditItemResponse response) {
         System.out.println("Failed to save item");
         Toast.makeText(this, "Failed To Save Item", Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onDeleteSuccess(DeleteItemResponse response) {
+        System.out.println("Successfully deleted item");
+        Toast.makeText(this, "Item Deleted!", Toast.LENGTH_LONG).show();
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onDeleteFail(DeleteItemResponse response) {
+        System.out.println("Failed to delete item");
+        Toast.makeText(this, "Failed To Delete Item", Toast.LENGTH_LONG).show();
     }
 }
