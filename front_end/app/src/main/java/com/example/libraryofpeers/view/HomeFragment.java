@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import android.widget.SearchView.OnQueryTextListener;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -16,9 +17,11 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.example.libraryofpeers.R;
+import com.example.libraryofpeers.view.utils.SearchCache;
 import com.example.libraryofpeers.service_proxy.LoginServiceProxy;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
@@ -86,8 +89,34 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         sectionsPagerAdapter = new SectionsPagerAdapter(getContext(), this.getChildFragmentManager(), null, SectionsPagerAdapter.DEFAULT_TAB_TITLES);
-        ViewPager viewPager = getView().findViewById(R.id.view_pager);
+        final ViewPager viewPager = getView().findViewById(R.id.view_pager);
         viewPager.setAdapter(sectionsPagerAdapter);
+
+        SearchView search = getView().findViewById(R.id.home_search);
+        search.setOnQueryTextListener(new OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                System.out.println("Searching catalog with query: " + query);
+                SearchCache.setCatalogQuery(query);
+                sectionsPagerAdapter.notifyDataSetChanged();
+                viewPager.setAdapter(sectionsPagerAdapter);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                if (newText.equals("")) {
+//                    Toast.makeText(getContext(), "it's empty!", Toast.LENGTH_LONG).show();
+                    System.out.println("Resetting catalog to no search");
+                    SearchCache.setCatalogQuery("");
+                    sectionsPagerAdapter.notifyDataSetChanged();
+                    viewPager.setAdapter(sectionsPagerAdapter);
+                }
+                return false;
+            }
+        });
+
+
 //        TabLayout tabs = getView().findViewById(R.id.tabs);
 //        tabs.setupWithViewPager(viewPager);
 
