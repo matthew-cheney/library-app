@@ -587,6 +587,7 @@
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:text="SAVE"
+            android:textColor="@color/white"
             android:backgroundTint="@color/main_orange"
             android:visibility="gone"/>
 
@@ -597,6 +598,7 @@
             android:checked="false"
             android:textOff="EDIT"
             android:textOn="EDITING..."
+            android:textColor="@color/white"
             android:backgroundTint="@color/main_orange"
             android:layout_marginLeft="35dp"
             android:layout_marginRight="35dp"/>
@@ -606,6 +608,7 @@
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/main_orange"
-            android:text="DELETE" />
+            android:text="DELETE"
+            android:textColor="@color/white" />
     </LinearLayout>
 </LinearLayout>
