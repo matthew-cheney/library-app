@@ -1,11 +1,13 @@
 package com.example.libraryofpeers.view;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import Entities.User;
 import Request.EditUserRequest;
 import Response.EditUserResponse;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
@@ -50,6 +52,16 @@ public class ProfileFragment extends Fragment implements EditProfileTask.EditPro
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         user = LoginServiceProxy.getInstance().getCurrentUser();
+
+        OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
+            @Override
+            public void handleOnBackPressed() {
+                Intent mainIntent = new Intent(getContext(), MainActivity.class);
+                startActivity(mainIntent);
+            }
+        };
+        requireActivity().getOnBackPressedDispatcher().addCallback(this, callback);
+
 
     }
 
