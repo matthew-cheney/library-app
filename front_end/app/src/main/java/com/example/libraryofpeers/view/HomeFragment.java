@@ -1,6 +1,5 @@
 package com.example.libraryofpeers.view;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -10,11 +9,6 @@ import android.widget.SearchView.OnQueryTextListener;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SearchView;
@@ -22,12 +16,9 @@ import android.widget.Toast;
 
 import com.example.libraryofpeers.R;
 import com.example.libraryofpeers.view.utils.SearchCache;
-import com.example.libraryofpeers.service_proxy.LoginServiceProxy;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
 
-import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
 /**
@@ -86,15 +77,35 @@ public class HomeFragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         sectionsPagerAdapter = new SectionsPagerAdapter(getContext(), this.getChildFragmentManager(), null, SectionsPagerAdapter.DEFAULT_TAB_TITLES);
         final ViewPager viewPager = getView().findViewById(R.id.view_pager);
         viewPager.setAdapter(sectionsPagerAdapter);
         TabLayout tabs = getView().findViewById(R.id.tabs);
+        tabs.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                if (tab.getPosition() == 0) {
+                    view.findViewById(R.id.catalog_search).setVisibility(View.VISIBLE);
+                } else {
+                    view.findViewById(R.id.catalog_search).setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
         tabs.setupWithViewPager(viewPager);
 
-        SearchView search = getView().findViewById(R.id.home_search);
+        SearchView search = getView().findViewById(R.id.catalog_search);
         search.setOnQueryTextListener(new OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
