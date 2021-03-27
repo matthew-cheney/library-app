@@ -25,6 +25,7 @@ import com.example.libraryofpeers.R;
 import com.example.libraryofpeers.async_tasks.EditProfileTask;
 import com.example.libraryofpeers.presenters.EditProfilePresenter;
 import com.example.libraryofpeers.service_proxy.LoginServiceProxy;
+import com.example.libraryofpeers.view.utils.SearchCache;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -56,6 +57,7 @@ public class ProfileFragment extends Fragment implements EditProfileTask.EditPro
         OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
             @Override
             public void handleOnBackPressed() {
+                SearchCache.setCatalogQuery("");
                 Intent mainIntent = new Intent(getContext(), MainActivity.class);
                 startActivity(mainIntent);
             }
