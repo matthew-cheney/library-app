@@ -1,10 +1,14 @@
 package com.example.libraryofpeers.view;
 
 import android.content.Intent;
+import android.database.DataSetObserver;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.SearchView.OnQueryTextListener;
 import androidx.fragment.app.Fragment;
 
@@ -12,6 +16,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SearchView;
+import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
 import android.widget.Toast;
 
 import com.example.libraryofpeers.R;
@@ -20,6 +26,9 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 
 import androidx.viewpager.widget.ViewPager;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -36,8 +45,11 @@ public class HomeFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
+    private boolean firstLoad;
+
     public HomeFragment() {
         // Required empty public constructor
+        firstLoad = true;
     }
 
     @Override
@@ -76,20 +88,24 @@ public class HomeFragment extends Fragment {
         startActivity(intent);
     }
 
+    private SectionsPagerAdapter getSectionsPagerAdapter() {
+        return new SectionsPagerAdapter(getContext(), this.getChildFragmentManager(), null, SectionsPagerAdapter.DEFAULT_TAB_TITLES);
+    }
+
     @Override
     public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        sectionsPagerAdapter = new SectionsPagerAdapter(getContext(), this.getChildFragmentManager(), null, SectionsPagerAdapter.DEFAULT_TAB_TITLES);
-        final ViewPager viewPager = getView().findViewById(R.id.view_pager);
+        sectionsPagerAdapter = getSectionsPagerAdapter();
+        ViewPager viewPager = getView().findViewById(R.id.view_pager);
         viewPager.setAdapter(sectionsPagerAdapter);
         TabLayout tabs = getView().findViewById(R.id.tabs);
         tabs.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 if (tab.getPosition() == 0) {
-                    view.findViewById(R.id.catalog_search).setVisibility(View.VISIBLE);
+                    view.findViewById(R.id.category_toolbar).setVisibility(View.VISIBLE);
                 } else {
-                    view.findViewById(R.id.catalog_search).setVisibility(View.GONE);
+                    view.findViewById(R.id.category_toolbar).setVisibility(View.GONE);
                 }
             }
 
@@ -105,13 +121,14 @@ public class HomeFragment extends Fragment {
         });
         tabs.setupWithViewPager(viewPager);
 
-        SearchView search = getView().findViewById(R.id.catalog_search);
+        final SearchView search = getView().findViewById(R.id.catalog_search);
         search.setOnQueryTextListener(new OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 System.out.println("Searching catalog with query: " + query);
                 SearchCache.setCatalogQuery(query);
                 sectionsPagerAdapter.notifyDataSetChanged();
+                ViewPager viewPager = getView().findViewById(R.id.view_pager);
                 viewPager.setAdapter(sectionsPagerAdapter);
                 return false;
             }
@@ -123,15 +140,66 @@ public class HomeFragment extends Fragment {
                     System.out.println("Resetting catalog to no search");
                     SearchCache.setCatalogQuery("");
                     sectionsPagerAdapter.notifyDataSetChanged();
+                    ViewPager viewPager = getView().findViewById(R.id.view_pager);
                     viewPager.setAdapter(sectionsPagerAdapter);
                 }
                 return false;
             }
         });
 
+        Spinner categorySpinner = getView().findViewById(R.id.category_dropdown);
+        List<String> categoryNames = new ArrayList<>();
+        categoryNames.add("All");
+        categoryNames.add("Book");
+        categoryNames.add("Movie");
+        categoryNames.add("Game");
 
-//        TabLayout tabs = getView().findViewById(R.id.tabs);
-//        tabs.setupWithViewPager(viewPager);
+        ArrayAdapter<String> categoryAdapter = new ArrayAdapter<>(getActivity(), R.layout.new_item_selected, categoryNames);
+        categoryAdapter.setDropDownViewResource(R.layout.new_item_dropdown_category);
+        categorySpinner.setAdapter(categoryAdapter);
+        categorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                ViewPager viewPager = getView().findViewById(R.id.view_pager);
+                switch (i) {
+                    case 0:
+                        if (firstLoad) {
+                            firstLoad = false;
+                            break;
+                        }
+                        SearchCache.setCategoryFilter(null);
+                        viewPager.setAdapter(getSectionsPagerAdapter());
+                        getActivity().findViewById(R.id.catalog_search).setVisibility(View.VISIBLE);
+                        break;
+                    case 1:
+//                        ((SearchView) getActivity().findViewById(R.id.catalog_search)).setQuery("", false);
+//                        SearchCache.setCatalogQuery("");
+                        SearchCache.setCategoryFilter("book");
+                        viewPager.setAdapter(getSectionsPagerAdapter());
+                        getActivity().findViewById(R.id.catalog_search).setVisibility(View.GONE);
+                        break;
+                    case 2:
+//                        ((SearchView) getActivity().findViewById(R.id.catalog_search)).setQuery("", false);
+//                        SearchCache.setCatalogQuery("");
+                        SearchCache.setCategoryFilter("movie");
+                        viewPager.setAdapter(getSectionsPagerAdapter());
+                        getActivity().findViewById(R.id.catalog_search).setVisibility(View.GONE);
+                        break;
+                    case 3:
+//                        ((SearchView) getActivity().findViewById(R.id.catalog_search)).setQuery("", false);
+//                        SearchCache.setCatalogQuery("");
+                        SearchCache.setCategoryFilter("game");
+                        viewPager.setAdapter(getSectionsPagerAdapter());
+                        getActivity().findViewById(R.id.catalog_search).setVisibility(View.GONE);
+                        break;
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
 
     }
 }
