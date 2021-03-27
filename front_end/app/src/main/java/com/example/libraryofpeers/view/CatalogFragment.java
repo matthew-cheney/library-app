@@ -195,16 +195,17 @@ public class CatalogFragment extends Fragment implements CatalogPresenter.View {
             isLoading = true;
             addLoadingFooter();
 
-            if (SearchCache.getCatalogQuery().equals("")) {
+            if (SearchCache.getCatalogQuery().equals("") || SearchCache.getCategoryFilter() != null) {
+//                Toast.makeText(getContext(), SearchCache.getCategoryFilter(), Toast.LENGTH_SHORT).show();
                 CatalogTask getCatalogTask = new CatalogTask(presenter, this);
-                CatalogRequest request = new CatalogRequest(LoginServiceProxy.getInstance().getCurrentUser().getId(), null, itemsLoaded);  // Eventually this will track how many items loaded so far
+                CatalogRequest request = new CatalogRequest(LoginServiceProxy.getInstance().getCurrentUser().getId(), SearchCache.getCategoryFilter(), itemsLoaded);  // Eventually this will track how many items loaded so far
     //            if (lastItem != null) {
     //                request.setLastItemInCatalogId(lastItem.getId());
     //            }
                 getCatalogTask.execute(request);
             } else {
                 // This will be a search task once that's available
-                Toast.makeText(getContext(), "Using search mode", Toast.LENGTH_LONG).show();
+//                Toast.makeText(getContext(), "Using search mode", Toast.LENGTH_LONG).show();
                 PseudoSearchTask searchTask = new PseudoSearchTask(presenter, this, SearchCache.getCatalogQuery());
                 CatalogRequest request = new CatalogRequest(LoginServiceProxy.getInstance().getCurrentUser().getId(), null, itemsLoaded);  // Eventually this will track how many items loaded so far
                 //            if (lastItem != null) {
