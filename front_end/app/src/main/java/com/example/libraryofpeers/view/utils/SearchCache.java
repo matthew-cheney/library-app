@@ -5,9 +5,11 @@ public class SearchCache {
     private static SearchCache cache;
 
     public String catalogQuery;
+    public String friendsQuery;
 
     private SearchCache() {
         this.catalogQuery = "";
+        this.friendsQuery = "";
     }
 
     public static SearchCache getInstance() {
@@ -23,6 +25,14 @@ public class SearchCache {
 
     public static String getCatalogQuery() {
         return getInstance().catalogQuery;
+    }
+
+    public static void setFriendsQuery(String friendsQuery) {
+        getInstance().friendsQuery = friendsQuery;
+    }
+
+    public static String getFriendsQuery() {
+        return getInstance().friendsQuery;
     }
 
 

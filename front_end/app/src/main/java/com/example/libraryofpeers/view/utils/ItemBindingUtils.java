@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 
 import Entities.Item;
+import Entities.User;
 
 import static com.example.libraryofpeers.view.utils.FetchImage.setImageToDrawable;
 import static com.example.libraryofpeers.view.utils.FetchImage.setImageViewToUrl;
@@ -22,6 +23,8 @@ public class ItemBindingUtils {
     public static String bookUri = "@drawable/book";
     public static String movieUri = "@drawable/movie";
     public static String boardGameUri = "@drawable/board_game";
+
+    public static String userUri = "@drawable/person";
 
     public static void bindItemToViews(Item item, TextView itemTitle, TextView itemSubtitle, ImageView itemImage, Context context) {
         itemTitle.setText(item.getTitle());
@@ -52,31 +55,12 @@ public class ItemBindingUtils {
                 break;
         }
     }
-//
-//    private static SpannableString parseBody(String body) {
-//        SpannableString spannableText = new SpannableString(body);
-//        boolean justSawSpace = true;
-//        for (int i = 0; i < spannableText.length(); i++) {
-//            if (justSawSpace && spannableText.charAt(i) == '@') {
-//                int start = i;
-//                i++;
-//                StringBuilder nextTag = new StringBuilder();
-//                while (i < spannableText.length()) {
-//                    if (spannableText.charAt(i) != ' ') {
-//                        nextTag.append(spannableText.charAt(i));
-//                        i++;
-//                    } else {
-//                        break;
-//                    }
-//                }
-//                if (spannableText.length() > 1) {
-//                    spannableText.setSpan(new ClickSpan(nextTag.toString()), start, i, spannableText.SPAN_EXCLUSIVE_EXCLUSIVE);
-//                }
-//            } else {
-//                justSawSpace = spannableText.charAt(i) == ' ';
-//            }
-//        }
-//        return spannableText;
-//    }
+
+    public static void bindUserToViews(User item, TextView itemTitle, TextView itemSubtitle, ImageView itemImage, Context context) {
+        itemTitle.setText(item.getFirstName());
+
+        setImageToDrawable(itemImage, userUri, context);
+        itemSubtitle.setVisibility(View.GONE);
+    }
 
 }

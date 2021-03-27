@@ -43,7 +43,7 @@ class SectionsPagerAdapter extends FragmentPagerAdapter {
         if (position == CATALOG_FRAGMENT_POSITION) {
             return CatalogFragment.newInstance(user, query);
         } else if (position == FRIENDS_FRAGMENT_POSITION) {
-            return CatalogFragment.newInstance(user, query);  // will change to FriendsFragment
+            return FriendsFragment.newInstance(user, query);  // will change to FriendsFragment
         }
         else {
             return PlaceholderFragment.newInstance(position + 1);
