@@ -20,5 +20,9 @@
             android:id="@+id/action_menuProfile_to_menuHome"
             app:destination="@id/menuHome" />
     </fragment>
-
+    <fragment
+        android:id="@+id/menuSettings"
+        android:name="com.example.libraryofpeers.view.FriendProfileFragment"
+        android:label="Settings"
+        tools:layout="@layout/fragment_friend_profile" />
 </navigation>
