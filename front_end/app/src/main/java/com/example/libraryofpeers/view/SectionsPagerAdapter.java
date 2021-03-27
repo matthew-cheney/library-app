@@ -41,8 +41,7 @@ class SectionsPagerAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
         if (position == CATALOG_FRAGMENT_POSITION) {
-            return FriendsFragment.newInstance(user, query);  // will change to FriendsFragment
-//            return CatalogFragment.newInstance(user, query);
+            return CatalogFragment.newInstance(user, query);
         } else if (position == FRIENDS_FRAGMENT_POSITION) {
             return FriendsFragment.newInstance(user, query);  // will change to FriendsFragment
         }

@@ -50,21 +50,29 @@
             android:layout_height="75dp"
             android:orientation="vertical" >
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="37dp"
-                android:textAlignment="center"
-                android:background="@color/main_orange"
-                android:textColor="@color/black"
-                android:textSize="22dp"
-                android:text="Catalog"
-                android:gravity="center_horizontal" />
+<!--            <TextView-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="37dp"-->
+<!--                android:textAlignment="center"-->
+<!--                android:background="@color/main_orange"-->
+<!--                android:textColor="@color/black"-->
+<!--                android:textSize="22dp"-->
+<!--                android:text="Catalog"-->
+<!--                android:gravity="center_horizontal" />-->
+        <SearchView
+            android:id="@+id/home_search"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="@color/light_grey"/>
 
-            <SearchView
-                android:id="@+id/home_search"
-                android:layout_width="match_parent"
-                android:layout_height="35dp"
-                android:background="@color/light_grey"/>
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tabs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:tabTextColor="@color/off_white"
+            app:tabSelectedTextColor="@color/white"
+            android:background="@color/main_orange" />
+
 
             <View
                 android:layout_width="match_parent"

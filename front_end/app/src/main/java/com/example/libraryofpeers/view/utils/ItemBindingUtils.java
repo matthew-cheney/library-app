@@ -24,7 +24,7 @@ public class ItemBindingUtils {
     public static String movieUri = "@drawable/movie";
     public static String boardGameUri = "@drawable/board_game";
 
-    public static String userUri = "@drawable/book";
+    public static String userUri = "@drawable/person";
 
     public static void bindItemToViews(Item item, TextView itemTitle, TextView itemSubtitle, ImageView itemImage, Context context) {
         itemTitle.setText(item.getTitle());

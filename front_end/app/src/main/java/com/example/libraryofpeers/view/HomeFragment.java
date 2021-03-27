@@ -91,6 +91,8 @@ public class HomeFragment extends Fragment {
         sectionsPagerAdapter = new SectionsPagerAdapter(getContext(), this.getChildFragmentManager(), null, SectionsPagerAdapter.DEFAULT_TAB_TITLES);
         final ViewPager viewPager = getView().findViewById(R.id.view_pager);
         viewPager.setAdapter(sectionsPagerAdapter);
+        TabLayout tabs = getView().findViewById(R.id.tabs);
+        tabs.setupWithViewPager(viewPager);
 
         SearchView search = getView().findViewById(R.id.home_search);
         search.setOnQueryTextListener(new OnQueryTextListener() {
