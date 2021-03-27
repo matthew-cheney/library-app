@@ -1,5 +1,6 @@
 package Service;
 
+import DataAccess.DAO.DAOFactorySingleton;
 import DataAccess.DAO.DatabaseException;
 import DataAccess.DAO.Interfaces.IUserDAO;
 import DataAccess.DAO.MySql.MySqlUserDAO;
@@ -24,11 +25,11 @@ public class RegisterService implements IRegisterService {
             return new RegisterResponse(getUserDAO().addUser(user));
         }
         catch (DatabaseException ex) {
-            return new RegisterResponse(false, ex.getMessage());
+            return new RegisterResponse(false, ex.getErrorCode(), ex.getMessage());
         }
     }
 
     public IUserDAO getUserDAO() {
-        return new MySqlUserDAO();
+        return DAOFactorySingleton.getInstance().makeUserDAO();
     }
 }

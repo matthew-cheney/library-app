@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS Users (
 	LastName VARCHAR(25) NOT NULL,
 	Email VARCHAR(50),
 	PhoneNumber VARCHAR(25),
-	ImageUrl VARCHAR(50),
+	ImageUrl VARCHAR(127),
 	PRIMARY KEY (Id)
 );
 CREATE TABLE IF NOT EXISTS ItemCategories (
@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS Items (
 	DateCreated VARCHAR(30) NOT NULL,
 	Available BOOL NOT NULL,
 	OwnerId VARCHAR(36) NOT NULL,
-	ImageUrl VARCHAR(50),
+	ImageUrl VARCHAR(127),
 	Description VARCHAR(255),
 	NumPlayers INT,
 	TimeToPlayInMins INT,
@@ -43,7 +43,6 @@ CREATE TABLE IF NOT EXISTS Friendships (
 	FOREIGN KEY (UserIdA) REFERENCES Users(Id),
 	FOREIGN KEY (UserIdB) REFERENCES Users(Id)
 );
-
 CREATE TABLE IF NOT EXISTS AuthTokens (
 	Id VARCHAR(36) NOT NULL,
 	Token VARCHAR(36) NOT NULL,

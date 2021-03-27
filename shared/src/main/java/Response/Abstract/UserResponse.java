@@ -1,7 +1,6 @@
 package Response.Abstract;
 
 import Entities.User;
-import Response.Abstract.BaseResponse;
 
 public abstract class UserResponse extends BaseResponse {
 
@@ -29,6 +28,18 @@ public abstract class UserResponse extends BaseResponse {
      */
     public UserResponse(boolean success, String message) {
         super(success, message);
+    }
+
+    /**
+     * Typically for a failed operation - an error message will be included and an HTTP error code
+     * @param success
+     * @param errorCode
+     * @param message
+     */
+    public UserResponse(boolean success, int errorCode, String message) {
+        setSuccess(success);
+        setErrorCode(errorCode);
+        setMessage(message);
     }
 
     public User getUser() {

@@ -1,5 +1,6 @@
 package Service;
 
+import DataAccess.DAO.DAOFactorySingleton;
 import DataAccess.DAO.DatabaseException;
 import DataAccess.DAO.Interfaces.IItemDAO;
 import DataAccess.DAO.MySql.MySqlItemDAO;
@@ -29,11 +30,11 @@ public class AddItemService implements IAddItemService {
             return new AddItemResponse(getItemDAO().addItem(item));
         }
         catch (DatabaseException ex) {
-            return new AddItemResponse(false, ex.getMessage());
+            return new AddItemResponse(false, ex.getErrorCode(), ex.getMessage());
         }
     }
 
     public IItemDAO getItemDAO() {
-        return new MySqlItemDAO();
+        return DAOFactorySingleton.getInstance().makeItemDAO();
     }
 }
