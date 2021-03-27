@@ -13,6 +13,8 @@ import Request.EditItemRequest;
 import Request.EditUserRequest;
 import Request.LoginRequest;
 import Request.RegisterRequest;
+import Request.SearchItemsRequest;
+import Request.SearchUsersRequest;
 import Response.AddItemResponse;
 import Response.CatalogResponse;
 import Response.DeleteItemResponse;
@@ -20,6 +22,8 @@ import Response.EditItemResponse;
 import Response.EditUserResponse;
 import Response.LoginResponse;
 import Response.RegisterResponse;
+import Response.SearchItemsResponse;
+import Response.SearchUsersResponse;
 
 public class ServerFacade {
     private static final String SERVER_URL = "https://uvxkvq54nl.execute-api.us-east-2.amazonaws.com/beta";
@@ -65,4 +69,17 @@ public class ServerFacade {
         ClientCommunicator communicator = new ClientCommunicator(SERVER_URL);
         return communicator.doPost(urlPath, request, null, DeleteItemResponse.class);
     }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    public SearchItemsResponse searchItems(SearchItemsRequest request, String urlPath) throws IOException {
+        ClientCommunicator communicator = new ClientCommunicator(SERVER_URL);
+        return communicator.doPost(urlPath, request, null, SearchItemsResponse.class);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    public SearchUsersResponse searchUsers(SearchUsersRequest request, String urlPath) throws IOException {
+        ClientCommunicator communicator = new ClientCommunicator(SERVER_URL);
+        return communicator.doPost(urlPath, request, null, SearchUsersResponse.class);
+    }
+
 }
