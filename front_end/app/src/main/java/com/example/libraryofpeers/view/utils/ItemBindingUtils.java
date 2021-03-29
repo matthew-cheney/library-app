@@ -57,10 +57,12 @@ public class ItemBindingUtils {
     }
 
     public static void bindUserToViews(User item, TextView itemTitle, TextView itemSubtitle, ImageView itemImage, Context context) {
-        itemTitle.setText(item.getFirstName());
-
+        itemTitle.setText(item.getFirstName() + " " + item.getLastName());
+        itemSubtitle.setText(item.getEmail());
         setImageToDrawable(itemImage, userUri, context);
-        itemSubtitle.setVisibility(View.GONE);
+        itemTitle.setVisibility(View.VISIBLE);
+        itemSubtitle.setVisibility(View.VISIBLE);
+        itemImage.setVisibility(View.VISIBLE);
     }
 
 }
