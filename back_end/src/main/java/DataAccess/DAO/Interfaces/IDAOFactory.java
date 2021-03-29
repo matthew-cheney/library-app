@@ -2,6 +2,6 @@ package DataAccess.DAO.Interfaces;
 
 public interface IDAOFactory {
     IFriendshipDAO makeFriendshipDAO();
-    IItemDAO makeNodeDAO();
+    IItemDAO makeItemDAO();
     IUserDAO makeUserDAO();
 }
