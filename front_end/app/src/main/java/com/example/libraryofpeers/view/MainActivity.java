@@ -1,5 +1,6 @@
 package com.example.libraryofpeers.view;
 
+import Entities.User;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,6 +15,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.libraryofpeers.R;
@@ -64,5 +66,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // Set Navigation User Information
+        User user = LoginServiceProxy.getInstance().getCurrentUser();
+        TextView navUserName = (TextView) navigationView.getHeaderView(0).findViewById(R.id.navUserName);
+        ImageView navImageProfile = (ImageView) navigationView.getHeaderView(0).findViewById(R.id.navImageProfile);
+        String userFullName = user.getFirstName() + " " + user.getLastName();
+        navUserName.setText(userFullName);
+        // Later set image url here
     }
 }
