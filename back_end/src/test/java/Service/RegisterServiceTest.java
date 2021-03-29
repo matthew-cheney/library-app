@@ -5,7 +5,7 @@ import DataAccess.DAO.MySql.MySqlUserDAO;
 import Entities.User;
 import Request.RegisterRequest;
 import Response.RegisterResponse;
-import TestUtils.BaseTest;
+import TestUtils.TestConfig;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,7 +14,7 @@ import org.mockito.Mockito;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class RegisterServiceTest extends BaseTest {
+public class RegisterServiceTest {
 
     private RegisterService service;
     private MySqlUserDAO dao;
@@ -34,7 +34,7 @@ public class RegisterServiceTest extends BaseTest {
     @BeforeEach
     public void setUpTests() {
         dao = Mockito.spy(MySqlUserDAO.class);
-        Mockito.when(dao.getConnectionPool()).thenReturn(CONNECTION_POOL);
+        Mockito.when(dao.getConnectionPool()).thenReturn(TestConfig.CONNECTION_POOL);
 
         service = Mockito.spy(RegisterService.class);
         Mockito.when(service.getUserDAO()).thenReturn(dao);
@@ -46,7 +46,9 @@ public class RegisterServiceTest extends BaseTest {
             User user = dao.getUserByCredentials(request.getUsername(), request.getPassword());
             dao.deleteUser(user.getId());
         }
-        catch (DatabaseException ignored) {}
+        catch (DatabaseException ex) {
+            System.out.println(ex.getMessage());
+        }
     }
 
     @Test

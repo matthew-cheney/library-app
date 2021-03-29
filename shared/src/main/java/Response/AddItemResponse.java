@@ -13,8 +13,4 @@ public class AddItemResponse extends BaseResponse {
     public AddItemResponse(boolean success, String message) {
         super(success, message);
     }
-
-    public AddItemResponse(boolean success, int errorCode, String message) {
-        super(success, errorCode, message);
-    }
 }

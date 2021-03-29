@@ -1,6 +1,5 @@
 package Service;
 
-import DataAccess.DAO.DAOFactorySingleton;
 import DataAccess.DAO.DatabaseException;
 import DataAccess.DAO.Interfaces.IItemDAO;
 import DataAccess.DAO.MySql.MySqlItemDAO;
@@ -14,11 +13,11 @@ public class EditItemService implements IEditItemService {
             return new EditItemResponse(getItemDAO().updateItem(request.getItem().getId(), request.getItem()));
         }
         catch (DatabaseException ex) {
-            return new EditItemResponse(false, ex.getErrorCode(), ex.getMessage());
+            return new EditItemResponse(false, ex.getMessage());
         }
     }
 
     public IItemDAO getItemDAO() {
-        return DAOFactorySingleton.getInstance().makeItemDAO();
+        return new MySqlItemDAO();
     }
 }

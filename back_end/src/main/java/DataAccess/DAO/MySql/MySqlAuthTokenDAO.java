@@ -3,7 +3,11 @@ package DataAccess.DAO.MySql;
 import DataAccess.DAO.DatabaseException;
 import DataAccess.DAO.Interfaces.IAuthTokenDAO;
 
+import java.text.SimpleDateFormat;
+
 public class MySqlAuthTokenDAO implements IAuthTokenDAO {
+
+    public final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("YYYY-MM-DD HH-MM-SS");
 
     @Override
     public boolean createAuthToken(String userId) throws DatabaseException {
