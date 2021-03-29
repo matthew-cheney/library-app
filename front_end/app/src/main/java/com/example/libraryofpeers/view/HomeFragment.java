@@ -188,7 +188,7 @@ public class HomeFragment extends Fragment {
                     case 3:
 //                        ((SearchView) getActivity().findViewById(R.id.catalog_search)).setQuery("", false);
 //                        SearchCache.setCatalogQuery("");
-                        SearchCache.setCategoryFilter("game");
+                        SearchCache.setCategoryFilter("board_game");
                         viewPager.setAdapter(getSectionsPagerAdapter());
                         getActivity().findViewById(R.id.catalog_search).setVisibility(View.GONE);
                         break;
