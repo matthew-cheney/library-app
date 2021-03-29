@@ -1,7 +1,10 @@
 package DataAccess.DAO;
 
+import Config.Constants;
 import DataAccess.DAO.MySql.MySqlItemDAO;
 import Entities.Item;
+import TestUtils.BaseTest;
+import TestUtils.DatabaseFiller;
 import TestUtils.TestConfig;
 
 import org.junit.jupiter.api.AfterEach;
@@ -9,21 +12,19 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class MySqlItemDAOTest {
+public class MySqlItemDAOTest extends BaseTest {
 
     MySqlItemDAO dao;
-    SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss");
     Item boardGame = new Item(
             "TEST_BOARD_GAME",
             "Pandemic",
             "BOARD_GAME",
-            dateFormat.format(new Date()),
+            Constants.ITEM_DATE_FORMAT.format(new Date()),
             true,
             "TEST",
             "www.google.com",
@@ -39,7 +40,7 @@ public class MySqlItemDAOTest {
             "TEST_MOVIE",
             "The Lord of the Rings 1",
             "MOVIE",
-            dateFormat.format(new Date()),
+            Constants.ITEM_DATE_FORMAT.format(new Date()),
             true,
             "TEST_OTHER",
             "www.google.com",
@@ -55,7 +56,7 @@ public class MySqlItemDAOTest {
             "TEST_BOOK",
             "Harry Potter and the Sorcerer's Stone",
             "BOOK",
-            dateFormat.format(new Date()),
+            Constants.ITEM_DATE_FORMAT.format(new Date()),
             true,
             "TEST",
             "www.google.com",
@@ -72,12 +73,10 @@ public class MySqlItemDAOTest {
     public void setUpTests() {
         try {
             dao = Mockito.spy(MySqlItemDAO.class);
-            Mockito.when(dao.getConnectionPool()).thenReturn(TestConfig.CONNECTION_POOL);
+            Mockito.when(dao.getConnectionPool()).thenReturn(CONNECTION_POOL);
             dao.addItem(boardGame);
         }
-        catch (DatabaseException ex) {
-            System.out.println(ex.getMessage());
-        }
+        catch (DatabaseException ignored) {}
     }
 
     @AfterEach
@@ -85,9 +84,7 @@ public class MySqlItemDAOTest {
         try {
             dao.deleteItem(boardGame.getId());
         }
-        catch (DatabaseException ex) {
-            System.out.println(ex.getMessage());
-        }
+        catch (DatabaseException ignored) {}
     }
 
     @Test
@@ -96,9 +93,7 @@ public class MySqlItemDAOTest {
             Item item = dao.getItemById(boardGame.getId());
             assertEquals(boardGame, item);
         }
-        catch (DatabaseException ex) {
-            System.out.println(ex.getMessage());
-        }
+        catch (DatabaseException ignored) {}
     }
 
     @Test
@@ -107,31 +102,77 @@ public class MySqlItemDAOTest {
             Item item = dao.getItemById("BUBBLES");
             assertNull(item);
         }
-        catch (DatabaseException ex) {
-            System.out.println(ex.getMessage());
-        }
+        catch (DatabaseException ignored) {}
     }
 
     @Test
     public void getItemsByOwner_Success() {
         try {
-            List<Item> items = dao.getItemsByOwner(boardGame.getOwnerId(), TestConfig.TEST_OFFSET);
+            List<Item> items = dao.getItemsByOwner(boardGame.getOwnerId(), null, TestConfig.TEST_OFFSET);
             assertNotEquals(0, items.size());
             assertEquals(boardGame, items.get(0));
         }
-        catch (DatabaseException ex) {
-            System.out.println(ex.getMessage());
-        }
+        catch (DatabaseException ignored) {}
     }
 
     @Test
     public void getItemsByOwner_Failure() {
         try {
-            List<Item> items = dao.getItemsByOwner("BUBBLES", TestConfig.TEST_OFFSET);
+            List<Item> items = dao.getItemsByOwner("BUBBLES", null, TestConfig.TEST_OFFSET);
             assertEquals(0, items.size());
         }
-        catch (DatabaseException ex) {
-            System.out.println(ex.getMessage());
+        catch (DatabaseException ignored) {}
+    }
+
+    @Test
+    public void getItemsMatchingCriteria_Success() {
+        try {
+            DatabaseFiller.addUnitTestItems(boardGame.getOwnerId(), 0, 25, dao);
+            List<Item> items = dao.getItemsMatchingCriteria(null, "com", TestConfig.TEST_OFFSET);
+            assertEquals(10, items.size());
+        }
+        catch (DatabaseException ignored) {}
+        finally {
+            dao.clearItemsTable();
+        }
+    }
+
+    @Test
+    public void getItemsMatchingCriteria_Failure() {
+        try {
+            DatabaseFiller.addUnitTestItems(boardGame.getOwnerId(), 0, 25, dao);
+            List<Item> items = dao.getItemsMatchingCriteria(null, "ERIN", TestConfig.TEST_OFFSET);
+            assertEquals(0, items.size());
+        }
+        catch (DatabaseException ignored) {}
+        finally {
+            dao.clearItemsTable();
+        }
+    }
+
+    @Test
+    public void getItemsMatchingCriteriaWithOwnerId_Success() {
+        try {
+            DatabaseFiller.addUnitTestItems(boardGame.getOwnerId(), 0, 25, dao);
+            List<Item> items = dao.getItemsMatchingCriteria(boardGame.getOwnerId(), "com", TestConfig.TEST_OFFSET);
+            assertEquals(10, items.size());
+        }
+        catch (DatabaseException ignored) {}
+        finally {
+            dao.clearItemsTable();
+        }
+    }
+
+    @Test
+    public void getItemsMatchingCriteriaWithOwnerId_Failure() {
+        try {
+            DatabaseFiller.addUnitTestItems(boardGame.getOwnerId(), 0, 25, dao);
+            List<Item> items = dao.getItemsMatchingCriteria("BUBBLES", "com", TestConfig.TEST_OFFSET);
+            assertEquals(0, items.size());
+        }
+        catch (DatabaseException ignored) {}
+        finally {
+            dao.clearItemsTable();
         }
     }
 
@@ -145,9 +186,7 @@ public class MySqlItemDAOTest {
             success = dao.deleteItem(movie.getId());
             assertTrue(success);
         }
-        catch (DatabaseException ex) {
-            System.out.println(ex.getMessage());
-        }
+        catch (DatabaseException ignored) {}
     }
 
     @Test
@@ -156,9 +195,7 @@ public class MySqlItemDAOTest {
             boolean success = dao.addItem(boardGame);
             assertFalse(success);
         }
-        catch (DatabaseException ex) {
-            System.out.println(ex.getMessage());
-        }
+        catch (DatabaseException ignored) {}
     }
 
     @Test
@@ -171,9 +208,7 @@ public class MySqlItemDAOTest {
             Item updatedItem = dao.getItemById(boardGame.getId());
             assertEquals(item, updatedItem);
         }
-        catch (DatabaseException ex) {
-            System.out.println(ex.getMessage());
-        }
+        catch (DatabaseException ignored) {}
     }
 
     @Test
@@ -186,9 +221,7 @@ public class MySqlItemDAOTest {
             Item notChangedItem = dao.getItemById(boardGame.getId());
             assertNotEquals(item, notChangedItem);
         }
-        catch (DatabaseException ex) {
-            System.out.println(ex.getMessage());
-        }
+        catch (DatabaseException ignored) {}
     }
 
     @Test
@@ -201,9 +234,7 @@ public class MySqlItemDAOTest {
             Item item = dao.getItemById(book.getId());
             assertNull(item);
         }
-        catch (DatabaseException ex) {
-            System.out.println(ex.getMessage());
-        }
+        catch (DatabaseException ignored) {}
     }
 
     @Test
@@ -214,8 +245,6 @@ public class MySqlItemDAOTest {
             Item item = dao.getItemById(book.getId());
             assertNull(item);
         }
-        catch (DatabaseException ex) {
-            System.out.println(ex.getMessage());
-        }
+        catch (DatabaseException ignored) {}
     }
 }

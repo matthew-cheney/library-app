@@ -12,13 +12,13 @@ import DataAccess.DAO.MySql.MySqlItemDAO;
 import Entities.Item;
 import Request.AddItemRequest;
 import Response.AddItemResponse;
+import TestUtils.BaseTest;
 import TestUtils.TestConfig;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class AddItemServiceTest {
+public class AddItemServiceTest extends BaseTest {
 
     private AddItemService service;
     private MySqlItemDAO dao;
@@ -48,7 +48,7 @@ public class AddItemServiceTest {
     @BeforeEach
     public void setUpTests() {
         dao = Mockito.spy(MySqlItemDAO.class);
-        Mockito.when(dao.getConnectionPool()).thenReturn(TestConfig.CONNECTION_POOL);
+        Mockito.when(dao.getConnectionPool()).thenReturn(CONNECTION_POOL);
 
         service = Mockito.spy(AddItemService.class);
         Mockito.when(service.getItemDAO()).thenReturn(dao);
@@ -57,12 +57,10 @@ public class AddItemServiceTest {
     @AfterEach
     public void tearDownTests() {
         try {
-            List<Item> items = dao.getItemsByOwner("TEST", TestConfig.TEST_OFFSET);
+            List<Item> items = dao.getItemsByOwner("TEST", null, TestConfig.TEST_OFFSET);
             if (items.size() != 0) dao.deleteItem(items.get(0).getId());
         }
-        catch (DatabaseException ex) {
-            System.out.println(ex.getMessage());
-        }
+        catch (DatabaseException ignored) {}
     }
 
     @Test
@@ -72,13 +70,11 @@ public class AddItemServiceTest {
             AddItemResponse response = service.addItem(successfulRequest);
             assertTrue(response.isSuccess());
             responseReceived = true;
-            List<Item> items = dao.getItemsByOwner(successfulRequest.getOwnerId(), TestConfig.TEST_OFFSET);
+            List<Item> items = dao.getItemsByOwner(successfulRequest.getOwnerId(), null, TestConfig.TEST_OFFSET);
             assertEquals(1, items.size());
             assertEquals("This game is amazing! So challenging, yet fun.", items.get(0).getDescription());
         }
-        catch (DatabaseException ex) {
-            System.out.println(ex.getMessage());
-        }
+        catch (DatabaseException ignored) {}
         finally {
             assertTrue(responseReceived);
         }

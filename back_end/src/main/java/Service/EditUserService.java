@@ -1,5 +1,6 @@
 package Service;
 
+import DataAccess.DAO.DAOFactorySingleton;
 import DataAccess.DAO.DatabaseException;
 import DataAccess.DAO.Interfaces.IUserDAO;
 import DataAccess.DAO.MySql.MySqlUserDAO;
@@ -13,11 +14,11 @@ public class EditUserService implements IEditUserService {
             return new EditUserResponse(getUserDAO().updateUser(request.getUser().getId(), request.getUser()));
         }
         catch (DatabaseException ex) {
-            return new EditUserResponse(false, ex.getMessage());
+            return new EditUserResponse(false, ex.getErrorCode(), ex.getMessage());
         }
     }
 
     public IUserDAO getUserDAO() {
-        return new MySqlUserDAO();
+        return DAOFactorySingleton.getInstance().makeUserDAO();
     }
 }

@@ -11,12 +11,12 @@ import Entities.User;
 import Request.EditUserRequest;
 import Request.RegisterRequest;
 import Response.EditUserResponse;
-import TestUtils.TestConfig;
+import TestUtils.BaseTest;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class EditUserServiceTest {
+public class EditUserServiceTest extends BaseTest {
 
     private EditUserService service;
     private MySqlUserDAO dao;
@@ -30,7 +30,7 @@ public class EditUserServiceTest {
     public void setUpTests() {
         try {
             dao = Mockito.spy(MySqlUserDAO.class);
-            Mockito.when(dao.getConnectionPool()).thenReturn(TestConfig.CONNECTION_POOL);
+            Mockito.when(dao.getConnectionPool()).thenReturn(CONNECTION_POOL);
 
             service = Mockito.spy(EditUserService.class);
             Mockito.when(service.getUserDAO()).thenReturn(dao);
@@ -62,9 +62,7 @@ public class EditUserServiceTest {
             );
             failureRequest = new EditUserRequest(invalidUser);
         }
-        catch (DatabaseException ex) {
-            System.out.println(ex.getMessage());
-        }
+        catch (DatabaseException ignored) {}
     }
 
     @AfterEach
@@ -72,9 +70,7 @@ public class EditUserServiceTest {
         try {
             dao.deleteUser(user.getId());
         }
-        catch (DatabaseException ex) {
-            System.out.println(ex.getMessage());
-        }
+        catch (DatabaseException ignored) {}
     }
 
     @Test
@@ -85,9 +81,7 @@ public class EditUserServiceTest {
             User resultingUser = dao.getUserById(user.getId());
             assertEquals(user, resultingUser);
         }
-        catch (DatabaseException ex) {
-            System.out.println(ex.getMessage());
-        }
+        catch (DatabaseException ignored) {}
     }
 
     @Test

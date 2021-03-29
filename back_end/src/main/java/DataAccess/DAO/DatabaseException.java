@@ -23,6 +23,10 @@ public class DatabaseException extends Exception {
         return message;
     }
 
+    public String getErrorCodeAndMessage() {
+        return errorCode + ": " + message;
+    }
+
     public void setErrorCode(int errorCode) {
         this.errorCode = errorCode;
     }

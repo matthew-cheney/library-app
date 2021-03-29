@@ -1,5 +1,6 @@
 package Service;
 
+import DataAccess.DAO.DAOFactorySingleton;
 import DataAccess.DAO.DatabaseException;
 import DataAccess.DAO.Interfaces.IItemDAO;
 import DataAccess.DAO.MySql.MySqlItemDAO;
@@ -13,11 +14,11 @@ public class DeleteItemService implements IDeleteItemService {
             return new DeleteItemResponse(getItemDAO().deleteItem(request.getId()));
         }
         catch (DatabaseException ex) {
-            return new DeleteItemResponse(false, ex.getMessage());
+            return new DeleteItemResponse(false, ex.getErrorCode(), ex.getMessage());
         }
     }
 
     public IItemDAO getItemDAO() {
-        return new MySqlItemDAO();
+        return DAOFactorySingleton.getInstance().makeItemDAO();
     }
 }
