@@ -1,5 +1,6 @@
 package Response;
 
+
 import Entities.User;
 import Response.Abstract.UserResponse;
 import Utilities.EntityUtils;
@@ -14,10 +15,6 @@ public class LoginResponse extends UserResponse {
 
     public LoginResponse(boolean success, String message) {
         super(success, message);
-    }
-
-    public LoginResponse(boolean success, int errorCode, String message) {
-        super(success, errorCode, message);
     }
 
     // region Overrides

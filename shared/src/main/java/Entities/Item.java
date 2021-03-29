@@ -1,15 +1,18 @@
 package Entities;
 
-import Config.Constants;
 import Utilities.EntityUtils;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class Item implements Serializable {
+public class Item {
 
     // region Properties
-  
+
+    public final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss");
+
     // region Required
 
     private String id;
@@ -43,8 +46,6 @@ public class Item implements Serializable {
 
     // region Constructors
 
-    public Item() {}
-
     /**
      * This is a constructor to use when retrieving an item from the client
      * @param title
@@ -63,12 +64,15 @@ public class Item implements Serializable {
     public Item(String title, String category, boolean available, String ownerId,
                 String imageUrl, String description, Integer numPlayers, Integer timeToPlayInMins, Integer releaseYear,
                 String genre, String itemFormat, String author) {
-        setId(EntityUtils.generateId());
+        this.id = EntityUtils.generateId();
+
         setTitle(title);
         setCategory(category);
-        setDateCreated(Constants.ITEM_DATE_FORMAT.format(new Date()));
         setAvailable(available);
-        setOwnerId(ownerId);
+
+        this.dateCreated = DATE_FORMAT.format(new Date()); // readonly property, no setter available
+        this.ownerId = ownerId; // readonly property, no setter available
+
         setImageUrl(imageUrl);
         setDescription(description);
         if (numPlayers != null) setNumPlayers(numPlayers);
@@ -99,12 +103,15 @@ public class Item implements Serializable {
     public Item(String id, String title, String category, String dateCreated, boolean available, String ownerId,
                 String imageUrl, String description, Integer numPlayers, Integer timeToPlayInMins, Integer releaseYear,
                 String genre, String itemFormat, String author) {
-        setId(id);
+        this.id = id; // readonly property, no setter available
+
         setTitle(title);
         setCategory(category);
-        setDateCreated(dateCreated);
         setAvailable(available);
-        setOwnerId(ownerId);
+
+        this.dateCreated = dateCreated; // readonly property, no setter available
+        this.ownerId = ownerId; // readonly property, no setter available
+
         setImageUrl(imageUrl);
         setDescription(description);
         if (numPlayers != null) setNumPlayers(numPlayers);
@@ -179,10 +186,6 @@ public class Item implements Serializable {
 
     // region Setters
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
     public void setTitle(String title) {
         this.title = title;
     }
@@ -191,16 +194,8 @@ public class Item implements Serializable {
         this.category = category;
     }
 
-    public void setDateCreated(String dateCreated) {
-        this.dateCreated = dateCreated;
-    }
-
     public void setAvailable(boolean available) {
         this.available = available;
-    }
-
-    public void setOwnerId(String ownerId) {
-        this.ownerId = ownerId;
     }
 
     public void setImageUrl(String imageUrl) {
@@ -265,14 +260,6 @@ public class Item implements Serializable {
                 EntityUtils.checkNullableObjects(this.getGenre(), other.getGenre()) &&
                 EntityUtils.checkNullableObjects(this.getItemFormat(), other.getItemFormat()) &&
                 EntityUtils.checkNullableObjects(this.getAuthor(), other.getAuthor());
-    }
-
-    // endregion
-
-    // region FrontEndUtils
-
-    public static Item getNullItem() {
-        return new Item(null, null, false, null, null, null, 0, 0, 0, null, null, null);
     }
 
     // endregion

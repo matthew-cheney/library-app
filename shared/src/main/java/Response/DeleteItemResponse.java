@@ -13,8 +13,4 @@ public class DeleteItemResponse extends BaseResponse {
     public DeleteItemResponse(boolean success, String message) {
         super(success, message);
     }
-
-    public DeleteItemResponse(boolean success, int errorCode, String message) {
-        super(success, errorCode, message);
-    }
 }

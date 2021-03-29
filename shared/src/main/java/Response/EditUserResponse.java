@@ -13,8 +13,4 @@ public class EditUserResponse extends BaseResponse {
     public EditUserResponse(boolean success, String message) {
         super(success, message);
     }
-
-    public EditUserResponse(boolean success, int errorCode, String message) {
-        super(success, errorCode, message);
-    }
 }

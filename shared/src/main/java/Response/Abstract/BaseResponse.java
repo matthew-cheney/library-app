@@ -1,11 +1,11 @@
 package Response.Abstract;
 
+import Response.RegisterResponse;
 import Utilities.EntityUtils;
 
 public abstract class BaseResponse {
 
     private boolean success;
-    private int errorCode;
     private String message;
 
     /**
@@ -31,18 +31,6 @@ public abstract class BaseResponse {
         setMessage(message);
     }
 
-    /**
-     * Typically for a failed operation - an error message will be included and an HTTP error code
-     * @param success
-     * @param errorCode
-     * @param message
-     */
-    public BaseResponse(boolean success, int errorCode, String message) {
-        setSuccess(success);
-        setErrorCode(errorCode);
-        setMessage(message);
-    }
-
     public boolean isSuccess() {
         return success;
     }
@@ -51,20 +39,12 @@ public abstract class BaseResponse {
         return message;
     }
 
-    public int getErrorCode() {
-        return errorCode;
-    }
-
     public void setSuccess(boolean success) {
         this.success = success;
     }
 
     public void setMessage(String message) {
         this.message = message;
-    }
-
-    public void setErrorCode(int errorCode) {
-        this.errorCode = errorCode;
     }
 
     // region Overrides

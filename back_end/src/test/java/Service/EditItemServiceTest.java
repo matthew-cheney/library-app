@@ -5,24 +5,26 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import Config.Constants;
 import DataAccess.DAO.DatabaseException;
 import DataAccess.DAO.MySql.MySqlItemDAO;
 import Entities.Item;
 import Request.EditItemRequest;
 import Response.EditItemResponse;
-import TestUtils.BaseTest;
+import TestUtils.TestConfig;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class EditItemServiceTest extends BaseTest {
+public class EditItemServiceTest {
 
     private EditItemService service;
     private MySqlItemDAO dao;
-    String currDate = Constants.ITEM_DATE_FORMAT.format(new Date());
+    SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss");
+    String currDate = dateFormat.format(new Date());
     Item boardGame = new Item(
             "TEST_BOARD_GAME",
             "Pandemic",
@@ -80,14 +82,16 @@ public class EditItemServiceTest extends BaseTest {
     public void setUpTests() {
         try {
             dao = Mockito.spy(MySqlItemDAO.class);
-            Mockito.when(dao.getConnectionPool()).thenReturn(CONNECTION_POOL);
+            Mockito.when(dao.getConnectionPool()).thenReturn(TestConfig.CONNECTION_POOL);
 
             service = Mockito.spy(EditItemService.class);
             Mockito.when(service.getItemDAO()).thenReturn(dao);
 
             dao.addItem(boardGame);
         }
-        catch (DatabaseException ignored) {}
+        catch (DatabaseException ex) {
+            System.out.println(ex.getMessage());
+        }
     }
 
     @AfterEach
@@ -95,7 +99,9 @@ public class EditItemServiceTest extends BaseTest {
         try {
             dao.deleteItem(boardGame.getId());
         }
-        catch (DatabaseException ignored) {}
+        catch (DatabaseException ex) {
+            System.out.println(ex.getMessage());
+        }
     }
 
     @Test
@@ -108,7 +114,9 @@ public class EditItemServiceTest extends BaseTest {
             Item item = dao.getItemById(successfulRequest.getItem().getId());
             assertEquals(editedBoardGame, item);
         }
-        catch (DatabaseException ignored) {}
+        catch (DatabaseException ex) {
+            System.out.println(ex.getMessage());
+        }
         finally {
             assertTrue(responseReceived);
         }

@@ -20,8 +20,6 @@ public class ItemCategory {
 
     // region Constructors
 
-    public ItemCategory() {}
-
     public ItemCategory(@NotNull String categoryName, @NotNull String ownerId) {
         id = EntityUtils.generateId();
 
@@ -50,16 +48,8 @@ public class ItemCategory {
 
     // region Setters
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
     public void setCategoryName(String categoryName) {
         this.categoryName = categoryName;
-    }
-
-    public void setOwnerId(String ownerId) {
-        this.ownerId = ownerId;
     }
 
     // endregion

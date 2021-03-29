@@ -2,10 +2,9 @@ package Entities;
 
 import Utilities.EntityUtils;
 
-import java.io.Serializable;
 import java.util.Map;
 
-public class User implements Serializable {
+public class User {
 
     // region Required Properties
 
@@ -27,8 +26,6 @@ public class User implements Serializable {
     // endregion
 
     // region Constructors
-
-    public User() {}
 
     /**
      * This is a constructor to use when receiving a user from the client
@@ -68,10 +65,12 @@ public class User implements Serializable {
      */
     public User(String id, String username, String passwordHash, String passwordSalt, String firstName, String lastName,
                 String email, String phoneNumber, String imageUrl) {
-        setId(id);
+        this.id = id;
+
         setUsername(username);
-        setPasswordHash(passwordHash);
-        setPasswordSalt(passwordSalt);
+
+        this.passwordHash = passwordHash;
+        this.passwordSalt = passwordSalt;
 
         setFirstName(firstName);
         setLastName(lastName);
@@ -125,10 +124,6 @@ public class User implements Serializable {
 
     // region Setters
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
     public void setUsername(String username) {
         this.username = username;
     }
@@ -137,17 +132,9 @@ public class User implements Serializable {
         Map<String, String> passwordPair = EntityUtils.hashPassword(password);
         assert(passwordPair.entrySet().size() == 1);
         for (Map.Entry<String, String> entry : passwordPair.entrySet()) {
-            setPasswordSalt(entry.getKey());
-            setPasswordHash(entry.getValue());
+            this.passwordSalt = entry.getKey();
+            this.passwordHash = entry.getValue();
         }
-    }
-
-    public void setPasswordHash(String passwordHash) {
-        this.passwordHash = passwordHash;
-    }
-
-    public void setPasswordSalt(String passwordSalt) {
-        this.passwordSalt = passwordSalt;
     }
 
     public void setFirstName(String firstName) {

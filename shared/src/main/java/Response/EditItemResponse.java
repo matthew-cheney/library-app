@@ -13,8 +13,4 @@ public class EditItemResponse extends BaseResponse {
     public EditItemResponse(boolean success, String message) {
         super(success, message);
     }
-
-    public EditItemResponse(boolean success, int errorCode, String message) {
-        super(success, errorCode, message);
-    }
 }

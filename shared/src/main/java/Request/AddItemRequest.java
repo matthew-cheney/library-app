@@ -3,6 +3,8 @@ package Request;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import Utilities.EntityUtils;
+
 public class AddItemRequest {
 
     // region Properties

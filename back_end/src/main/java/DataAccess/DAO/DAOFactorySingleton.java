@@ -5,7 +5,7 @@ import DataAccess.DAO.MySql.MySqlDAOFactory;
 
 public class DAOFactorySingleton {
 
-    private static IDAOFactory daoFactory;
+    private static DataAccess.DAO.Interfaces.IDAOFactory daoFactory;
 
     private DAOFactorySingleton() {}
 
