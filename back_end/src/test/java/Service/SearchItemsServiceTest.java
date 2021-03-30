@@ -26,7 +26,7 @@ public class SearchItemsServiceTest extends BaseTest {
     private MySqlItemDAO dao;
     private MySqlUserDAO userDao;
     private SearchItemsRequest successfulRequest = new SearchItemsRequest("TEST", "com", 3);
-    private SearchItemsRequest successfulRequestNoOwner = new SearchItemsRequest(null, "com", 3);
+    private SearchItemsRequest successfulRequestNoOwner = new SearchItemsRequest(null, "com edu", 3);
     private SearchItemsRequest failureRequest = new SearchItemsRequest("TEST", "ERIN", 0);
     private SearchItemsRequest failureRequestNoOwner = new SearchItemsRequest(null, "ERIN", 0);
     private SearchItemsRequest failureRequestInvalidOwner = new SearchItemsRequest("BUBBLES", "com", 0);
@@ -82,7 +82,7 @@ public class SearchItemsServiceTest extends BaseTest {
     public void searchItemsNoOwner_success() {
         SearchItemsResponse response = service.searchItems(successfulRequestNoOwner);
         assertTrue(response.isSuccess());
-        assertEquals(7, response.getItems().size());
+        assertEquals(10, response.getItems().size());
     }
 
     @Test
