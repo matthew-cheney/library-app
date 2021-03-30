@@ -18,11 +18,20 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class RegisterActivity extends AppCompatActivity implements RegisterPresenter.View, RegisterTask.RegisterRequestObserver {
     private RegisterPresenter presenter;
+    private String imageUrl = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+
+        Button addImageBtn = (Button) findViewById(R.id.addImageButton);
+        addImageBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                StartImageSelectorActivity();
+            }
+        });
 
         Button registerBtn = (Button) findViewById(R.id.registerButton);
         registerBtn.setOnClickListener(new View.OnClickListener() {
@@ -31,6 +40,19 @@ public class RegisterActivity extends AppCompatActivity implements RegisterPrese
                 Register();
             }
         });
+    }
+
+    public void StartImageSelectorActivity() {
+        Intent intent = new Intent(this, ImageSelectorActivity.class);
+        startActivityForResult(intent, 1);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1) {
+            imageUrl = data.getStringExtra("IMAGE_URL");
+        }
     }
 
     public void Register() {
@@ -49,7 +71,7 @@ public class RegisterActivity extends AppCompatActivity implements RegisterPrese
 
         if (passwordRegister.equals(confirmPasswordRegister)) {
             RegisterRequest registerRequest = new RegisterRequest(userNameRegister, passwordRegister, firstNameRegister,
-                    lastNameRegister, "", "", "");
+                    lastNameRegister, "", "", getImageUrl());
             RegisterTask registerTask = new RegisterTask(this, presenter);
             registerTask.execute(registerRequest);
         } else {
@@ -67,5 +89,9 @@ public class RegisterActivity extends AppCompatActivity implements RegisterPrese
     public void onRegisterFailure(RegisterResponse registerResponse) {
         Log.e("", "Error with Register");
         Toast.makeText(this, "Register failed. Try again!", Toast.LENGTH_LONG).show();
+    }
+
+    private String getImageUrl() {
+        return (imageUrl == null) ? "" : imageUrl;
     }
 }
