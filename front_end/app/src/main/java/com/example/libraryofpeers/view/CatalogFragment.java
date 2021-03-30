@@ -17,7 +17,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.libraryofpeers.R;
 import com.example.libraryofpeers.async_tasks.CatalogTask;
 import com.example.libraryofpeers.async_tasks.PseudoSearchTask;
+import com.example.libraryofpeers.async_tasks.SearchItemsTask;
 import com.example.libraryofpeers.presenters.CatalogPresenter;
+import com.example.libraryofpeers.presenters.SearchItemsPresenter;
 import com.example.libraryofpeers.service_proxy.LoginServiceProxy;
 import com.example.libraryofpeers.view.utils.ItemClickListener;
 import com.example.libraryofpeers.view.utils.SearchCache;
@@ -30,7 +32,9 @@ import java.util.List;
 import Entities.Item;
 import Entities.User;
 import Request.CatalogRequest;
+import Request.SearchItemsRequest;
 import Response.CatalogResponse;
+import Response.SearchItemsResponse;
 
 import static com.example.libraryofpeers.view.utils.ItemBindingUtils.bindItemToViews;
 
@@ -48,6 +52,7 @@ public class CatalogFragment extends Fragment implements CatalogPresenter.View {
 
     private User user;
     private CatalogPresenter presenter;
+    private SearchItemsPresenter searchPresenter;
 
 //    private int itemsLoaded = 0;
 
@@ -81,6 +86,7 @@ public class CatalogFragment extends Fragment implements CatalogPresenter.View {
         user = (User) getArguments().getSerializable(ITEM_KEY);
 
         presenter = new CatalogPresenter(this);
+        searchPresenter = new SearchItemsPresenter();
 
         RecyclerView CatalogRecyclerView = view.findViewById(R.id.statusesRecyclerView);
 
@@ -97,7 +103,7 @@ public class CatalogFragment extends Fragment implements CatalogPresenter.View {
 
     private class CatalogHolder extends RecyclerView.ViewHolder {
 
-//        private final ImageView itemImage;
+        //        private final ImageView itemImage;
 //        private final TextView itemAlias;
 //        private final TextView itemName;
 //        private final TextView itemContent;
@@ -125,7 +131,7 @@ public class CatalogFragment extends Fragment implements CatalogPresenter.View {
         }
     }
 
-    private class CatalogRecyclerViewAdapter extends RecyclerView.Adapter<CatalogFragment.CatalogHolder> implements CatalogTask.Observer {
+    private class CatalogRecyclerViewAdapter extends RecyclerView.Adapter<CatalogFragment.CatalogHolder> implements CatalogTask.Observer, SearchItemsTask.SearchItemsObserver {
 
         private final List<Item> items = new ArrayList<>();
 
@@ -195,18 +201,19 @@ public class CatalogFragment extends Fragment implements CatalogPresenter.View {
             isLoading = true;
             addLoadingFooter();
 
-            if (SearchCache.getCatalogQuery().equals("")) {
+            if (SearchCache.getCatalogQuery().equals("") || SearchCache.getCategoryFilter() != null) {
+//                Toast.makeText(getContext(), SearchCache.getCategoryFilter(), Toast.LENGTH_SHORT).show();
                 CatalogTask getCatalogTask = new CatalogTask(presenter, this);
-                CatalogRequest request = new CatalogRequest(LoginServiceProxy.getInstance().getCurrentUser().getId(), null, itemsLoaded);  // Eventually this will track how many items loaded so far
-    //            if (lastItem != null) {
-    //                request.setLastItemInCatalogId(lastItem.getId());
-    //            }
+                CatalogRequest request = new CatalogRequest(LoginServiceProxy.getInstance().getCurrentUser().getId(), SearchCache.getCategoryFilter(), itemsLoaded);  // Eventually this will track how many items loaded so far
+                //            if (lastItem != null) {
+                //                request.setLastItemInCatalogId(lastItem.getId());
+                //            }
                 getCatalogTask.execute(request);
             } else {
                 // This will be a search task once that's available
-                Toast.makeText(getContext(), "Using search mode", Toast.LENGTH_LONG).show();
-                PseudoSearchTask searchTask = new PseudoSearchTask(presenter, this, SearchCache.getCatalogQuery());
-                CatalogRequest request = new CatalogRequest(LoginServiceProxy.getInstance().getCurrentUser().getId(), null, itemsLoaded);  // Eventually this will track how many items loaded so far
+//                Toast.makeText(getContext(), "Using search mode", Toast.LENGTH_LONG).show();
+                SearchItemsTask searchTask = new SearchItemsTask(this, searchPresenter);
+                SearchItemsRequest request = new SearchItemsRequest(LoginServiceProxy.getInstance().getCurrentUser().getId(), SearchCache.getCatalogQuery(), itemsLoaded);  // Eventually this will track how many items loaded so far
                 //            if (lastItem != null) {
                 //                request.setLastItemInCatalogId(lastItem.getId());
                 //            }
@@ -241,6 +248,27 @@ public class CatalogFragment extends Fragment implements CatalogPresenter.View {
 
         private void removeLoadingFooter() {
             removeItem(items.size() - 1);
+        }
+
+        @Override
+        public void onSearchSuccess(SearchItemsResponse response) {
+            List<Item> items = response.getItems();
+
+            lastItem = (items.size() > 0) ? items.get(items.size() -1) : null;
+            hasMorePages = items.size() == 10;
+
+            itemsLoaded += items.size();
+
+            isLoading = false;
+            removeLoadingFooter();
+            CatalogRecyclerViewAdapter.addItems(items);
+
+        }
+
+        @Override
+        public void onSearchFail(SearchItemsResponse response) {
+            removeLoadingFooter();
+            Toast.makeText(getContext(), response.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
 
