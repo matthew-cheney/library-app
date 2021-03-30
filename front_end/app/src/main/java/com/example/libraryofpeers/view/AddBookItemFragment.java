@@ -145,10 +145,6 @@ public class AddBookItemFragment extends Fragment implements AddItemTask.AddItem
 
     @Override
     public void onQuerySuccess(APICommunicator.BookResult bookResult) {
-        System.out.println("got book:");
-        System.out.println(bookResult.getTitle());
-        System.out.println(bookResult.getAuthor());
-        System.out.println(bookResult.getPublishDate());
         if (bookResult.getTitle() != null) {
             titleEditText.setText(bookResult.getTitle());
         }

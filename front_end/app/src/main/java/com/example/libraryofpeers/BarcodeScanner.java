@@ -11,10 +11,11 @@ import android.os.Bundle;
 import android.util.SparseArray;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.libraryofpeers.view.MainActivity;
 import com.google.android.gms.vision.CameraSource;
 import com.google.android.gms.vision.Detector;
 import com.google.android.gms.vision.barcode.Barcode;
@@ -32,6 +33,7 @@ public class BarcodeScanner extends AppCompatActivity {
     private ToneGenerator toneGen1;
     private TextView barcodeText;
     private String barcodeData;
+    private Button submitButton;
 
 
 
@@ -42,6 +44,19 @@ public class BarcodeScanner extends AppCompatActivity {
         toneGen1 = new ToneGenerator(AudioManager.STREAM_MUSIC, 100);
         surfaceView = findViewById(R.id.surface_view);
         barcodeText = findViewById(R.id.barcode_text);
+        submitButton = findViewById(R.id.barcode_submit);
+
+        submitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent resultIntent = new Intent();
+                String barcodeData  = barcodeText.getText().toString();
+                resultIntent.putExtra("isbn", barcodeData);
+                setResult(BarcodeScanner.RESULT_OK, resultIntent);
+                finish();
+            }
+        });
+
         initialiseDetectorsAndSources();
     }
 
@@ -106,12 +121,9 @@ public class BarcodeScanner extends AppCompatActivity {
 
                             if (barcodes.valueAt(0).displayValue != null) {
 
-                                Intent resultIntent = new Intent();
                                 // TODO Add extras or a data URI to this intent as appropriate.
                                 barcodeData = barcodes.valueAt(0).displayValue;
-                                resultIntent.putExtra("isbn", barcodeData);
-                                setResult(BarcodeScanner.RESULT_OK, resultIntent);
-                                finish();
+                                barcodeText.setText(barcodeData);
                             }
                         }
                     });
