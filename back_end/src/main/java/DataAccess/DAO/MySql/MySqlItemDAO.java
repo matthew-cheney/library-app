@@ -122,27 +122,17 @@ public class MySqlItemDAO extends BaseMySqlDAO implements IItemDAO {
         ResultSet resultSet;
         String sqlCommand = "SELECT * FROM Items WHERE "
                 + getOwnerIdCommandChunk(ownerId)
-                + "(Title LIKE ? OR "
-                + "Description LIKE ? OR "
-                + "NumPlayers LIKE ? OR "
-                + "TimeToPlayInMins LIKE ? OR "
-                + "ReleaseYear LIKE ? OR "
-                + "Genre LIKE ? OR "
-                + "ItemFormat LIKE ? OR "
-                + "Author LIKE ? )"
+                + "("
+                + getColumnPartiallyContainsCommandChunk(searchCriteria)
+                + " OR "
+                + getColumnFullyContainsCommandChunk(searchCriteria)
+                + ")"
                 + "ORDER BY Title "
                 + "LIMIT " + offset + ", " + Constants.BATCH_SIZE;
 
         try (PreparedStatement statement = connection.prepareStatement(sqlCommand)) {
-            String containsSearchCriteria = "%" + searchCriteria + "%";
-
-            int startingInt = 1;
             if (!getOwnerIdCommandChunk(ownerId).equals("")) {
-                statement.setString(startingInt, ownerId);
-                startingInt++;
-            }
-            for (int i = startingInt; i < 8 + startingInt; i++) {
-                statement.setString(i, containsSearchCriteria);
+                statement.setString(1, ownerId);
             }
 
             resultSet = statement.executeQuery();
@@ -335,5 +325,27 @@ public class MySqlItemDAO extends BaseMySqlDAO implements IItemDAO {
 
     private String getCategoryFilterCommandChunk(String categoryFilter) {
         return categoryFilter == null ? "" : "AND Category = ? ";
+    }
+
+    private String getColumnPartiallyContainsCommandChunk(String searchCriteria) {
+        return "('" + searchCriteria + "' LIKE Concat(Concat('%', Title), '%') OR " +
+                "'" + searchCriteria + "' LIKE Concat(Concat('%', Description), '%') OR " +
+                "'" + searchCriteria + "' LIKE Concat(Concat('%', NumPlayers), '%') OR " +
+                "'" + searchCriteria + "' LIKE Concat(Concat('%', TimeToPlayInMins), '%') OR " +
+                "'" + searchCriteria + "' LIKE Concat(Concat('%', ReleaseYear), '%') OR " +
+                "'" + searchCriteria + "' LIKE Concat(Concat('%', Genre), '%') OR " +
+                "'" + searchCriteria + "' LIKE Concat(Concat('%', ItemFormat), '%') OR " +
+                "'" + searchCriteria + "' LIKE Concat(Concat('%', Author), '%'))";
+    }
+
+    private String getColumnFullyContainsCommandChunk(String searchCriteria) {
+        return "(Title LIKE '%" + searchCriteria + "%' OR "
+                + "Description LIKE '%" + searchCriteria + "%' OR "
+                + "NumPlayers LIKE '%" + searchCriteria + "%' OR "
+                + "TimeToPlayInMins LIKE '%" + searchCriteria + "%' OR "
+                + "ReleaseYear LIKE '%" + searchCriteria + "%' OR "
+                + "Genre LIKE '%" + searchCriteria + "%' OR "
+                + "ItemFormat LIKE '%" + searchCriteria + "%' OR "
+                + "Author LIKE '%" + searchCriteria + "%' )";
     }
 }
