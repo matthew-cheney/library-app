@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.libraryofpeers.BarcodeScanner;
 import com.example.libraryofpeers.R;
 import com.example.libraryofpeers.async_tasks.AddItemTask;
 import com.example.libraryofpeers.presenters.AddItemPresenter;
@@ -30,6 +31,8 @@ public class AddBookItemFragment extends Fragment implements AddItemTask.AddItem
     EditText imageUrlEditText;
     EditText itemFormatEditText;
     String BOOK_CATEGORY = "BOOK";
+    Button scanButton;
+    final int BARCODE_CODE = 0;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -52,6 +55,18 @@ public class AddBookItemFragment extends Fragment implements AddItemTask.AddItem
                 addItem();
             }
         });
+
+        scanButton = view.findViewById(R.id.scan_barcode_button);
+
+        scanButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(), BarcodeScanner.class);
+//                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivityForResult(intent, BARCODE_CODE);
+            }
+        });
+
 
         return view;
     }
@@ -108,5 +123,20 @@ public class AddBookItemFragment extends Fragment implements AddItemTask.AddItem
     public void onAddFailure(AddItemResponse response) {
         System.out.println("Failed to add item");
         Toast.makeText(getActivity(), "Failed To Add Item", Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch(requestCode) {
+            case (BARCODE_CODE) : {
+                if (resultCode == BarcodeScanner.RESULT_OK) {
+                    // TODO Extract the data returned from the child Activity.
+                    String returnValue = data.getStringExtra("isbn");
+                    Toast.makeText(getContext(), returnValue, Toast.LENGTH_LONG).show();
+                }
+                break;
+            }
+        }
     }
 }

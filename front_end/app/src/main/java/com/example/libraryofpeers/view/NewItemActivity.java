@@ -27,8 +27,6 @@ public class NewItemActivity extends AppCompatActivity {
     Spinner spinner;
     List<String> itemNames;
     ImageView returnHomeArrow;
-    Button scanButton;
-    final int BARCODE_CODE = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,16 +38,6 @@ public class NewItemActivity extends AppCompatActivity {
         addMovieItemFragment = new AddMovieItemFragment();
         addGameItemFragment = new AddGameItemFragment();
         returnHomeArrow = findViewById(R.id.returnHomeArrow);
-        scanButton = findViewById(R.id.scan_barcode_button);
-
-        scanButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), BarcodeScanner.class);
-//                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivityForResult(intent, BARCODE_CODE);
-            }
-        });
 
         itemNames = new ArrayList<>();
         itemNames.add("Book");
@@ -115,18 +103,5 @@ public class NewItemActivity extends AppCompatActivity {
         fragmentTransaction.commit();
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        switch(requestCode) {
-            case (BARCODE_CODE) : {
-                if (resultCode == BarcodeScanner.RESULT_OK) {
-                    // TODO Extract the data returned from the child Activity.
-                    String returnValue = data.getStringExtra("isbn");
-                    Toast.makeText(getApplicationContext(), returnValue, Toast.LENGTH_LONG).show();
-                }
-                break;
-            }
-        }
-    }
+
 }
