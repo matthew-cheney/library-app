@@ -18,10 +18,12 @@ import android.widget.Toast;
 import com.example.libraryofpeers.BarcodeScanner;
 import com.example.libraryofpeers.R;
 import com.example.libraryofpeers.async_tasks.AddItemTask;
+import com.example.libraryofpeers.async_tasks.QueryAPITask;
 import com.example.libraryofpeers.presenters.AddItemPresenter;
 import com.example.libraryofpeers.service_proxy.LoginServiceProxy;
+import com.example.libraryofpeers.view.utils.APICommunicator;
 
-public class AddBookItemFragment extends Fragment implements AddItemTask.AddItemObserver {
+public class AddBookItemFragment extends Fragment implements AddItemTask.AddItemObserver, QueryAPITask.QueryAPIObserver {
     View view;
     EditText titleEditText;
     EditText authorEditText;
@@ -132,11 +134,34 @@ public class AddBookItemFragment extends Fragment implements AddItemTask.AddItem
             case (BARCODE_CODE) : {
                 if (resultCode == BarcodeScanner.RESULT_OK) {
                     // TODO Extract the data returned from the child Activity.
-                    String returnValue = data.getStringExtra("isbn");
-                    Toast.makeText(getContext(), returnValue, Toast.LENGTH_LONG).show();
+                    String isbn = data.getStringExtra("isbn");
+                    QueryAPITask task = new QueryAPITask(this);
+                    task.execute(isbn);
                 }
                 break;
             }
         }
+    }
+
+    @Override
+    public void onQuerySuccess(APICommunicator.BookResult bookResult) {
+        System.out.println("got book:");
+        System.out.println(bookResult.getTitle());
+        System.out.println(bookResult.getAuthor());
+        System.out.println(bookResult.getPublishDate());
+        if (bookResult.getTitle() != null) {
+            titleEditText.setText(bookResult.getTitle());
+        }
+        if (bookResult.getAuthor() != null) {
+            authorEditText.setText(bookResult.getAuthor());
+        }
+        if (bookResult.getPublishDate() != null) {
+            releaseYearEditText.setText(bookResult.getPublishDate());
+        }
+    }
+
+    @Override
+    public void onQueryFailure(APICommunicator.BookResult response) {
+        Toast.makeText(getContext(), "unable to find book", Toast.LENGTH_SHORT).show();
     }
 }
