@@ -87,12 +87,12 @@ public class AddBookItemFragment extends Fragment implements AddItemTask.AddItem
         if (title.isEmpty()) {
             Toast.makeText(getActivity(), "Title is required!", Toast.LENGTH_LONG).show();
         } else {
-            imageUrl = (imageUrl.isEmpty()) ? imageUrl : null;
-            description = (description.isEmpty()) ? description : null;
-            genre = (genre.isEmpty()) ? genre : null;
-            itemFormat = (itemFormat.isEmpty()) ? itemFormat : null;
-            author = (author.isEmpty()) ? author : null;
-            releaseYear = (releaseYeaString.isEmpty()) ? null : Integer.parseInt(releaseYeaString);
+            imageUrl = (!imageUrl.isEmpty()) ? imageUrl : null;
+            description = (!description.isEmpty()) ? description : null;
+            genre = (!genre.isEmpty()) ? genre : null;
+            itemFormat = (!itemFormat.isEmpty()) ? itemFormat : null;
+            author = (!author.isEmpty()) ? author : null;
+            releaseYear = (!releaseYeaString.isEmpty()) ? null : Integer.parseInt(releaseYeaString);
 
             AddItemRequest addItemRequest = new AddItemRequest(
                     titleEditText.getText().toString(),
