@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.database.DataSetObserver;
 import android.os.Bundle;
 
+import Entities.User;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -21,6 +22,7 @@ import android.widget.SpinnerAdapter;
 import android.widget.Toast;
 
 import com.example.libraryofpeers.R;
+import com.example.libraryofpeers.service_proxy.LoginServiceProxy;
 import com.example.libraryofpeers.view.utils.SearchCache;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
@@ -44,6 +46,7 @@ public class HomeFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private User loggedInUser;
 
     private boolean firstLoad;
 
@@ -71,6 +74,8 @@ public class HomeFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
+        loggedInUser = LoginServiceProxy.getInstance().getCurrentUser();
+
         FloatingActionButton addItem = (FloatingActionButton) view.findViewById(R.id.addItemButton);
         addItem.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,7 +94,7 @@ public class HomeFragment extends Fragment {
     }
 
     private SectionsPagerAdapter getSectionsPagerAdapter() {
-        return new SectionsPagerAdapter(getContext(), this.getChildFragmentManager(), null, SectionsPagerAdapter.DEFAULT_TAB_TITLES);
+        return new SectionsPagerAdapter(getContext(), this.getChildFragmentManager(), loggedInUser, SectionsPagerAdapter.DEFAULT_TAB_TITLES);
     }
 
     @Override

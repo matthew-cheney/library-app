@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/initLayout"
+    tools:context=".view.FriendProfileActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize"
+            android:id="@+id/friendProfileHeaderBar"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingStart="15dp"
+            android:paddingEnd="15dp"
+            app:layout_constraintTop_toTopOf="parent"
+            android:background="@color/dark_blue">
+
+            <ImageView
+                android:id="@+id/returnHomeArrow"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/ic_back_arrow"
+                app:tint="@color/white"/>
+
+            <TextView
+                android:id="@+id/headerTextTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Profile"
+                android:textColor="@color/white"
+                android:textSize="18dp"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:layout_marginLeft="15dp" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/relativeLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            app:layout_constraintTop_toBottomOf="@id/friendProfileHeaderBar"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:background="@color/white">
+
+            <LinearLayout
+                android:id="@+id/firstLinearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="75dp"
+                android:background="@color/main_blue"
+                android:orientation="horizontal"
+                android:gravity="center">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="User Name"
+                    android:textSize="25dp"
+                    android:background="@color/main_blue"
+                    android:textColor="@color/white"
+                    android:id="@+id/userNameTitle"
+                    />
+
+                <ImageView
+                    android:id="@+id/toggle_friend_btn"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="40dp"
+                    android:background="@drawable/layout_bg"
+                    android:backgroundTint="@color/main_orange"
+                    android:src="@drawable/selector_friend_toggle"
+                    />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/secondLinearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="75dp"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="37dp"
+                    android:textAlignment="center"
+                    android:background="@color/main_orange"
+                    android:textColor="@color/black"
+                    android:textSize="22dp"
+                    android:text="Catalog"
+                    android:gravity="center_horizontal" />
+
+                <RelativeLayout
+                    android:id="@+id/category_toolbar"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <SearchView
+                        android:id="@+id/catalog_search"
+                        android:layout_width="250dp"
+                        android:layout_height="40dp"
+                        android:background="@color/light_grey"/>
+
+                    <Spinner
+                        android:id="@+id/category_dropdown"
+                        style="@style/Widget.AppCompat.Spinner"
+                        android:layout_width="fill_parent"
+                        android:layout_height="40dp"
+                        android:layout_toEndOf="@+id/catalog_search"
+                        android:layout_toRightOf="@+id/catalog_search"
+                        android:background="@drawable/spinner_bg_category"
+                        android:dropDownWidth="fill_parent"
+                        android:dropDownVerticalOffset="?attr/dropdownListPreferredItemHeight"
+                        android:gravity="center"
+                        android:popupBackground="@color/gold"
+                        android:spinnerMode="dropdown"
+                        android:stateListAnimator="@drawable/spinner_sla" />
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="3dp"
+                    android:background="@color/black" />
+            </LinearLayout>
+
+            <androidx.viewpager.widget.ViewPager
+                android:id="@+id/view_pager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
