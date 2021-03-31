@@ -326,13 +326,12 @@
             android:layout_marginTop="20dp"
             android:layout_marginBottom="20dp"
             android:backgroundTint="@color/light_grey"
-            android:text="Scan"
+            android:text="SCAN"
             android:textColor="@color/white"
-            app:layout_constraintTop_toBottomOf="@+id/addItemBtn"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent" />
-
+            app:layout_constraintStart_toEndOf="@+id/addItemBtn"
+            app:layout_constraintTop_toBottomOf="@+id/itemFormatLayout" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
