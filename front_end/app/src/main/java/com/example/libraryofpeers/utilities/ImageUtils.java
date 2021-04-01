@@ -22,15 +22,15 @@ import java.util.concurrent.TimeoutException;
 
 import Enums.ObjectTypeEnum;
 
-public class ImageUtils implements GetBytesTask.GetBytesObserver {
+public class ImageUtils {
 
-    byte [] imageBytes = new byte [] {};
+    byte [] imageBytes = null;
 
     public Drawable drawableFromUrl(String url, ObjectTypeEnum objectType) {
         try {
-            GetBytesTask task = new GetBytesTask(this);
+            GetBytesTask task = new GetBytesTask();
             task.execute(url);
-            imageBytes = task.get(10, TimeUnit.SECONDS);
+            await(task);
             if (imageBytes == null) throw new IOException("Error getting URL.");
             return drawableFromByteArray(imageBytes);
         }
@@ -50,28 +50,17 @@ public class ImageUtils implements GetBytesTask.GetBytesObserver {
         }
     }
 
-    @Override
-    public void onTaskComplete(byte[] bytes) {
-        imageBytes = bytes;
-    }
-
     private static Drawable drawableFromByteArray(byte [] bytes) {
         Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
         return new BitmapDrawable(Resources.getSystem(), bitmap);
     }
+
+    private void await(GetBytesTask task) throws InterruptedException, ExecutionException, TimeoutException {
+        imageBytes = task.get(10, TimeUnit.SECONDS);
+    }
 }
 
 class GetBytesTask extends AsyncTask<String, Void, byte []> {
-
-    GetBytesObserver observer;
-
-    public GetBytesTask(GetBytesObserver observer) {
-        this.observer = observer;
-    }
-
-    public interface GetBytesObserver {
-        void onTaskComplete(byte [] bytes);
-    }
 
     protected byte [] doInBackground(String... urls) {
         HttpURLConnection connection = null;
@@ -104,10 +93,6 @@ class GetBytesTask extends AsyncTask<String, Void, byte []> {
         }
 
         return null;
-    }
-
-    protected void onPostExecute(byte [] bytes) {
-        observer.onTaskComplete(bytes);
     }
 
     private static byte [] bytesFromInputStream(InputStream inputStream) throws IOException {
