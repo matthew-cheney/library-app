@@ -3,6 +3,7 @@ package com.example.libraryofpeers.view;
 import android.content.Intent;
 import android.os.Bundle;
 
+import Config.Constants;
 import Entities.User;
 import Request.EditUserRequest;
 import Response.EditUserResponse;
@@ -44,10 +45,10 @@ public class ProfileFragment extends Fragment implements EditProfileTask.EditPro
     EditText phoneNumberEditText;
     TextView imageTextView;
     EditText imageEditText;
+    Button addImageBtn;
     TextView passwordTextView;
     EditText passwordEditText;
     User user;
-    String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -92,6 +93,14 @@ public class ProfileFragment extends Fragment implements EditProfileTask.EditPro
 
         initializeFields(user);
 
+        addImageBtn = (Button) view.findViewById(R.id.addProfileImageButton);
+        addImageBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                StartImageSelectorActivity();
+            }
+        });
+
         editProfileBtn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
@@ -127,8 +136,8 @@ public class ProfileFragment extends Fragment implements EditProfileTask.EditPro
         phoneNumberEditText.setText(user.getPhoneNumber());
         imageTextView.setText(user.getImageUrl());
         imageEditText.setText(user.getImageUrl());
-        passwordTextView.setText(user.getPasswordHash());
-        passwordEditText.setText(user.getPasswordHash());
+        passwordTextView.setText("");
+        passwordEditText.setText("");
     }
 
     private void isEditingNow() {
@@ -146,6 +155,9 @@ public class ProfileFragment extends Fragment implements EditProfileTask.EditPro
         imageEditText.setVisibility(View.VISIBLE);
         passwordTextView.setVisibility(View.GONE);
         passwordEditText.setVisibility(View.VISIBLE);
+
+        addImageBtn.setVisibility(View.VISIBLE);
+        addImageBtn.setEnabled(true);
     }
 
     private void isEditingDone() {
@@ -163,6 +175,9 @@ public class ProfileFragment extends Fragment implements EditProfileTask.EditPro
         imageEditText.setVisibility(View.GONE);
         passwordTextView.setVisibility(View.VISIBLE);
         passwordEditText.setVisibility(View.GONE);
+
+        addImageBtn.setVisibility(View.GONE);
+        addImageBtn.setEnabled(false);
     }
 
     private void saveUpdatedProfile() {
@@ -185,7 +200,7 @@ public class ProfileFragment extends Fragment implements EditProfileTask.EditPro
             user.setLastName(lastName);
         }
         if (!user.getEmail().equals(email)) {
-            if (!email.matches(emailPattern)) {
+            if (!email.matches(Constants.EMAIL_PATTERN)) {
                 Toast.makeText(getActivity(), "Invalid Email Address", Toast.LENGTH_SHORT).show();
                 isUpdateValid = false;
             } else {
@@ -198,7 +213,7 @@ public class ProfileFragment extends Fragment implements EditProfileTask.EditPro
         if (!user.getImageUrl().equals(imageUrl)) {
             user.setImageUrl(imageUrl);
         }
-        if (!user.getPasswordHash().equals(password)) {
+        if (!password.isEmpty()) {
             user.setPassword(password);
         }
 
@@ -219,5 +234,20 @@ public class ProfileFragment extends Fragment implements EditProfileTask.EditPro
     @Override
     public void onEditFailure(EditUserResponse response) {
         Toast.makeText(getActivity(), "Profile update failed", Toast.LENGTH_LONG).show();
+    }
+
+    public void StartImageSelectorActivity() {
+        Intent intent = new Intent(this.getActivity(), ImageSelectorActivity.class);
+        startActivityForResult(intent, 1);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1) {
+            String test = data.getStringExtra(Constants.IMAGE_URL_EXTRA);
+            imageEditText.setText(data.getStringExtra(Constants.IMAGE_URL_EXTRA));
+            imageTextView.setText(data.getStringExtra(Constants.IMAGE_URL_EXTRA));
+        }
     }
 }

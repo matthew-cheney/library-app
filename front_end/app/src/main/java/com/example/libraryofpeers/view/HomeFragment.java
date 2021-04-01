@@ -30,6 +30,8 @@ import androidx.viewpager.widget.ViewPager;
 import java.util.ArrayList;
 import java.util.List;
 
+import Config.Constants;
+
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -174,21 +176,21 @@ public class HomeFragment extends Fragment {
                     case 1:
 //                        ((SearchView) getActivity().findViewById(R.id.catalog_search)).setQuery("", false);
 //                        SearchCache.setCatalogQuery("");
-                        SearchCache.setCategoryFilter("book");
+                        SearchCache.setCategoryFilter(Constants.BOOK_CATEGORY);
                         viewPager.setAdapter(getSectionsPagerAdapter());
                         getActivity().findViewById(R.id.catalog_search).setVisibility(View.GONE);
                         break;
                     case 2:
 //                        ((SearchView) getActivity().findViewById(R.id.catalog_search)).setQuery("", false);
 //                        SearchCache.setCatalogQuery("");
-                        SearchCache.setCategoryFilter("movie");
+                        SearchCache.setCategoryFilter(Constants.MOVIE_CATEGORY);
                         viewPager.setAdapter(getSectionsPagerAdapter());
                         getActivity().findViewById(R.id.catalog_search).setVisibility(View.GONE);
                         break;
                     case 3:
 //                        ((SearchView) getActivity().findViewById(R.id.catalog_search)).setQuery("", false);
 //                        SearchCache.setCatalogQuery("");
-                        SearchCache.setCategoryFilter("board_game");
+                        SearchCache.setCategoryFilter(Constants.BOARD_GAME_CATEGORY);
                         viewPager.setAdapter(getSectionsPagerAdapter());
                         getActivity().findViewById(R.id.catalog_search).setVisibility(View.GONE);
                         break;

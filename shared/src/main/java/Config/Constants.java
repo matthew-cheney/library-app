@@ -14,4 +14,5 @@ public class Constants {
     public static final String BOOK_CATEGORY = "BOOK";
     public static final String BOARD_GAME_CATEGORY = "BOARD_GAME";
     public static final String MOVIE_CATEGORY = "MOVIE";
+    public static final String EMAIL_PATTERN = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
 }

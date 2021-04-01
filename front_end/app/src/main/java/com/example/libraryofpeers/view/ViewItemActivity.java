@@ -1,5 +1,6 @@
 package com.example.libraryofpeers.view;
 
+import Config.Constants;
 import Entities.Item;
 import Request.DeleteItemRequest;
 import Request.EditItemRequest;
@@ -56,10 +57,6 @@ public class ViewItemActivity extends AppCompatActivity implements EditItemTask.
     ConstraintLayout itemFormatLayout;
     ConstraintLayout numPlayersLayout;
     ConstraintLayout timeGamePlayLayout;
-
-    String BOOK_CATEGORY = "BOOK";
-    String MOVIE_CATEGORY = "MOVIE";
-    String BOARD_GAME_CATEGORY = "BOARD_GAME";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -161,14 +158,14 @@ public class ViewItemActivity extends AppCompatActivity implements EditItemTask.
         timeGamePlayEditText.setText(String.valueOf(item.getTimeToPlayInMins()));
 
         String itemCategory = item.getCategory();
-        if (itemCategory.equals(BOARD_GAME_CATEGORY)) {
+        if (itemCategory.equals(Constants.BOARD_GAME_CATEGORY)) {
             numPlayersLayout.setVisibility(View.VISIBLE);
             timeGamePlayLayout.setVisibility(View.VISIBLE);
         } else {
             genreLayout.setVisibility(View.VISIBLE);
             releaseYearLayout.setVisibility(View.VISIBLE);
             itemFormatLayout.setVisibility(View.VISIBLE);
-            if (itemCategory.equals(BOOK_CATEGORY)) {
+            if (itemCategory.equals(Constants.BOOK_CATEGORY)) {
                 authorLayout.setVisibility(View.VISIBLE);
             }
         }
@@ -215,7 +212,7 @@ public class ViewItemActivity extends AppCompatActivity implements EditItemTask.
         imageUrlTextView.setVisibility(View.GONE);
         imageUrlEditText.setVisibility(View.VISIBLE);
 
-        if (category.equals(BOARD_GAME_CATEGORY)) {
+        if (category.equals(Constants.BOARD_GAME_CATEGORY)) {
             numPlayersTextView.setVisibility(View.GONE);
             numPlayersEditText.setVisibility(View.VISIBLE);
             timeGamePlayTextView.setVisibility(View.GONE);
@@ -227,7 +224,7 @@ public class ViewItemActivity extends AppCompatActivity implements EditItemTask.
             releaseYearEditText.setVisibility(View.VISIBLE);
             itemFormatTextView.setVisibility(View.GONE);
             itemFormatEditText.setVisibility(View.VISIBLE);
-            if (category.equals(BOOK_CATEGORY)) {
+            if (category.equals(Constants.BOOK_CATEGORY)) {
                 authorTextView.setVisibility(View.GONE);
                 authorEditText.setVisibility(View.VISIBLE);
             }
@@ -242,7 +239,7 @@ public class ViewItemActivity extends AppCompatActivity implements EditItemTask.
         imageUrlEditText.setVisibility(View.GONE);
         imageUrlTextView.setVisibility(View.VISIBLE);
 
-        if (category.equals(BOARD_GAME_CATEGORY)) {
+        if (category.equals(Constants.BOARD_GAME_CATEGORY)) {
             numPlayersTextView.setVisibility(View.VISIBLE);
             numPlayersEditText.setVisibility(View.GONE);
             timeGamePlayTextView.setVisibility(View.VISIBLE);
@@ -254,7 +251,7 @@ public class ViewItemActivity extends AppCompatActivity implements EditItemTask.
             releaseYearEditText.setVisibility(View.GONE);
             itemFormatTextView.setVisibility(View.VISIBLE);
             itemFormatEditText.setVisibility(View.GONE);
-            if (category.equals(BOOK_CATEGORY)) {
+            if (category.equals(Constants.BOOK_CATEGORY)) {
                 authorTextView.setVisibility(View.VISIBLE);
                 authorEditText.setVisibility(View.GONE);
             }

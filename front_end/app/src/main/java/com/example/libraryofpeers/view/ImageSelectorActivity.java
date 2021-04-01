@@ -74,11 +74,11 @@ public class ImageSelectorActivity extends AppCompatActivity {
 
     public void Save() {
         webView.loadUrl(Constants.GOOGLE_IMAGES_URL);
-        imageUrl = null;
         saveBtn.setEnabled(false);
         Intent data = new Intent();
         data.putExtra(Constants.IMAGE_URL_EXTRA, imageUrl);
         setResult(RESULT_OK, data);
+        imageUrl = null;
         finish();
     }
 
