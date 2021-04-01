@@ -16,9 +16,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import Enums.ObjectTypeEnum;
-import Response.AddItemResponse;
 
 public class ImageUtils implements GetBytesTask.GetBytesObserver {
 
@@ -28,11 +30,11 @@ public class ImageUtils implements GetBytesTask.GetBytesObserver {
         try {
             GetBytesTask task = new GetBytesTask(this);
             task.execute(url);
-            await(task);
+            imageBytes = task.get(10, TimeUnit.SECONDS);
             if (imageBytes == null) throw new IOException("Error getting URL.");
             return drawableFromByteArray(imageBytes);
         }
-        catch (IOException ex) {
+        catch (ExecutionException | InterruptedException | IOException | TimeoutException ex) {
             switch (objectType) {
                 case user:
                     return ResourcesCompat.getDrawable(Resources.getSystem(), R.drawable.ic_profile, null);
@@ -51,11 +53,6 @@ public class ImageUtils implements GetBytesTask.GetBytesObserver {
     @Override
     public void onTaskComplete(byte[] bytes) {
         imageBytes = bytes;
-    }
-
-    public void await(GetBytesTask task) {
-        while (task.getStatus() != AsyncTask.Status.FINISHED) {
-        }
     }
 
     private static Drawable drawableFromByteArray(byte [] bytes) {
@@ -98,6 +95,11 @@ class GetBytesTask extends AsyncTask<String, Void, byte []> {
         finally {
             if(connection != null) {
                 connection.disconnect();
+                try {
+                    this.finalize();
+                } catch (Throwable throwable) {
+                    throwable.printStackTrace();
+                }
             }
         }
 
