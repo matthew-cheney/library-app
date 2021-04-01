@@ -1,6 +1,8 @@
 package com.example.libraryofpeers.view;
 
 import Entities.User;
+import Enums.ObjectTypeEnum;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,6 +22,7 @@ import android.widget.TextView;
 
 import com.example.libraryofpeers.R;
 import com.example.libraryofpeers.service_proxy.LoginServiceProxy;
+import com.example.libraryofpeers.utilities.ImageUtils;
 import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends AppCompatActivity {
@@ -72,6 +75,6 @@ public class MainActivity extends AppCompatActivity {
         ImageView navImageProfile = (ImageView) navigationView.getHeaderView(0).findViewById(R.id.navImageProfile);
         String userFullName = user.getFirstName() + " " + user.getLastName();
         navUserName.setText(userFullName);
-        // TODO: Later set image url here using image drawing utils from 340!
+        navImageProfile.setImageDrawable(new ImageUtils().drawableFromUrl(user.getImageUrl(), ObjectTypeEnum.user));
     }
 }
