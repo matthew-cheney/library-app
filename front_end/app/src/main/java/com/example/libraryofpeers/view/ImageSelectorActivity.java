@@ -1,23 +1,13 @@
 package com.example.libraryofpeers.view;
 
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 
-import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
 import android.webkit.WebChromeClient;
-import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
@@ -25,11 +15,9 @@ import android.widget.Toast;
 
 import com.example.libraryofpeers.R;
 
-public class ImageSelectorActivity extends AppCompatActivity {
+import Config.Constants;
 
-    private final String GOOGLE_IMAGES_URL = "https://images.google.com/";
-    private final String GOOGLE_URL = "https://www.google.com/";
-    private final String IMAGE_URL_IDENTIFIER = "imgurl=";
+public class ImageSelectorActivity extends AppCompatActivity {
 
     private WebView webView;
     private String imageUrl = null;
@@ -41,7 +29,7 @@ public class ImageSelectorActivity extends AppCompatActivity {
         setContentView(R.layout.activity_image_selector);
 
         webView = (WebView) findViewById(R.id.imageSelectorWebView);
-        webView.loadUrl(GOOGLE_IMAGES_URL);
+        webView.loadUrl(Constants.GOOGLE_IMAGES_URL);
 
         Button cancelBtn = (Button) findViewById(R.id.imageSelectorBackButton);
         cancelBtn.setOnClickListener(new View.OnClickListener() {
@@ -77,7 +65,7 @@ public class ImageSelectorActivity extends AppCompatActivity {
     }
 
     public void Cancel() {
-        webView.loadUrl(GOOGLE_IMAGES_URL);
+        webView.loadUrl(Constants.GOOGLE_IMAGES_URL);
         imageUrl = null;
         saveBtn.setEnabled(false);
         setResult(RESULT_OK, new Intent());
@@ -85,25 +73,25 @@ public class ImageSelectorActivity extends AppCompatActivity {
     }
 
     public void Save() {
-        webView.loadUrl(GOOGLE_IMAGES_URL);
+        webView.loadUrl(Constants.GOOGLE_IMAGES_URL);
         imageUrl = null;
         saveBtn.setEnabled(false);
         Intent data = new Intent();
-        data.putExtra("IMAGE_URL", imageUrl);
+        data.putExtra(Constants.IMAGE_URL_EXTRA, imageUrl);
         setResult(RESULT_OK, data);
         finish();
     }
 
     private boolean isGoogleUrl(String url) {
-        return url.startsWith(GOOGLE_URL) || url.startsWith(GOOGLE_IMAGES_URL);
+        return url.startsWith(Constants.GOOGLE_URL) || url.startsWith(Constants.GOOGLE_IMAGES_URL);
     }
 
     private boolean isImageUrl(String url) {
-        return url.contains(IMAGE_URL_IDENTIFIER);
+        return url.contains(Constants.IMAGE_URL_IDENTIFIER);
     }
 
     private String getImageUrl(String url) {
-        int startingIndex = url.indexOf(IMAGE_URL_IDENTIFIER) + IMAGE_URL_IDENTIFIER.length();
+        int startingIndex = url.indexOf(Constants.IMAGE_URL_IDENTIFIER) + Constants.IMAGE_URL_IDENTIFIER.length();
         int endingIndex = url.indexOf('&');
         return url.substring(startingIndex, endingIndex);
     }

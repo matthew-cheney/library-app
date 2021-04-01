@@ -12,6 +12,7 @@ import com.example.libraryofpeers.R;
 import com.example.libraryofpeers.async_tasks.RegisterTask;
 import com.example.libraryofpeers.presenters.RegisterPresenter;
 
+import Config.Constants;
 import Request.RegisterRequest;
 import Response.RegisterResponse;
 import androidx.appcompat.app.AppCompatActivity;
@@ -40,19 +41,6 @@ public class RegisterActivity extends AppCompatActivity implements RegisterPrese
                 Register();
             }
         });
-    }
-
-    public void StartImageSelectorActivity() {
-        Intent intent = new Intent(this, ImageSelectorActivity.class);
-        startActivityForResult(intent, 1);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1) {
-            imageUrl = data.getStringExtra("IMAGE_URL");
-        }
     }
 
     public void Register() {
@@ -89,6 +77,19 @@ public class RegisterActivity extends AppCompatActivity implements RegisterPrese
     public void onRegisterFailure(RegisterResponse registerResponse) {
         Log.e("", "Error with Register");
         Toast.makeText(this, "Register failed. Try again!", Toast.LENGTH_LONG).show();
+    }
+
+    public void StartImageSelectorActivity() {
+        Intent intent = new Intent(this, ImageSelectorActivity.class);
+        startActivityForResult(intent, 1);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1) {
+            imageUrl = data.getStringExtra(Constants.IMAGE_URL_EXTRA);
+        }
     }
 
     private String getImageUrl() {
