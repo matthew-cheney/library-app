@@ -24,13 +24,11 @@ import Enums.ObjectTypeEnum;
 
 public class ImageUtils {
 
-    byte [] imageBytes = null;
-
-    public Drawable drawableFromUrl(String url, ObjectTypeEnum objectType) {
+    public static Drawable drawableFromUrl(String url, ObjectTypeEnum objectType) {
         try {
             GetBytesTask task = new GetBytesTask();
             task.execute(url);
-            await(task);
+            byte[] imageBytes = task.get(10, TimeUnit.SECONDS); // This is the Java way to await for 10 seconds.
             if (imageBytes == null) throw new IOException("Error getting URL.");
             return drawableFromByteArray(imageBytes);
         }
@@ -50,62 +48,53 @@ public class ImageUtils {
         }
     }
 
-    private static Drawable drawableFromByteArray(byte [] bytes) {
+    private static Drawable drawableFromByteArray(byte[] bytes) {
         Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
         return new BitmapDrawable(Resources.getSystem(), bitmap);
     }
 
-    private void await(GetBytesTask task) throws InterruptedException, ExecutionException, TimeoutException {
-        imageBytes = task.get(10, TimeUnit.SECONDS);
-    }
-}
+    static private class GetBytesTask extends AsyncTask<String, Void, byte[]> {
 
-class GetBytesTask extends AsyncTask<String, Void, byte []> {
+        protected byte[] doInBackground(String... urls) {
+            HttpURLConnection connection = null;
 
-    protected byte [] doInBackground(String... urls) {
-        HttpURLConnection connection = null;
+            try {
+                String urlString = urls[0];
+                urlString = urlString.replace(' ', '+');
+                URL url = new URL(urlString);
 
-        try {
-            String urlString = urls[0];
-            urlString.replace(' ', '+');
-            URL url = new URL(urlString);
+                connection = (HttpURLConnection) url.openConnection();
+                connection.setRequestMethod("GET");
 
-            connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("GET");
-
-            if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
-                InputStream inputStream = connection.getInputStream();
-                return bytesFromInputStream(inputStream);
-            }
-        }
-        catch (IOException ex) {
-            System.out.println("Unable to read from url.");
-        }
-        finally {
-            if(connection != null) {
-                connection.disconnect();
-                try {
-                    this.finalize();
-                } catch (Throwable throwable) {
-                    throwable.printStackTrace();
+                if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                    InputStream inputStream = connection.getInputStream();
+                    return bytesFromInputStream(inputStream);
                 }
             }
+            catch (IOException ex) {
+                System.out.println("Unable to read from url.");
+            }
+            finally {
+                if(connection != null) {
+                    connection.disconnect();
+                }
+            }
+
+            return null;
         }
 
-        return null;
-    }
+        private static byte[] bytesFromInputStream(InputStream inputStream) throws IOException {
 
-    private static byte [] bytesFromInputStream(InputStream inputStream) throws IOException {
+            ByteArrayOutputStream buffer = new ByteArrayOutputStream();
 
-        ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+            int numbRead;
+            byte[] data = new byte[1024];
+            while ((numbRead = inputStream.read(data, 0, data.length)) != -1) {
+                buffer.write(data, 0, numbRead);
+            }
 
-        int numbRead;
-        byte[] data = new byte[1024];
-        while ((numbRead = inputStream.read(data, 0, data.length)) != -1) {
-            buffer.write(data, 0, numbRead);
+            buffer.flush();
+            return buffer.toByteArray();
         }
-
-        buffer.flush();
-        return buffer.toByteArray();
     }
 }

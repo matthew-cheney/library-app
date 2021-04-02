@@ -76,6 +76,6 @@ public class MainActivity extends AppCompatActivity {
         ImageView navImageProfile = (ImageView) navigationView.getHeaderView(0).findViewById(R.id.navImageProfile);
         String userFullName = user.getFirstName() + " " + user.getLastName();
         navUserName.setText(userFullName);
-        navImageProfile.setImageDrawable(new ImageUtils().drawableFromUrl(user.getImageUrl(), ObjectTypeEnum.user));
+        navImageProfile.setImageDrawable(ImageUtils.drawableFromUrl(user.getImageUrl(), ObjectTypeEnum.user));
     }
 }
