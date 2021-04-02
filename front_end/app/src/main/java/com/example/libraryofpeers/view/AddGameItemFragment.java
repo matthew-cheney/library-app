@@ -68,10 +68,10 @@ public class AddGameItemFragment extends Fragment implements AddItemTask.AddItem
         if (title.isEmpty()) {
             Toast.makeText(getActivity(), "Title is required!", Toast.LENGTH_LONG).show();
         } else {
-            imageUrl = (imageUrl.isEmpty()) ? imageUrl : null;
-            description = (description.isEmpty()) ? description : null;
-            numPlayers = (numPlayersString.isEmpty()) ? null : Integer.parseInt(numPlayersString);
-            timeGamePlay = (timeGamePlayString.isEmpty()) ? null : Integer.parseInt(timeGamePlayString);
+            imageUrl = (!imageUrl.isEmpty()) ? imageUrl : null;
+            description = (!description.isEmpty()) ? description : null;
+            numPlayers = (!numPlayersString.isEmpty()) ? null : Integer.parseInt(numPlayersString);
+            timeGamePlay = (!timeGamePlayString.isEmpty()) ? null : Integer.parseInt(timeGamePlayString);
 
             AddItemRequest addItemRequest = new AddItemRequest(
                     titleEditText.getText().toString(),

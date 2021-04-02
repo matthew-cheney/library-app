@@ -6,6 +6,7 @@ import androidx.annotation.RequiresApi;
 
 import java.io.IOException;
 
+import Request.AddFriendRequest;
 import Request.AddItemRequest;
 import Request.CatalogRequest;
 import Request.DeleteItemRequest;
@@ -13,8 +14,10 @@ import Request.EditItemRequest;
 import Request.EditUserRequest;
 import Request.LoginRequest;
 import Request.RegisterRequest;
+import Request.RemoveFriendRequest;
 import Request.SearchItemsRequest;
 import Request.SearchUsersRequest;
+import Response.AddFriendResponse;
 import Response.AddItemResponse;
 import Response.CatalogResponse;
 import Response.DeleteItemResponse;
@@ -22,6 +25,7 @@ import Response.EditItemResponse;
 import Response.EditUserResponse;
 import Response.LoginResponse;
 import Response.RegisterResponse;
+import Response.RemoveFriendResponse;
 import Response.SearchItemsResponse;
 import Response.SearchUsersResponse;
 
@@ -80,6 +84,18 @@ public class ServerFacade {
     public SearchUsersResponse searchUsers(SearchUsersRequest request, String urlPath) throws IOException {
         ClientCommunicator communicator = new ClientCommunicator(SERVER_URL);
         return communicator.doPost(urlPath, request, null, SearchUsersResponse.class);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    public AddFriendResponse addFriend(AddFriendRequest request, String urlPath) throws IOException {
+        ClientCommunicator communicator = new ClientCommunicator(SERVER_URL);
+        return communicator.doPost(urlPath, request, null, AddFriendResponse.class);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    public RemoveFriendResponse removeFriend(RemoveFriendRequest request, String urlPath) throws IOException {
+        ClientCommunicator communicator = new ClientCommunicator(SERVER_URL);
+        return communicator.doPost(urlPath, request, null, RemoveFriendResponse.class);
     }
 
 }

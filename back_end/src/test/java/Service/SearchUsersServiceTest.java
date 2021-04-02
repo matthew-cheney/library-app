@@ -18,7 +18,7 @@ public class SearchUsersServiceTest extends BaseTest {
 
     private SearchUsersService service;
     private MySqlUserDAO dao;
-    private SearchUsersRequest successfulRequest = new SearchUsersRequest("com", 3);
+    private SearchUsersRequest successfulRequest = new SearchUsersRequest("gov com", 0);
     private SearchUsersRequest failureRequest = new SearchUsersRequest("ERIN", 0);
 
     @BeforeEach
@@ -41,7 +41,7 @@ public class SearchUsersServiceTest extends BaseTest {
     public void searchUsers_success() {
         SearchUsersResponse response = service.searchUsers(successfulRequest);
         assertTrue(response.isSuccess());
-        assertEquals(2, response.getUsers().size());
+        assertEquals(10, response.getUsers().size());
     }
 
     @Test
