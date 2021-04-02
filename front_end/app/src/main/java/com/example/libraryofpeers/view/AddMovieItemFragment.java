@@ -68,11 +68,11 @@ public class AddMovieItemFragment extends Fragment implements AddItemTask.AddIte
         if (title.isEmpty()) {
             Toast.makeText(getActivity(), "Title is required!", Toast.LENGTH_LONG).show();
         } else {
-            imageUrl = (imageUrl.isEmpty()) ? imageUrl : null;
-            description = (description.isEmpty()) ? description : null;
-            genre = (genre.isEmpty()) ? genre : null;
-            itemFormat = (itemFormat.isEmpty()) ? itemFormat : null;
-            releaseYear = (releaseYeaString.isEmpty()) ? null : Integer.parseInt(releaseYeaString);
+            imageUrl = (!imageUrl.isEmpty()) ? imageUrl : null;
+            description = (!description.isEmpty()) ? description : null;
+            genre = (!genre.isEmpty()) ? genre : null;
+            itemFormat = (!itemFormat.isEmpty()) ? itemFormat : null;
+            releaseYear = (!releaseYeaString.isEmpty()) ? null : Integer.parseInt(releaseYeaString);
 
 
             AddItemRequest addItemRequest = new AddItemRequest(

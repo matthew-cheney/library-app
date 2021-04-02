@@ -20,5 +20,4 @@
             android:id="@+id/action_menuProfile_to_menuHome"
             app:destination="@id/menuHome" />
     </fragment>
-
 </navigation>

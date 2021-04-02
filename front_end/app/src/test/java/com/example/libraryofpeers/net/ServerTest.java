@@ -165,7 +165,7 @@ public class ServerTest {
         AddItemResponse addItemResponse = serverFacade.addItem(addItemRequest, ADD_ITEM_URL);
         assertTrue(addItemResponse.getMessage(), addItemResponse.isSuccess());
 
-        CatalogRequest request = new CatalogRequest(user.getId(), 0);
+        CatalogRequest request = new CatalogRequest(user.getId(), null, 0);
         CatalogResponse response1 = serverFacade.getCatalog(request, CATALOG_URL);
         assertEquals(1, response1.getItems().size());
         assertEquals(itemName, response1.getItems().get(0).getTitle());
