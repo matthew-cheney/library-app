@@ -42,11 +42,7 @@ public class PseudoFriendsTask extends AsyncTask<FriendsRequest, Void, FriendsRe
 
         FriendsResponse response = null;
 
-        try {
-            response = presenter.getFriends(FriendsRequests[0]);
-        } catch (IOException ex) {
-            exception = ex;
-        }
+        response = presenter.getRandomFriends();
 
         return response;
     }

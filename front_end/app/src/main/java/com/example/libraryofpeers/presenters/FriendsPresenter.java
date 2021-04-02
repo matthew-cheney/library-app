@@ -6,6 +6,8 @@ import androidx.annotation.RequiresApi;
 
 //import com.example.libraryofpeers.service_proxy.GetFriendsServiceProxy;
 
+import com.example.libraryofpeers.service_proxy.GetFriendsServiceProxy;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -38,15 +40,14 @@ public class FriendsPresenter {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public FriendsResponse getFriends(FriendsRequest request) throws IOException {
-//        GetFriendsServiceProxy FriendsService = getFriendsService();
-//        FriendsResponse response = FriendsService.getFriends(request);
-//        return response;
-        return getRandomFriends();
+    public FriendsResponse getFriends(FriendsRequest request) {
+        GetFriendsServiceProxy FriendsService = new GetFriendsServiceProxy();
+        return FriendsService.getFriends(request);
+//        return getRandomFriends();
     }
 
 
-    FriendsResponse getRandomFriends() {
+    public FriendsResponse getRandomFriends() {
         List<User> users = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
             String name = getRandomChoice(first_names);
