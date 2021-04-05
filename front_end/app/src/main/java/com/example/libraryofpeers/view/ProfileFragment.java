@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import Config.Constants;
 import Entities.User;
+import Enums.ObjectTypeEnum;
 import Request.EditUserRequest;
 import Response.EditUserResponse;
 
@@ -26,7 +27,10 @@ import com.example.libraryofpeers.R;
 import com.example.libraryofpeers.async_tasks.EditProfileTask;
 import com.example.libraryofpeers.presenters.EditProfilePresenter;
 import com.example.libraryofpeers.service_proxy.LoginServiceProxy;
+import com.example.libraryofpeers.utilities.ImageUtils;
 import com.example.libraryofpeers.view.utils.SearchCache;
+
+import java.util.Objects;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -226,8 +230,11 @@ public class ProfileFragment extends Fragment implements EditProfileTask.EditPro
     }
 
     @Override
-    public void onEditSuccess(EditUserResponse response) {
+    public void onEditSuccess(EditUserResponse response, User user) {
         Toast.makeText(getActivity(), "Profile Updated!", Toast.LENGTH_LONG).show();
+        String userFullName = user.getFirstName() + " " + user.getLastName();
+        ((MainActivity) requireActivity()).navUserName.setText(userFullName);
+        ((MainActivity) requireActivity()).navImageProfile.setImageDrawable(ImageUtils.drawableFromUrl(user.getImageUrl(), ObjectTypeEnum.user));
         Navigation.findNavController(view).navigate(R.id.action_menuProfile_to_menuHome);
     }
 
@@ -245,7 +252,6 @@ public class ProfileFragment extends Fragment implements EditProfileTask.EditPro
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1) {
-            String test = data.getStringExtra(Constants.IMAGE_URL_EXTRA);
             imageEditText.setText(data.getStringExtra(Constants.IMAGE_URL_EXTRA));
             imageTextView.setText(data.getStringExtra(Constants.IMAGE_URL_EXTRA));
         }

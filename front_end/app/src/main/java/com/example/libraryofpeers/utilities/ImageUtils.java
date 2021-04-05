@@ -53,7 +53,7 @@ public class ImageUtils {
         return new BitmapDrawable(Resources.getSystem(), bitmap);
     }
 
-    static private class GetBytesTask extends AsyncTask<String, Void, byte[]> {
+    private static class GetBytesTask extends AsyncTask<String, Void, byte[]> {
 
         protected byte[] doInBackground(String... urls) {
             HttpURLConnection connection = null;
