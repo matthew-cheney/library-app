@@ -2,6 +2,7 @@ package com.example.libraryofpeers.view;
 
 import Config.Constants;
 import Entities.Item;
+import Enums.ObjectTypeEnum;
 import Request.DeleteItemRequest;
 import Request.EditItemRequest;
 import Response.DeleteItemResponse;
@@ -25,9 +26,11 @@ import com.example.libraryofpeers.async_tasks.DeleteItemTask;
 import com.example.libraryofpeers.async_tasks.EditItemTask;
 import com.example.libraryofpeers.presenters.DeleteItemPresenter;
 import com.example.libraryofpeers.presenters.EditItemPresenter;
+import com.example.libraryofpeers.view.utils.ImageUtils;
 
 public class ViewItemActivity extends AppCompatActivity implements EditItemTask.EditItemObserver, DeleteItemTask.DeleteItemObserver {
     ImageView returnHomeArrow;
+    ImageView itemImage;
     TextView titleTextView;
     EditText titleEditText;
     TextView dateAddedTextView;
@@ -57,6 +60,7 @@ public class ViewItemActivity extends AppCompatActivity implements EditItemTask.
     ConstraintLayout itemFormatLayout;
     ConstraintLayout numPlayersLayout;
     ConstraintLayout timeGamePlayLayout;
+    Button addImageBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +69,8 @@ public class ViewItemActivity extends AppCompatActivity implements EditItemTask.
 
         item = (Item) getIntent().getSerializableExtra("item");
 
+        itemImage = (ImageView) findViewById(R.id.itemImage);
+        setItemImage(item.getCategory(), item.getImageUrl());
 
         returnHomeArrow = findViewById(R.id.returnHomeArrow);
         titleTextView = (TextView) findViewById(R.id.itemTitleText);
@@ -99,6 +105,14 @@ public class ViewItemActivity extends AppCompatActivity implements EditItemTask.
         deleteItemBtn = (Button) findViewById(R.id.deleteItemBtn);
 
         initializeFields();
+
+        addImageBtn = (Button) findViewById(R.id.addItemImageButton);
+        addImageBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                StartImageSelectorActivity();
+            }
+        });
 
         returnHomeArrow.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -229,6 +243,9 @@ public class ViewItemActivity extends AppCompatActivity implements EditItemTask.
                 authorEditText.setVisibility(View.VISIBLE);
             }
         }
+
+        addImageBtn.setVisibility(View.VISIBLE);
+        addImageBtn.setEnabled(true);
     }
 
     private void editingDone(String category) {
@@ -256,6 +273,9 @@ public class ViewItemActivity extends AppCompatActivity implements EditItemTask.
                 authorEditText.setVisibility(View.GONE);
             }
         }
+
+        addImageBtn.setVisibility(View.GONE);
+        addImageBtn.setEnabled(false);
     }
 
     @Override
@@ -284,5 +304,39 @@ public class ViewItemActivity extends AppCompatActivity implements EditItemTask.
     public void onDeleteFail(DeleteItemResponse response) {
         System.out.println("Failed to delete item");
         Toast.makeText(this, "Failed To Delete Item", Toast.LENGTH_LONG).show();
+    }
+
+    public void StartImageSelectorActivity() {
+        Intent intent = new Intent(this, ImageSelectorActivity.class);
+        startActivityForResult(intent, 1);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1) {
+            String imageUrl = data.getStringExtra(Constants.IMAGE_URL_EXTRA);
+            imageUrlEditText.setText(imageUrl);
+            imageUrlTextView.setText(imageUrl);
+            setItemImage(item.getCategory(), imageUrl);
+        }
+    }
+
+    private void setItemImage(String category, String imageUrl) {
+        ObjectTypeEnum itemType;
+        switch (category) {
+            case Constants.BOOK_CATEGORY:
+                itemType = ObjectTypeEnum.book;
+                break;
+            case Constants.MOVIE_CATEGORY:
+                itemType = ObjectTypeEnum.movie;
+                break;
+            case Constants.BOARD_GAME_CATEGORY:
+            default:
+                itemType = ObjectTypeEnum.boardGame;
+                break;
+        }
+
+        itemImage.setImageDrawable(ImageUtils.drawableFromUrl(imageUrl, itemType, getBaseContext()));
     }
 }

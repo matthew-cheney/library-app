@@ -2,7 +2,6 @@ package com.example.libraryofpeers.view;
 
 import Entities.User;
 import Enums.ObjectTypeEnum;
-import Response.EditUserResponse;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,7 +14,6 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,9 +21,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.libraryofpeers.R;
-import com.example.libraryofpeers.async_tasks.EditProfileTask;
 import com.example.libraryofpeers.service_proxy.LoginServiceProxy;
-import com.example.libraryofpeers.utilities.ImageUtils;
+import com.example.libraryofpeers.view.utils.ImageUtils;
 import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends AppCompatActivity {
@@ -81,6 +78,6 @@ public class MainActivity extends AppCompatActivity {
         navImageProfile = (ImageView) navigationView.getHeaderView(0).findViewById(R.id.navImageProfile);
         String userFullName = user.getFirstName() + " " + user.getLastName();
         navUserName.setText(userFullName);
-        navImageProfile.setImageDrawable(ImageUtils.drawableFromUrl(user.getImageUrl(), ObjectTypeEnum.user));
+        navImageProfile.setImageDrawable(ImageUtils.drawableFromUrl(user.getImageUrl(), ObjectTypeEnum.user, getBaseContext()));
     }
 }

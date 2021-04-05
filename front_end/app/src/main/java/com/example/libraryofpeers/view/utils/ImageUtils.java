@@ -1,5 +1,6 @@
-package com.example.libraryofpeers.utilities;
+package com.example.libraryofpeers.view.utils;
 
+import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -20,12 +21,14 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
+import Config.Constants;
 import Enums.ObjectTypeEnum;
 
 public class ImageUtils {
 
-    public static Drawable drawableFromUrl(String url, ObjectTypeEnum objectType) {
+    public static Drawable drawableFromUrl(String url, ObjectTypeEnum objectType, Context context) {
         try {
+            if (url == null) throw new IOException("URL was null.");
             GetBytesTask task = new GetBytesTask();
             task.execute(url);
             byte[] imageBytes = task.get(10, TimeUnit.SECONDS); // This is the Java way to await for 10 seconds.
@@ -35,13 +38,13 @@ public class ImageUtils {
         catch (ExecutionException | InterruptedException | IOException | TimeoutException ex) {
             switch (objectType) {
                 case user:
-                    return ResourcesCompat.getDrawable(Resources.getSystem(), R.drawable.ic_profile, null);
+                    return drawableFromContext(context, Constants.USER_URI);
                 case book:
-                    return ResourcesCompat.getDrawable(Resources.getSystem(), R.drawable.book, null);
+                    return drawableFromContext(context, Constants.BOOK_URI);
                 case movie:
-                    return ResourcesCompat.getDrawable(Resources.getSystem(), R.drawable.movie, null);
+                    return drawableFromContext(context, Constants.MOVIE_URI);
                 case boardGame:
-                    return ResourcesCompat.getDrawable(Resources.getSystem(), R.drawable.board_game, null);
+                    return drawableFromContext(context, Constants.BOARD_GAME_URI);
                 default:
                     return null;
             }
@@ -51,6 +54,13 @@ public class ImageUtils {
     private static Drawable drawableFromByteArray(byte[] bytes) {
         Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
         return new BitmapDrawable(Resources.getSystem(), bitmap);
+    }
+
+    private static Drawable drawableFromContext(Context context, String uri) {
+        return ResourcesCompat.getDrawable(
+                context.getResources(),
+                context.getResources().getIdentifier(uri, null, context.getPackageName()),
+                null);
     }
 
     private static class GetBytesTask extends AsyncTask<String, Void, byte[]> {

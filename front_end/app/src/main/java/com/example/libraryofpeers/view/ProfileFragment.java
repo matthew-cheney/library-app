@@ -27,10 +27,8 @@ import com.example.libraryofpeers.R;
 import com.example.libraryofpeers.async_tasks.EditProfileTask;
 import com.example.libraryofpeers.presenters.EditProfilePresenter;
 import com.example.libraryofpeers.service_proxy.LoginServiceProxy;
-import com.example.libraryofpeers.utilities.ImageUtils;
+import com.example.libraryofpeers.view.utils.ImageUtils;
 import com.example.libraryofpeers.view.utils.SearchCache;
-
-import java.util.Objects;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -234,7 +232,7 @@ public class ProfileFragment extends Fragment implements EditProfileTask.EditPro
         Toast.makeText(getActivity(), "Profile Updated!", Toast.LENGTH_LONG).show();
         String userFullName = user.getFirstName() + " " + user.getLastName();
         ((MainActivity) requireActivity()).navUserName.setText(userFullName);
-        ((MainActivity) requireActivity()).navImageProfile.setImageDrawable(ImageUtils.drawableFromUrl(user.getImageUrl(), ObjectTypeEnum.user));
+        ((MainActivity) requireActivity()).navImageProfile.setImageDrawable(ImageUtils.drawableFromUrl(user.getImageUrl(), ObjectTypeEnum.user, getContext()));
         Navigation.findNavController(view).navigate(R.id.action_menuProfile_to_menuHome);
     }
 

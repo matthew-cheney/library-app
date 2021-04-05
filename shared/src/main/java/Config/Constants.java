@@ -15,4 +15,8 @@ public class Constants {
     public static final String BOARD_GAME_CATEGORY = "BOARD_GAME";
     public static final String MOVIE_CATEGORY = "MOVIE";
     public static final String EMAIL_PATTERN = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
+    public static String BOOK_URI = "@drawable/book";
+    public static String MOVIE_URI = "@drawable/movie";
+    public static String BOARD_GAME_URI = "@drawable/board_game";
+    public static String USER_URI = "@drawable/person";
 }

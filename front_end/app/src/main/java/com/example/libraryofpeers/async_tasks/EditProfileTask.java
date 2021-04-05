@@ -37,6 +37,7 @@ public class EditProfileTask extends AsyncTask<EditUserRequest, Void, EditUserRe
         if (response.isSuccess()) {
             observer.onEditSuccess(response, editedUsersCache.remove());
         } else {
+            editedUsersCache.remove();
             observer.onEditFailure(response);
         }
     }

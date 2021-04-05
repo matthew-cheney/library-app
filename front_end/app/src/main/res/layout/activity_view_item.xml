@@ -54,8 +54,8 @@
             android:id="@+id/itemImage"
             android:layout_width="85dp"
             android:layout_height="85dp"
-            android:src="@drawable/ic_profile"
             android:background="@drawable/layout_bg"
+            android:padding="10sp"
             android:layout_marginLeft="25dp"
             />
 
@@ -237,16 +237,37 @@
                     android:textSize="18dp"
                     app:layout_constraintTop_toBottomOf="@id/borderLine2" />
 
-                <EditText
-                    android:id="@+id/imageUrlEditor"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="43dp"
-                    android:background="@color/light_orange"
-                    android:hint="url"
-                    android:paddingLeft="10dp"
-                    android:textSize="18dp"
-                    android:visibility="gone"
-                    app:layout_constraintTop_toBottomOf="@id/borderLine2" />
+                    android:orientation="horizontal"
+                    app:layout_constraintTop_toBottomOf="@id/borderLine2">
+
+                    <EditText
+                        android:id="@+id/imageUrlEditor"
+                        android:layout_width="match_parent"
+                        android:layout_height="43dp"
+                        android:background="@color/light_orange"
+                        android:hint="url"
+                        android:paddingLeft="10dp"
+                        android:textSize="18dp"
+                        android:layout_weight="1"
+                        android:layout_marginEnd="2dp"
+                        android:layout_marginRight="2dp"
+                        android:visibility="gone" />
+
+                    <Button
+                        android:id="@+id/addItemImageButton"
+                        android:layout_width="115dp"
+                        android:layout_height="33dp"
+                        android:layout_margin="1dp"
+                        android:layout_weight="0"
+                        android:text="@string/addImageButton"
+                        android:textColor="@color/main_blue"
+                        android:textSize="18dp"
+                        android:background="@color/light_blue"
+                        android:visibility="gone" />
+                </LinearLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
