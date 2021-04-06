@@ -308,13 +308,13 @@ public class ViewItemActivity extends AppCompatActivity implements EditItemTask.
 
     public void StartImageSelectorActivity() {
         Intent intent = new Intent(this, ImageSelectorActivity.class);
-        startActivityForResult(intent, 1);
+        startActivityForResult(intent, Constants.IMAGE_CODE);
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1) {
+        if (requestCode == Constants.IMAGE_CODE) {
             String imageUrl = data.getStringExtra(Constants.IMAGE_URL_EXTRA);
             imageUrlEditText.setText(imageUrl);
             imageUrlTextView.setText(imageUrl);

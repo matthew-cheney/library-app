@@ -114,13 +114,13 @@ public class AddGameItemFragment extends Fragment implements AddItemTask.AddItem
 
     public void StartImageSelectorActivity() {
         Intent intent = new Intent(this.getActivity(), ImageSelectorActivity.class);
-        startActivityForResult(intent, 1);
+        startActivityForResult(intent, Constants.IMAGE_CODE);
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1) {
+        if (requestCode == Constants.IMAGE_CODE) {
             imageUrlEditText.setText(data.getStringExtra(Constants.IMAGE_URL_EXTRA));
         }
     }

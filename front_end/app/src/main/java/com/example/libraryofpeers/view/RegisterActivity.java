@@ -81,13 +81,13 @@ public class RegisterActivity extends AppCompatActivity implements RegisterPrese
 
     public void StartImageSelectorActivity() {
         Intent intent = new Intent(this, ImageSelectorActivity.class);
-        startActivityForResult(intent, 1);
+        startActivityForResult(intent, Constants.IMAGE_CODE);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1) {
+        if (requestCode == Constants.IMAGE_CODE) {
             imageUrl = data.getStringExtra(Constants.IMAGE_URL_EXTRA);
         }
     }

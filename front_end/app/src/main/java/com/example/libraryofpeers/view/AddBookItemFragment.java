@@ -34,7 +34,6 @@ public class AddBookItemFragment extends Fragment implements AddItemTask.AddItem
     EditText imageUrlEditText;
     EditText itemFormatEditText;
     Button scanButton;
-    final int BARCODE_CODE = 0;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -73,7 +72,7 @@ public class AddBookItemFragment extends Fragment implements AddItemTask.AddItem
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(), BarcodeScanner.class);
 //                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivityForResult(intent, BARCODE_CODE);
+                startActivityForResult(intent, Constants.BARCODE_CODE);
             }
         });
 
@@ -137,22 +136,14 @@ public class AddBookItemFragment extends Fragment implements AddItemTask.AddItem
 
     public void StartImageSelectorActivity() {
         Intent intent = new Intent(this.getActivity(), ImageSelectorActivity.class);
-        startActivityForResult(intent, 1);
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1) {
-            imageUrlEditText.setText(data.getStringExtra(Constants.IMAGE_URL_EXTRA));
-        }
+        startActivityForResult(intent, Constants.IMAGE_CODE);
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         switch(requestCode) {
-            case (BARCODE_CODE) : {
+            case (Constants.BARCODE_CODE) : {
                 if (resultCode == BarcodeScanner.RESULT_OK) {
                     // TODO Extract the data returned from the child Activity.
                     String isbn = data.getStringExtra("isbn");
@@ -161,6 +152,9 @@ public class AddBookItemFragment extends Fragment implements AddItemTask.AddItem
                 }
                 break;
             }
+            case Constants.IMAGE_CODE:
+                imageUrlEditText.setText(data.getStringExtra(Constants.IMAGE_URL_EXTRA));
+                break;
         }
     }
 

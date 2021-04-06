@@ -19,4 +19,6 @@ public class Constants {
     public static String MOVIE_URI = "@drawable/movie";
     public static String BOARD_GAME_URI = "@drawable/board_game";
     public static String USER_URI = "@drawable/person";
+    public static final int BARCODE_CODE = 0;
+    public static final int IMAGE_CODE = 1;
 }
