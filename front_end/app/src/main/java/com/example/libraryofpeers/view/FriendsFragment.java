@@ -116,9 +116,9 @@ public class FriendsFragment extends Fragment implements FriendsPresenter.View {
             this.itemView = itemView;
         }
 
-        void bindItem(User item) {
-            bindUserToViews(item, itemTitle, itemCategory, itemImage, getContext());
-            currentItem = item;
+        void bindItem(User user) {
+            bindUserToViews(user, itemTitle, itemCategory, itemImage, getContext());
+            currentItem = user;
             itemView.setOnClickListener(new UserClickListener(currentItem));
         }
     }
