@@ -16,12 +16,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.libraryofpeers.BarcodeScanner;
 import com.example.libraryofpeers.R;
 import com.example.libraryofpeers.async_tasks.AddItemTask;
+import com.example.libraryofpeers.async_tasks.QueryAPITask;
 import com.example.libraryofpeers.presenters.AddItemPresenter;
 import com.example.libraryofpeers.service_proxy.LoginServiceProxy;
+import com.example.libraryofpeers.view.utils.APICommunicator;
 
-public class AddBookItemFragment extends Fragment implements AddItemTask.AddItemObserver {
+public class AddBookItemFragment extends Fragment implements AddItemTask.AddItemObserver, QueryAPITask.QueryAPIObserver {
     View view;
     EditText titleEditText;
     EditText authorEditText;
@@ -30,6 +33,8 @@ public class AddBookItemFragment extends Fragment implements AddItemTask.AddItem
     EditText descriptionEditText;
     EditText imageUrlEditText;
     EditText itemFormatEditText;
+    Button scanButton;
+    final int BARCODE_CODE = 0;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -60,6 +65,18 @@ public class AddBookItemFragment extends Fragment implements AddItemTask.AddItem
                 addItem();
             }
         });
+
+        scanButton = view.findViewById(R.id.scan_barcode_button);
+
+        scanButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(), BarcodeScanner.class);
+//                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivityForResult(intent, BARCODE_CODE);
+            }
+        });
+
 
         return view;
     }
@@ -129,5 +146,39 @@ public class AddBookItemFragment extends Fragment implements AddItemTask.AddItem
         if (requestCode == 1) {
             imageUrlEditText.setText(data.getStringExtra(Constants.IMAGE_URL_EXTRA));
         }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch(requestCode) {
+            case (BARCODE_CODE) : {
+                if (resultCode == BarcodeScanner.RESULT_OK) {
+                    // TODO Extract the data returned from the child Activity.
+                    String isbn = data.getStringExtra("isbn");
+                    QueryAPITask task = new QueryAPITask(this);
+                    task.execute(isbn);
+                }
+                break;
+            }
+        }
+    }
+
+    @Override
+    public void onQuerySuccess(APICommunicator.BookResult bookResult) {
+        if (bookResult.getTitle() != null) {
+            titleEditText.setText(bookResult.getTitle());
+        }
+        if (bookResult.getAuthor() != null) {
+            authorEditText.setText(bookResult.getAuthor());
+        }
+        if (bookResult.getPublishDate() != null) {
+            releaseYearEditText.setText(bookResult.getPublishDate());
+        }
+    }
+
+    @Override
+    public void onQueryFailure(APICommunicator.BookResult response) {
+        Toast.makeText(getContext(), "unable to find book", Toast.LENGTH_SHORT).show();
     }
 }
