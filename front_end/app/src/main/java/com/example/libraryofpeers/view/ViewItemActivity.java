@@ -7,10 +7,13 @@ import Request.DeleteItemRequest;
 import Request.EditItemRequest;
 import Response.DeleteItemResponse;
 import Response.EditItemResponse;
+
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -336,7 +339,7 @@ public class ViewItemActivity extends AppCompatActivity implements EditItemTask.
                 itemType = ObjectTypeEnum.boardGame;
                 break;
         }
-
-        itemImage.setImageDrawable(ImageUtils.drawableFromUrl(imageUrl, itemType, getBaseContext()));
+        ImageUtils.ImageReporter reporter = new ImageUtils.ImageReporter(false);
+        itemImage.setImageDrawable(ImageUtils.drawableFromUrl(imageUrl, itemType, getBaseContext(), reporter));
     }
 }

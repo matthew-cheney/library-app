@@ -160,6 +160,10 @@ public class AddBookItemFragment extends Fragment implements AddItemTask.AddItem
 
     @Override
     public void onQuerySuccess(APICommunicator.BookResult bookResult) {
+        if (!bookResult.any()) {
+            Toast.makeText(getContext(), "book not found", Toast.LENGTH_SHORT).show();
+            return;
+        }
         if (bookResult.getTitle() != null) {
             titleEditText.setText(bookResult.getTitle());
         }
@@ -168,6 +172,9 @@ public class AddBookItemFragment extends Fragment implements AddItemTask.AddItem
         }
         if (bookResult.getPublishDate() != null) {
             releaseYearEditText.setText(bookResult.getPublishDate());
+        }
+        if (bookResult.getCoverUrl() != null) {
+            imageUrlEditText.setText(bookResult.getCoverUrl());
         }
     }
 
