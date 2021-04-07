@@ -20,16 +20,28 @@ public class APICommunicator {
         private String author;
         private String publishDate;
 
-        public BookResult(String title, String author, String publish_date) {
+        public String getCoverUrl() {
+            return coverUrl;
+        }
+
+        public void setCoverUrl(String coverUrl) {
+            this.coverUrl = coverUrl;
+        }
+
+        private String coverUrl;
+
+        public BookResult(String title, String author, String publish_date, String coverUrl) {
             this.title = title;
             this.author = author;
             this.publishDate = publish_date;
+            this.coverUrl = coverUrl;
         }
 
         public BookResult() {
             this.title = null;
             this.author = null;
             this.publishDate = null;
+            this.coverUrl = null;
         }
 
 
@@ -55,6 +67,10 @@ public class APICommunicator {
 
         public void setPublishDate(String publishDate) {
             this.publishDate = publishDate;
+        }
+
+        public boolean any() {
+            return this.title != null || this.author != null || this.publishDate != null || this.coverUrl  != null;
         }
     }
 
@@ -88,9 +104,46 @@ public class APICommunicator {
             }
 
             try {
-                bookResult.setPublishDate(innerRes.get("publish_date").getAsString());
+                String publishDate = innerRes.get("publish_date").getAsString();
+                StringBuilder run = new StringBuilder();
+                for (int i = 0; i < publishDate.length(); i++) {
+                    if (Character.isDigit(publishDate.charAt(i))) {
+                        run.append(publishDate.charAt(i));
+                    } else {
+                        run = new StringBuilder();
+                    }
+                    if (run.length() == 4) {
+                        break;
+                    }
+                }
+                if (run.length() == 4) {
+                    bookResult.setPublishDate(run.toString());
+                } else {
+                    bookResult.setPublishDate(null);
+                }
             } catch (Exception e) {
                 bookResult.setPublishDate(null);
+            }
+
+            // Try small, then medium, then large
+            try {
+                bookResult.setCoverUrl(innerRes.get("cover").getAsJsonObject().get("small").getAsString());
+            } catch (Exception e) {
+                bookResult.setCoverUrl(null);
+            }
+            if (bookResult.getCoverUrl() == null) {
+                try {
+                    bookResult.setCoverUrl(innerRes.get("cover").getAsJsonObject().get("medium").getAsString());
+                } catch (Exception e) {
+                    bookResult.setCoverUrl(null);
+                }
+            }
+            if (bookResult.getCoverUrl() == null) {
+                try {
+                    bookResult.setCoverUrl(innerRes.get("cover").getAsJsonObject().get("large").getAsString());
+                } catch (Exception e) {
+                    bookResult.setCoverUrl(null);
+                }
             }
 
             return bookResult;
