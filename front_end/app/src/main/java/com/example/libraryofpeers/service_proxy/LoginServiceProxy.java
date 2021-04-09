@@ -1,5 +1,9 @@
 package com.example.libraryofpeers.service_proxy;
 
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
+
 import com.example.libraryofpeers.net.ServerFacade;
 
 import java.io.IOException;
@@ -33,6 +37,7 @@ public class LoginServiceProxy implements ILoginService {
     }
 
     public void setCurrentUser(User currentUser) {
+        System.out.println("...................." + currentUser.getId());
         this.currentUser = currentUser;
     }
 
@@ -44,6 +49,7 @@ public class LoginServiceProxy implements ILoginService {
         this.curAuthToken = curAuthToken;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public LoginResponse login(LoginRequest request) {
         try {

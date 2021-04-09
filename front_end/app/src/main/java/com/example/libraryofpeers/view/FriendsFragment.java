@@ -15,8 +15,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.libraryofpeers.R;
+import com.example.libraryofpeers.async_tasks.GetFriendsTask;
 import com.example.libraryofpeers.async_tasks.PseudoFriendsTask;
 import com.example.libraryofpeers.presenters.FriendsPresenter;
+import com.example.libraryofpeers.presenters.GetFriendsPresenter;
 import com.example.libraryofpeers.service_proxy.LoginServiceProxy;
 import com.example.libraryofpeers.view.utils.UserClickListener;
 import com.example.libraryofpeers.view.utils.SearchCache;
@@ -45,7 +47,7 @@ public class FriendsFragment extends Fragment implements FriendsPresenter.View {
     private String query;
 
     private User user;
-    private FriendsPresenter presenter;
+    private GetFriendsPresenter presenter;
 
 //    private int itemsLoaded = 0;
 
@@ -78,7 +80,7 @@ public class FriendsFragment extends Fragment implements FriendsPresenter.View {
 
         user = (User) getArguments().getSerializable(ITEM_KEY);
 
-        presenter = new FriendsPresenter(this);
+        presenter = new GetFriendsPresenter();
 
         RecyclerView FriendsRecyclerView = view.findViewById(R.id.statusesRecyclerView);
 
@@ -123,7 +125,7 @@ public class FriendsFragment extends Fragment implements FriendsPresenter.View {
         }
     }
 
-    private class FriendsRecyclerViewAdapter extends RecyclerView.Adapter<FriendsFragment.FriendsHolder> implements PseudoFriendsTask.Observer {
+    private class FriendsRecyclerViewAdapter extends RecyclerView.Adapter<FriendsFragment.FriendsHolder> implements GetFriendsTask.GetFriendsObserver {
 
         private final List<User> items = new ArrayList<>();
 
@@ -194,8 +196,8 @@ public class FriendsFragment extends Fragment implements FriendsPresenter.View {
             addLoadingFooter();
 
             if (SearchCache.getFriendsQuery().equals("")) {
-                PseudoFriendsTask getFriendsTask = new PseudoFriendsTask(presenter, this, "");
-                FriendsRequest request = new FriendsRequest(LoginServiceProxy.getInstance().getCurrentUser().getId(), itemsLoaded);  // Eventually this will track how many items loaded so far
+                GetFriendsTask getFriendsTask = new GetFriendsTask(this, presenter);
+                FriendsRequest request = new FriendsRequest(LoginServiceProxy.getInstance().getCurrentUser().getId(), itemsLoaded);
     //            if (lastItem != null) {
     //                request.setLastItemInFriendsId(lastItem.getId());
     //            }
@@ -203,18 +205,26 @@ public class FriendsFragment extends Fragment implements FriendsPresenter.View {
             } else {
                 // This will be a search task once that's available
                 Toast.makeText(getContext(), "Using search mode", Toast.LENGTH_LONG).show();
-                PseudoFriendsTask searchTask = new PseudoFriendsTask(presenter, this, SearchCache.getFriendsQuery());
-                FriendsRequest request = new FriendsRequest(LoginServiceProxy.getInstance().getCurrentUser().getId(), itemsLoaded);  // Eventually this will track how many items loaded so far
+                GetFriendsTask getFriendsTask = new GetFriendsTask(this, presenter);
+                FriendsRequest request = new FriendsRequest(LoginServiceProxy.getInstance().getCurrentUser().getId(), itemsLoaded);
                 //            if (lastItem != null) {
                 //                request.setLastItemInFriendsId(lastItem.getId());
                 //            }
-                searchTask.execute(request);
+                getFriendsTask.execute(request);
             }
         }
 
+        private void addLoadingFooter() {
+            addItem(new User(null, null, null, null, null, null, null, null, null));
+        }
+
+        private void removeLoadingFooter() {
+            removeItem(items.size() - 1);
+        }
+
         @Override
-        public void friendsRetrieved(FriendsResponse FriendsResponse) {
-            List<User> items = FriendsResponse.getFriends();
+        public void onGetFriendsSuccess(FriendsResponse response) {
+            List<User> items = response.getFriends();
 
             lastItem = (items.size() > 0) ? items.get(items.size() -1) : null;
             hasMorePages = items.size() == 10;
@@ -227,18 +237,9 @@ public class FriendsFragment extends Fragment implements FriendsPresenter.View {
         }
 
         @Override
-        public void handleException(Exception exception) {
-            Log.e(LOG_TAG, exception.getMessage(), exception);
+        public void onGetFriendsFail(FriendsResponse response) {
             removeLoadingFooter();
-            Toast.makeText(getContext(), exception.getMessage(), Toast.LENGTH_LONG).show();
-        }
-
-        private void addLoadingFooter() {
-            addItem(new User(null, null, null, null, null, null, null, null, null));
-        }
-
-        private void removeLoadingFooter() {
-            removeItem(items.size() - 1);
+            Toast.makeText(getContext(), response.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
 
