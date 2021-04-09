@@ -123,8 +123,8 @@ public class MySqlItemDAO extends BaseMySqlDAO implements IItemDAO {
         String sqlCommand = "SELECT * FROM Items WHERE "
                 + getOwnerIdCommandChunk(ownerId)
                 + "("
-                + getColumnPartiallyContainsCommandChunk(searchCriteria)
-                + " OR "
+                // + getColumnPartiallyContainsCommandChunk(searchCriteria)
+                // + " OR "
                 + getColumnFullyContainsCommandChunk(searchCriteria)
                 + ")"
                 + "ORDER BY Title "
