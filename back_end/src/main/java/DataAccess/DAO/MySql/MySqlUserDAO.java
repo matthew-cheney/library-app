@@ -165,18 +165,13 @@ public class MySqlUserDAO extends BaseMySqlDAO implements IUserDAO {
         boolean success = false;
         ResultSet resultSet;
         String sqlCommand = "SELECT * FROM Users WHERE "
-                + "Username LIKE ? OR "
-                + "FirstName LIKE ? OR "
-                + "LastName LIKE ? "
-                + "ORDER BY LastName, FirstName "
+                + getColumnPartiallyContainsCommandChunk(searchCriteria)
+                + " OR "
+                + getColumnFullyContainsCommandChunk(searchCriteria)
+                + getSearchResultsOrderByCommandChunk(searchCriteria)
                 + "LIMIT " + offset + ", " + Constants.BATCH_SIZE;
 
         try (PreparedStatement statement = connection.prepareStatement(sqlCommand)) {
-            String containsSearchCriteria = "%" + searchCriteria + "%";
-
-            for (int i = 1; i <= 3; i++) {
-                statement.setString(i, containsSearchCriteria);
-            }
 
             resultSet = statement.executeQuery();
             List<User> users = new ArrayList<>();
@@ -349,5 +344,24 @@ public class MySqlUserDAO extends BaseMySqlDAO implements IUserDAO {
 
         sqlCommand.append("LIMIT ").append(offset).append(", ").append(Constants.BATCH_SIZE);
         return sqlCommand.toString();
+    }
+
+    private String getColumnPartiallyContainsCommandChunk(String searchCriteria) {
+        return "('" + searchCriteria + "' LIKE Concat(Concat('%', Username), '%') OR " +
+                "'" + searchCriteria + "' LIKE Concat(Concat('%', FirstName), '%') OR " +
+                "'" + searchCriteria + "' LIKE Concat(Concat('%', LastName), '%'))";
+    }
+
+    private String getColumnFullyContainsCommandChunk(String searchCriteria) {
+        return "(Username LIKE '%" + searchCriteria + "%' OR "
+                + "FirstName LIKE '%" + searchCriteria + "%' OR "
+                + "LastName LIKE '%" + searchCriteria + "%')";
+    }
+
+    private String getSearchResultsOrderByCommandChunk(String searchCriteria) {
+        return "ORDER BY (('" + searchCriteria + "' LIKE Concat(Concat('%', Username), '%')) + " +
+                        "('" + searchCriteria + "' LIKE Concat(Concat('%', LastName), '%')) + " +
+                        "('" + searchCriteria + "' LIKE Concat(Concat('%', FirstName), '%'))" +
+                        ") DESC, FirstName, LastName ";
     }
 }

@@ -1,8 +1,11 @@
 package com.example.libraryofpeers.view;
 
 import Entities.User;
+import Enums.ObjectTypeEnum;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -12,6 +15,7 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,9 +24,13 @@ import android.widget.TextView;
 
 import com.example.libraryofpeers.R;
 import com.example.libraryofpeers.service_proxy.LoginServiceProxy;
+import com.example.libraryofpeers.view.utils.ImageUtils;
 import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends AppCompatActivity {
+
+    TextView navUserName;
+    ImageView navImageProfile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,10 +76,10 @@ public class MainActivity extends AppCompatActivity {
 
         // Set Navigation User Information
         User user = LoginServiceProxy.getInstance().getCurrentUser();
-        TextView navUserName = (TextView) navigationView.getHeaderView(0).findViewById(R.id.navUserName);
-        ImageView navImageProfile = (ImageView) navigationView.getHeaderView(0).findViewById(R.id.navImageProfile);
+        navUserName = (TextView) navigationView.getHeaderView(0).findViewById(R.id.navUserName);
+        navImageProfile = (ImageView) navigationView.getHeaderView(0).findViewById(R.id.navImageProfile);
         String userFullName = user.getFirstName() + " " + user.getLastName();
         navUserName.setText(userFullName);
-        // Later set image url here
+        navImageProfile.setImageDrawable(ImageUtils.drawableFromUrl(user.getImageUrl(), ObjectTypeEnum.user, getBaseContext()));
     }
 }

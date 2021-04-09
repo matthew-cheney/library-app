@@ -3,6 +3,7 @@ package com.example.libraryofpeers.view;
 import android.content.Intent;
 import android.os.Bundle;
 
+import Config.Constants;
 import Entities.User;
 import Request.AddItemRequest;
 import Response.AddItemResponse;
@@ -28,7 +29,6 @@ public class AddMovieItemFragment extends Fragment implements AddItemTask.AddIte
     EditText descriptionEditText;
     EditText imageUrlEditText;
     EditText itemFormatEditText;
-    String MOVIE_CATEGORY = "MOVIE";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -43,6 +43,14 @@ public class AddMovieItemFragment extends Fragment implements AddItemTask.AddIte
         descriptionEditText = (EditText) view.findViewById(R.id.descriptionEditor);
         imageUrlEditText = (EditText) view.findViewById(R.id.imageEditor);
         itemFormatEditText = (EditText) view.findViewById(R.id.itemFormatEditor);
+
+        final Button addImageBtn = (Button) view.findViewById(R.id.addMovieImageButton);
+        addImageBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                StartImageSelectorActivity();
+            }
+        });
 
         addItemBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,16 +76,16 @@ public class AddMovieItemFragment extends Fragment implements AddItemTask.AddIte
         if (title.isEmpty()) {
             Toast.makeText(getActivity(), "Title is required!", Toast.LENGTH_LONG).show();
         } else {
-            imageUrl = (imageUrl.isEmpty()) ? imageUrl : null;
-            description = (description.isEmpty()) ? description : null;
-            genre = (genre.isEmpty()) ? genre : null;
-            itemFormat = (itemFormat.isEmpty()) ? itemFormat : null;
+            imageUrl = (imageUrl.isEmpty()) ? null : imageUrl;
+            description = (description.isEmpty()) ? null : description;
+            genre = (genre.isEmpty()) ? null : genre;
+            itemFormat = (itemFormat.isEmpty()) ? null : itemFormat;
             releaseYear = (releaseYeaString.isEmpty()) ? null : Integer.parseInt(releaseYeaString);
 
 
             AddItemRequest addItemRequest = new AddItemRequest(
                     titleEditText.getText().toString(),
-                    MOVIE_CATEGORY,
+                    Constants.MOVIE_CATEGORY,
                     false,
                     user.getId(),
                     imageUrl,
@@ -105,5 +113,18 @@ public class AddMovieItemFragment extends Fragment implements AddItemTask.AddIte
     public void onAddFailure(AddItemResponse response) {
         System.out.println("Failed to add item");
         Toast.makeText(getActivity(), "Failed To Add Item", Toast.LENGTH_LONG).show();
+    }
+
+    public void StartImageSelectorActivity() {
+        Intent intent = new Intent(this.getActivity(), ImageSelectorActivity.class);
+        startActivityForResult(intent, Constants.IMAGE_CODE);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == Constants.IMAGE_CODE) {
+            imageUrlEditText.setText(data.getStringExtra(Constants.IMAGE_URL_EXTRA));
+        }
     }
 }

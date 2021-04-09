@@ -1,18 +1,20 @@
 package com.example.libraryofpeers.view.utils;
 
 import android.content.Context;
-import android.text.SpannableString;
-import android.text.method.LinkMovementMethod;
+import android.os.Build;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 
+import androidx.annotation.RequiresApi;
+
+import com.example.libraryofpeers.R;
+
+import Config.Constants;
 import Entities.Item;
 import Entities.User;
-
-import static com.example.libraryofpeers.view.utils.FetchImage.setImageToDrawable;
-import static com.example.libraryofpeers.view.utils.FetchImage.setImageViewToUrl;
+import Enums.ObjectTypeEnum;
 
 public class ItemBindingUtils {
 
@@ -33,9 +35,10 @@ public class ItemBindingUtils {
             return;
         }
 
+        ImageUtils.ImageReporter reporter = new ImageUtils.ImageReporter(false);
         switch (item.getCategory()) {
-            case "BOOK":
-                setImageToDrawable(itemImage, bookUri, context);
+            case Constants.BOOK_CATEGORY:
+                itemImage.setImageDrawable(ImageUtils.drawableFromUrl(item.getImageUrl(), ObjectTypeEnum.book, context, reporter));
                 if (item.getAuthor() != null) {
                     itemSubtitle.setText(item.getAuthor());
                     itemSubtitle.setVisibility(View.VISIBLE);
@@ -43,12 +46,12 @@ public class ItemBindingUtils {
                     itemSubtitle.setVisibility(View.GONE);
                 }
                 break;
-            case "MOVIE":
-                setImageToDrawable(itemImage, movieUri, context);
+            case Constants.MOVIE_CATEGORY:
+                itemImage.setImageDrawable(ImageUtils.drawableFromUrl(item.getImageUrl(), ObjectTypeEnum.movie, context, reporter));
                 itemSubtitle.setVisibility(View.GONE);
                 break;
-            case "BOARD_GAME":
-                setImageToDrawable(itemImage, boardGameUri, context);
+            case Constants.BOARD_GAME_CATEGORY:
+                itemImage.setImageDrawable(ImageUtils.drawableFromUrl(item.getImageUrl(), ObjectTypeEnum.boardGame, context, reporter));
                 itemSubtitle.setVisibility(View.GONE);
                 break;
             default:
@@ -56,10 +59,12 @@ public class ItemBindingUtils {
         }
     }
 
-    public static void bindUserToViews(User item, TextView itemTitle, TextView itemSubtitle, ImageView itemImage, Context context) {
-        itemTitle.setText(item.getFirstName() + " " + item.getLastName());
-        itemSubtitle.setText(item.getEmail());
-        setImageToDrawable(itemImage, userUri, context);
+    public static void bindUserToViews(User user, TextView itemTitle, TextView itemSubtitle, ImageView itemImage, Context context) {
+        String userFullName = user.getFirstName() + " " + user.getLastName();
+        itemTitle.setText(userFullName);
+        itemSubtitle.setText(user.getEmail());
+        ImageUtils.ImageReporter reporter = new ImageUtils.ImageReporter(false);
+        itemImage.setImageDrawable(ImageUtils.drawableFromUrl(user.getImageUrl(), ObjectTypeEnum.user, context, reporter));
         itemTitle.setVisibility(View.VISIBLE);
         itemSubtitle.setVisibility(View.VISIBLE);
         itemImage.setVisibility(View.VISIBLE);

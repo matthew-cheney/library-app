@@ -12,17 +12,27 @@ import com.example.libraryofpeers.R;
 import com.example.libraryofpeers.async_tasks.RegisterTask;
 import com.example.libraryofpeers.presenters.RegisterPresenter;
 
+import Config.Constants;
 import Request.RegisterRequest;
 import Response.RegisterResponse;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class RegisterActivity extends AppCompatActivity implements RegisterPresenter.View, RegisterTask.RegisterRequestObserver {
     private RegisterPresenter presenter;
+    private String imageUrl = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+
+        Button addImageBtn = (Button) findViewById(R.id.addImageButton);
+        addImageBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                StartImageSelectorActivity();
+            }
+        });
 
         Button registerBtn = (Button) findViewById(R.id.registerButton);
         registerBtn.setOnClickListener(new View.OnClickListener() {
@@ -49,7 +59,7 @@ public class RegisterActivity extends AppCompatActivity implements RegisterPrese
 
         if (passwordRegister.equals(confirmPasswordRegister)) {
             RegisterRequest registerRequest = new RegisterRequest(userNameRegister, passwordRegister, firstNameRegister,
-                    lastNameRegister, "", "", "");
+                    lastNameRegister, "", "", getImageUrl());
             RegisterTask registerTask = new RegisterTask(this, presenter);
             registerTask.execute(registerRequest);
         } else {
@@ -67,5 +77,22 @@ public class RegisterActivity extends AppCompatActivity implements RegisterPrese
     public void onRegisterFailure(RegisterResponse registerResponse) {
         Log.e("", "Error with Register");
         Toast.makeText(this, "Register failed. Try again!", Toast.LENGTH_LONG).show();
+    }
+
+    public void StartImageSelectorActivity() {
+        Intent intent = new Intent(this, ImageSelectorActivity.class);
+        startActivityForResult(intent, Constants.IMAGE_CODE);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == Constants.IMAGE_CODE) {
+            imageUrl = data.getStringExtra(Constants.IMAGE_URL_EXTRA);
+        }
+    }
+
+    private String getImageUrl() {
+        return (imageUrl == null) ? "" : imageUrl;
     }
 }
