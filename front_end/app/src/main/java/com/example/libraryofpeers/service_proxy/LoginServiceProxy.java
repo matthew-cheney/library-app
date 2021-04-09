@@ -37,7 +37,6 @@ public class LoginServiceProxy implements ILoginService {
     }
 
     public void setCurrentUser(User currentUser) {
-        System.out.println("...................." + currentUser.getId());
         this.currentUser = currentUser;
     }
 

@@ -32,6 +32,7 @@ import com.example.libraryofpeers.presenters.EditItemPresenter;
 import com.example.libraryofpeers.view.utils.ImageUtils;
 
 public class ViewItemActivity extends AppCompatActivity implements EditItemTask.EditItemObserver, DeleteItemTask.DeleteItemObserver {
+    boolean isCurrentUser;
     ImageView returnHomeArrow;
     ImageView itemImage;
     TextView titleTextView;
@@ -71,6 +72,7 @@ public class ViewItemActivity extends AppCompatActivity implements EditItemTask.
         setContentView(R.layout.activity_view_item);
 
         item = (Item) getIntent().getSerializableExtra("item");
+        isCurrentUser = getIntent().getBooleanExtra("isCurrentUser", true);
 
         itemImage = (ImageView) findViewById(R.id.itemImage);
         setItemImage(item.getCategory(), item.getImageUrl());
@@ -109,45 +111,58 @@ public class ViewItemActivity extends AppCompatActivity implements EditItemTask.
 
         initializeFields();
 
-        addImageBtn = (Button) findViewById(R.id.addItemImageButton);
-        addImageBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                StartImageSelectorActivity();
-            }
-        });
+        if (isCurrentUser) {
+            addImageBtn = (Button) findViewById(R.id.addItemImageButton);
+            addImageBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    StartImageSelectorActivity();
+                }
+            });
+
+            returnHomeArrow.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    returnHome();
+                }
+            });
+
+            saveItemBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    saveItem();
+                }
+            });
+
+            editItemBtn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                    if (isChecked) {
+                        editingNow(item.getCategory());
+                        saveItemBtn.setVisibility(View.VISIBLE);
+                    } else {
+                        editingDone(item.getCategory());
+                        saveItemBtn.setVisibility(View.GONE);
+                    }
+                }
+            });
+
+            deleteItemBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    deleteItem();
+                }
+            });
+
+        } else {
+            deleteItemBtn.setVisibility(View.GONE);
+            editItemBtn.setVisibility(View.GONE);
+        }
 
         returnHomeArrow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                returnHome();
-            }
-        });
-
-        saveItemBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                saveItem();
-            }
-        });
-
-        editItemBtn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                if (isChecked) {
-                    editingNow(item.getCategory());
-                    saveItemBtn.setVisibility(View.VISIBLE);
-                } else {
-                    editingDone(item.getCategory());
-                    saveItemBtn.setVisibility(View.GONE);
-                }
-            }
-        });
-
-        deleteItemBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                deleteItem();
+                finish();
             }
         });
 

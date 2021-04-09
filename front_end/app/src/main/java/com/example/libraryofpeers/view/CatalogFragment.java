@@ -127,7 +127,7 @@ public class CatalogFragment extends Fragment implements CatalogPresenter.View {
         void bindItem(Item item) {
             bindItemToViews(item, itemTitle, itemCategory, itemImage, getContext());
             currentItem = item;
-            itemView.setOnClickListener(new ItemClickListener(currentItem));
+            itemView.setOnClickListener(new ItemClickListener(currentItem,  user.getId().equals(LoginServiceProxy.getInstance().getCurrentUser().getId())));
         }
     }
 
