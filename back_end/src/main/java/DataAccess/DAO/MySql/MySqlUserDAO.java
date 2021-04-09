@@ -338,7 +338,7 @@ public class MySqlUserDAO extends BaseMySqlDAO implements IUserDAO {
                 sqlCommand.append(" ? ");
             }
             else {
-                sqlCommand.append("OR ? ");
+                sqlCommand.append("OR Id = ? ");
             }
         }
 
