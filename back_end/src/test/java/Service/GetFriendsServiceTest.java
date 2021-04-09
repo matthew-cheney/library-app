@@ -1,10 +1,14 @@
 package Service;
 
+import com.mysql.cj.x.protobuf.MysqlxSession;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
+import Config.Constants;
+import DataAccess.Connection.ConnectionPool;
 import DataAccess.DAO.MySql.MySqlFriendshipDAO;
 import DataAccess.DAO.MySql.MySqlUserDAO;
 import Entities.User;
