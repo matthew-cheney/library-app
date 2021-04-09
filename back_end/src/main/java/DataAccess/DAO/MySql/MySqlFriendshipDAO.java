@@ -65,8 +65,6 @@ public class MySqlFriendshipDAO extends BaseMySqlDAO implements IFriendshipDAO {
                 + "ORDER BY UserIdA "
                 + "LIMIT " + offset + ", " + Constants.BATCH_SIZE;
 
-        System.out.println(sqlCommand);
-
         try (PreparedStatement statement = connection.prepareStatement(sqlCommand)) {
             statement.setString(1, userId);
             statement.setString(2, userId);

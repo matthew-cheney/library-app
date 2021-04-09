@@ -72,24 +72,4 @@ public class GetFriendsServiceTest extends BaseTest {
         FriendsResponse response = service.getFriends(request);
         assertEquals(0, response.getFriends().size());
     }
-
-    @Test
-    public void getFriendsIntegrationTest_success() {
-        MySqlFriendshipDAO integrationFriendsDao = Mockito.spy(MySqlFriendshipDAO.class);
-        Mockito.when(integrationFriendsDao.getConnectionPool()).thenReturn(ConnectionPool.getInstance());
-
-        MySqlUserDAO integrationUserDao = Mockito.spy(MySqlUserDAO.class);
-        Mockito.when(integrationUserDao.getConnectionPool()).thenReturn(ConnectionPool.getInstance());
-
-        GetFriendsService integrationService = Mockito.spy(GetFriendsService.class);
-        Mockito.when(integrationService.getFriendshipDAO()).thenReturn(integrationFriendsDao);
-        Mockito.when(integrationService.getUserDAO()).thenReturn(integrationUserDao);
-
-        FriendsRequest requestOne = new FriendsRequest("11", 0);
-        FriendsResponse responseOne = integrationService.getFriends(requestOne);
-        FriendsRequest requestTwo = new FriendsRequest("11", 10);
-        FriendsResponse responseTwo = integrationService.getFriends(requestTwo);
-        assertEquals(10, responseOne.getFriends().size());
-        assertEquals(10, responseTwo.getFriends().size());
-    }
 }
