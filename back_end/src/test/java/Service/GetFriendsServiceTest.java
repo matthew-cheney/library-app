@@ -1,10 +1,14 @@
 package Service;
 
+import com.mysql.cj.x.protobuf.MysqlxSession;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
+import Config.Constants;
+import DataAccess.Connection.ConnectionPool;
 import DataAccess.DAO.MySql.MySqlFriendshipDAO;
 import DataAccess.DAO.MySql.MySqlUserDAO;
 import Entities.User;
@@ -67,5 +71,25 @@ public class GetFriendsServiceTest extends BaseTest {
         FriendsRequest request = new FriendsRequest("BUBBLES", TestConfig.TEST_OFFSET);
         FriendsResponse response = service.getFriends(request);
         assertEquals(0, response.getFriends().size());
+    }
+
+    @Test
+    public void getFriendsIntegrationTest_success() {
+        MySqlFriendshipDAO integrationFriendsDao = Mockito.spy(MySqlFriendshipDAO.class);
+        Mockito.when(integrationFriendsDao.getConnectionPool()).thenReturn(ConnectionPool.getInstance());
+
+        MySqlUserDAO integrationUserDao = Mockito.spy(MySqlUserDAO.class);
+        Mockito.when(integrationUserDao.getConnectionPool()).thenReturn(ConnectionPool.getInstance());
+
+        GetFriendsService integrationService = Mockito.spy(GetFriendsService.class);
+        Mockito.when(integrationService.getFriendshipDAO()).thenReturn(integrationFriendsDao);
+        Mockito.when(integrationService.getUserDAO()).thenReturn(integrationUserDao);
+
+        FriendsRequest requestOne = new FriendsRequest("11", 0);
+        FriendsResponse responseOne = integrationService.getFriends(requestOne);
+        FriendsRequest requestTwo = new FriendsRequest("11", 10);
+        FriendsResponse responseTwo = integrationService.getFriends(requestTwo);
+        assertEquals(10, responseOne.getFriends().size());
+        assertEquals(10, responseTwo.getFriends().size());
     }
 }

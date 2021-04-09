@@ -85,11 +85,11 @@ public class MySqlUserDAOTest extends BaseTest {
     @Test
     public void getUsersByIds_Success() {
         try {
-            dao.addUser(otherTestUser);
+            boolean result = dao.addUser(otherTestUser);
             List<String> ids = new ArrayList<>();
             ids.add("TEST");
             ids.add("TEST_OTHER");
-
+            assertTrue(result);
             List<User> users = dao.getUsersByIds(ids, 0);
             assertEquals(2, users.size());
         }
