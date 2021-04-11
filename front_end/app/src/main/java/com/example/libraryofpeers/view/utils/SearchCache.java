@@ -7,10 +7,14 @@ public class SearchCache {
     public String catalogQuery;
     public String friendsQuery;
     public String categoryFilter;
+    public String friendCategoryFilter;
+    public String friendCatalogQuery;
 
     private SearchCache() {
         this.catalogQuery = "";
         this.friendsQuery = "";
+        this.friendCatalogQuery = "";
+        this.friendCategoryFilter = null;
         this.categoryFilter = null;
     }
 
@@ -43,6 +47,24 @@ public class SearchCache {
 
     public static String getCategoryFilter() {
         return getInstance().categoryFilter;
+    }
+
+    public static String getFriendCategoryFilter() {
+        return getInstance().friendCategoryFilter;
+    }
+
+    public static void setFriendCategoryFilter(String friendCategoryFilter) {
+        getInstance().friendCategoryFilter = friendCategoryFilter;
+    }
+
+
+
+    public static String getFriendCatalogQuery() {
+        return getInstance().friendCatalogQuery;
+    }
+
+    public static void setFriendCatalogQuery(String friendCatalogQuery) {
+        getInstance().friendCatalogQuery = friendCatalogQuery;
     }
 
 

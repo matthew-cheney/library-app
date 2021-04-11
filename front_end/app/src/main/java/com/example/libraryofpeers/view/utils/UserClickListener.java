@@ -21,6 +21,8 @@ public class UserClickListener implements View.OnClickListener {
     public void onClick(View view) {
         Intent intent = new Intent(view.getContext(), FriendProfileActivity.class);
         intent.putExtra("user", user);
+        SearchCache.setFriendCatalogQuery("");
+        SearchCache.setFriendCategoryFilter(null);
         view.getContext().startActivity(intent);
     }
 }

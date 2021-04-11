@@ -1,5 +1,6 @@
 package com.example.libraryofpeers.view;
 
+import Config.Constants;
 import Entities.User;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.SearchView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -62,6 +64,32 @@ public class FriendProfileActivity extends AppCompatActivity {
         ViewPager viewPager = findViewById(R.id.view_pager);
         viewPager.setAdapter(sectionsPagerAdapter);
 
+        final SearchView search = findViewById(R.id.catalog_search_friend);
+        search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                System.out.println("Searching catalog with query: " + query);
+                SearchCache.setFriendCatalogQuery(query);
+                sectionsPagerAdapter.notifyDataSetChanged();
+                ViewPager viewPager = findViewById(R.id.view_pager);
+                viewPager.setAdapter(sectionsPagerAdapter);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                if (newText.equals("")) {
+//                    Toast.makeText(getContext(), "it's empty!", Toast.LENGTH_LONG).show();
+                    System.out.println("Resetting catalog to no search");
+                    SearchCache.setFriendCatalogQuery("");
+                    sectionsPagerAdapter.notifyDataSetChanged();
+                    ViewPager viewPager = findViewById(R.id.view_pager);
+                    viewPager.setAdapter(sectionsPagerAdapter);
+                }
+                return false;
+            }
+        });
+
         Spinner categorySpinner = findViewById(R.id.category_dropdown);
         List<String> categoryNames = new ArrayList<>();
         categoryNames.add("All");
@@ -82,30 +110,30 @@ public class FriendProfileActivity extends AppCompatActivity {
                             firstLoad = false;
                             break;
                         }
-                        SearchCache.setCategoryFilter(null);
+                        SearchCache.setFriendCategoryFilter(null);
                         viewPager.setAdapter(getSectionsPagerAdapter());
-                        findViewById(R.id.catalog_search).setVisibility(View.VISIBLE);
+                        findViewById(R.id.catalog_search_friend).setVisibility(View.VISIBLE);
                         break;
                     case 1:
 //                        ((SearchView) getActivity().findViewById(R.id.catalog_search)).setQuery("", false);
 //                        SearchCache.setCatalogQuery("");
-                        SearchCache.setCategoryFilter("book");
+                        SearchCache.setFriendCategoryFilter(Constants.BOOK_CATEGORY);
                         viewPager.setAdapter(getSectionsPagerAdapter());
-                        findViewById(R.id.catalog_search).setVisibility(View.GONE);
+                        findViewById(R.id.catalog_search_friend).setVisibility(View.GONE);
                         break;
                     case 2:
 //                        ((SearchView) getActivity().findViewById(R.id.catalog_search)).setQuery("", false);
 //                        SearchCache.setCatalogQuery("");
-                        SearchCache.setCategoryFilter("movie");
+                        SearchCache.setFriendCategoryFilter(Constants.MOVIE_CATEGORY);
                         viewPager.setAdapter(getSectionsPagerAdapter());
-                        findViewById(R.id.catalog_search).setVisibility(View.GONE);
+                        findViewById(R.id.catalog_search_friend).setVisibility(View.GONE);
                         break;
                     case 3:
 //                        ((SearchView) getActivity().findViewById(R.id.catalog_search)).setQuery("", false);
 //                        SearchCache.setCatalogQuery("");
-                        SearchCache.setCategoryFilter("board_game");
+                        SearchCache.setFriendCategoryFilter(Constants.BOARD_GAME_CATEGORY);
                         viewPager.setAdapter(getSectionsPagerAdapter());
-                        findViewById(R.id.catalog_search).setVisibility(View.GONE);
+                        findViewById(R.id.catalog_search_friend).setVisibility(View.GONE);
                         break;
                 }
             }
