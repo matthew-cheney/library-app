@@ -1,14 +1,19 @@
 package com.example.libraryofpeers.view;
 
+import Config.Constants;
 import Entities.Item;
+import Enums.ObjectTypeEnum;
 import Request.DeleteItemRequest;
 import Request.EditItemRequest;
 import Response.DeleteItemResponse;
 import Response.EditItemResponse;
+
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -24,9 +29,12 @@ import com.example.libraryofpeers.async_tasks.DeleteItemTask;
 import com.example.libraryofpeers.async_tasks.EditItemTask;
 import com.example.libraryofpeers.presenters.DeleteItemPresenter;
 import com.example.libraryofpeers.presenters.EditItemPresenter;
+import com.example.libraryofpeers.view.utils.ImageUtils;
 
 public class ViewItemActivity extends AppCompatActivity implements EditItemTask.EditItemObserver, DeleteItemTask.DeleteItemObserver {
+    boolean isCurrentUser;
     ImageView returnHomeArrow;
+    ImageView itemImage;
     TextView titleTextView;
     EditText titleEditText;
     TextView dateAddedTextView;
@@ -56,10 +64,7 @@ public class ViewItemActivity extends AppCompatActivity implements EditItemTask.
     ConstraintLayout itemFormatLayout;
     ConstraintLayout numPlayersLayout;
     ConstraintLayout timeGamePlayLayout;
-
-    String BOOK_CATEGORY = "BOOK";
-    String MOVIE_CATEGORY = "MOVIE";
-    String BOARD_GAME_CATEGORY = "BOARD_GAME";
+    Button addImageBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +72,10 @@ public class ViewItemActivity extends AppCompatActivity implements EditItemTask.
         setContentView(R.layout.activity_view_item);
 
         item = (Item) getIntent().getSerializableExtra("item");
+        isCurrentUser = getIntent().getBooleanExtra("isCurrentUser", true);
 
+        itemImage = (ImageView) findViewById(R.id.itemImage);
+        setItemImage(item.getCategory(), item.getImageUrl());
 
         returnHomeArrow = findViewById(R.id.returnHomeArrow);
         titleTextView = (TextView) findViewById(R.id.itemTitleText);
@@ -103,37 +111,58 @@ public class ViewItemActivity extends AppCompatActivity implements EditItemTask.
 
         initializeFields();
 
+        if (isCurrentUser) {
+            addImageBtn = (Button) findViewById(R.id.addItemImageButton);
+            addImageBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    StartImageSelectorActivity();
+                }
+            });
+
+            returnHomeArrow.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    returnHome();
+                }
+            });
+
+            saveItemBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    saveItem();
+                }
+            });
+
+            editItemBtn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                    if (isChecked) {
+                        editingNow(item.getCategory());
+                        saveItemBtn.setVisibility(View.VISIBLE);
+                    } else {
+                        editingDone(item.getCategory());
+                        saveItemBtn.setVisibility(View.GONE);
+                    }
+                }
+            });
+
+            deleteItemBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    deleteItem();
+                }
+            });
+
+        } else {
+            deleteItemBtn.setVisibility(View.GONE);
+            editItemBtn.setVisibility(View.GONE);
+        }
+
         returnHomeArrow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                returnHome();
-            }
-        });
-
-        saveItemBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                saveItem();
-            }
-        });
-
-        editItemBtn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                if (isChecked) {
-                    editingNow(item.getCategory());
-                    saveItemBtn.setVisibility(View.VISIBLE);
-                } else {
-                    editingDone(item.getCategory());
-                    saveItemBtn.setVisibility(View.GONE);
-                }
-            }
-        });
-
-        deleteItemBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                deleteItem();
+                finish();
             }
         });
 
@@ -161,14 +190,14 @@ public class ViewItemActivity extends AppCompatActivity implements EditItemTask.
         timeGamePlayEditText.setText(String.valueOf(item.getTimeToPlayInMins()));
 
         String itemCategory = item.getCategory();
-        if (itemCategory.equals(BOARD_GAME_CATEGORY)) {
+        if (itemCategory.equals(Constants.BOARD_GAME_CATEGORY)) {
             numPlayersLayout.setVisibility(View.VISIBLE);
             timeGamePlayLayout.setVisibility(View.VISIBLE);
         } else {
             genreLayout.setVisibility(View.VISIBLE);
             releaseYearLayout.setVisibility(View.VISIBLE);
             itemFormatLayout.setVisibility(View.VISIBLE);
-            if (itemCategory.equals(BOOK_CATEGORY)) {
+            if (itemCategory.equals(Constants.BOOK_CATEGORY)) {
                 authorLayout.setVisibility(View.VISIBLE);
             }
         }
@@ -215,7 +244,7 @@ public class ViewItemActivity extends AppCompatActivity implements EditItemTask.
         imageUrlTextView.setVisibility(View.GONE);
         imageUrlEditText.setVisibility(View.VISIBLE);
 
-        if (category.equals(BOARD_GAME_CATEGORY)) {
+        if (category.equals(Constants.BOARD_GAME_CATEGORY)) {
             numPlayersTextView.setVisibility(View.GONE);
             numPlayersEditText.setVisibility(View.VISIBLE);
             timeGamePlayTextView.setVisibility(View.GONE);
@@ -227,11 +256,14 @@ public class ViewItemActivity extends AppCompatActivity implements EditItemTask.
             releaseYearEditText.setVisibility(View.VISIBLE);
             itemFormatTextView.setVisibility(View.GONE);
             itemFormatEditText.setVisibility(View.VISIBLE);
-            if (category.equals(BOOK_CATEGORY)) {
+            if (category.equals(Constants.BOOK_CATEGORY)) {
                 authorTextView.setVisibility(View.GONE);
                 authorEditText.setVisibility(View.VISIBLE);
             }
         }
+
+        addImageBtn.setVisibility(View.VISIBLE);
+        addImageBtn.setEnabled(true);
     }
 
     private void editingDone(String category) {
@@ -242,7 +274,7 @@ public class ViewItemActivity extends AppCompatActivity implements EditItemTask.
         imageUrlEditText.setVisibility(View.GONE);
         imageUrlTextView.setVisibility(View.VISIBLE);
 
-        if (category.equals(BOARD_GAME_CATEGORY)) {
+        if (category.equals(Constants.BOARD_GAME_CATEGORY)) {
             numPlayersTextView.setVisibility(View.VISIBLE);
             numPlayersEditText.setVisibility(View.GONE);
             timeGamePlayTextView.setVisibility(View.VISIBLE);
@@ -254,11 +286,14 @@ public class ViewItemActivity extends AppCompatActivity implements EditItemTask.
             releaseYearEditText.setVisibility(View.GONE);
             itemFormatTextView.setVisibility(View.VISIBLE);
             itemFormatEditText.setVisibility(View.GONE);
-            if (category.equals(BOOK_CATEGORY)) {
+            if (category.equals(Constants.BOOK_CATEGORY)) {
                 authorTextView.setVisibility(View.VISIBLE);
                 authorEditText.setVisibility(View.GONE);
             }
         }
+
+        addImageBtn.setVisibility(View.GONE);
+        addImageBtn.setEnabled(false);
     }
 
     @Override
@@ -287,5 +322,39 @@ public class ViewItemActivity extends AppCompatActivity implements EditItemTask.
     public void onDeleteFail(DeleteItemResponse response) {
         System.out.println("Failed to delete item");
         Toast.makeText(this, "Failed To Delete Item", Toast.LENGTH_LONG).show();
+    }
+
+    public void StartImageSelectorActivity() {
+        Intent intent = new Intent(this, ImageSelectorActivity.class);
+        startActivityForResult(intent, Constants.IMAGE_CODE);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == Constants.IMAGE_CODE) {
+            String imageUrl = data.getStringExtra(Constants.IMAGE_URL_EXTRA);
+            imageUrlEditText.setText(imageUrl);
+            imageUrlTextView.setText(imageUrl);
+            setItemImage(item.getCategory(), imageUrl);
+        }
+    }
+
+    private void setItemImage(String category, String imageUrl) {
+        ObjectTypeEnum itemType;
+        switch (category) {
+            case Constants.BOOK_CATEGORY:
+                itemType = ObjectTypeEnum.book;
+                break;
+            case Constants.MOVIE_CATEGORY:
+                itemType = ObjectTypeEnum.movie;
+                break;
+            case Constants.BOARD_GAME_CATEGORY:
+            default:
+                itemType = ObjectTypeEnum.boardGame;
+                break;
+        }
+        ImageUtils.ImageReporter reporter = new ImageUtils.ImageReporter(false);
+        itemImage.setImageDrawable(ImageUtils.drawableFromUrl(imageUrl, itemType, getBaseContext(), reporter));
     }
 }

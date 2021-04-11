@@ -12,6 +12,7 @@ import Request.CatalogRequest;
 import Request.DeleteItemRequest;
 import Request.EditItemRequest;
 import Request.EditUserRequest;
+import Request.FriendsRequest;
 import Request.LoginRequest;
 import Request.RegisterRequest;
 import Request.RemoveFriendRequest;
@@ -23,6 +24,7 @@ import Response.CatalogResponse;
 import Response.DeleteItemResponse;
 import Response.EditItemResponse;
 import Response.EditUserResponse;
+import Response.FriendsResponse;
 import Response.LoginResponse;
 import Response.RegisterResponse;
 import Response.RemoveFriendResponse;
@@ -98,4 +100,9 @@ public class ServerFacade {
         return communicator.doPost(urlPath, request, null, RemoveFriendResponse.class);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    public FriendsResponse getFriends(FriendsRequest request, String urlPath) throws IOException {
+        ClientCommunicator communicator = new ClientCommunicator(SERVER_URL);
+        return communicator.doPost(urlPath, request, null, FriendsResponse.class);
+    }
 }

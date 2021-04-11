@@ -18,6 +18,8 @@
     <string name="signInButton">Sign In</string>
     <string name="registerButton">Register</string>
     <string name="addImageButton">Add Image</string>
+    <string name="saveImageButton">Save</string>
+    <string name="cancelImageSelectButton">Cancel</string>
     <string name="catalogTabTitle">Catalog</string>
     <string name="friendsTabTitle">Friends</string>
     <string name="viewItemTitle"><u>Title</u></string>
@@ -45,6 +47,7 @@
     <string name="user_image">User Image</string>
     <string name="sampleSubtitle">subtitle</string>
     <string name="sampleTitle">title</string>
+    <string name="title_activity_image_selector">ImageSelectorActivity</string>
     <string name="title_activity_barcode_scanner">BarcodeScanner</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>

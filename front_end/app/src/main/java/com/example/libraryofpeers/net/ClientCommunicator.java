@@ -32,7 +32,7 @@ class ClientCommunicator {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    <T> T doPost(String urlPath, final Object requestInfo, Map<String, String> headers, Class<T> returnType) throws IOException {
+    <T> T doPost(final String urlPath, final Object requestInfo, Map<String, String> headers, Class<T> returnType) throws IOException {
         RequestStrategy requestStrategy = new RequestStrategy() {
             @Override
             public void setRequestMethod(HttpURLConnection connection) throws IOException {
@@ -45,6 +45,7 @@ class ClientCommunicator {
                 connection.setDoOutput(true);
 
                 String entityBody = Serializer.serialize(requestInfo);
+                System.out.println("........................" + urlPath + "=" + entityBody + ".........................");
                 try (DataOutputStream os = new DataOutputStream(connection.getOutputStream())) {
                     os.writeBytes(entityBody);
                     os.flush();

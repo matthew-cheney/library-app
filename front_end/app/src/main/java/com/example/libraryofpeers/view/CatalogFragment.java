@@ -90,6 +90,11 @@ public class CatalogFragment extends Fragment implements CatalogPresenter.View {
 
         RecyclerView CatalogRecyclerView = view.findViewById(R.id.statusesRecyclerView);
 
+        CatalogRecyclerView.setHasFixedSize(true);
+        CatalogRecyclerView.setItemViewCacheSize(20);
+        CatalogRecyclerView.setDrawingCacheEnabled(true);
+        CatalogRecyclerView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
+
         LinearLayoutManager layoutManager = new LinearLayoutManager(this.getContext());
         CatalogRecyclerView.setLayoutManager(layoutManager);
 
@@ -127,7 +132,7 @@ public class CatalogFragment extends Fragment implements CatalogPresenter.View {
         void bindItem(Item item) {
             bindItemToViews(item, itemTitle, itemCategory, itemImage, getContext());
             currentItem = item;
-            itemView.setOnClickListener(new ItemClickListener(currentItem));
+            itemView.setOnClickListener(new ItemClickListener(currentItem,  user.getId().equals(LoginServiceProxy.getInstance().getCurrentUser().getId())));
         }
     }
 
@@ -201,24 +206,48 @@ public class CatalogFragment extends Fragment implements CatalogPresenter.View {
             isLoading = true;
             addLoadingFooter();
 
-            if (SearchCache.getCatalogQuery().equals("") || SearchCache.getCategoryFilter() != null) {
+            if (user.getId().equals(LoginServiceProxy.getInstance().getCurrentUser().getId())) {
+                // own user
+                if (SearchCache.getCatalogQuery().equals("") || SearchCache.getCategoryFilter() != null) {
 //                Toast.makeText(getContext(), SearchCache.getCategoryFilter(), Toast.LENGTH_SHORT).show();
-                CatalogTask getCatalogTask = new CatalogTask(presenter, this);
-                CatalogRequest request = new CatalogRequest(user.getId(), SearchCache.getCategoryFilter(), itemsLoaded);  // Eventually this will track how many items loaded so far
-                //            if (lastItem != null) {
-                //                request.setLastItemInCatalogId(lastItem.getId());
-                //            }
-                getCatalogTask.execute(request);
-            } else {
-                // This will be a search task once that's available
+                    CatalogTask getCatalogTask = new CatalogTask(presenter, this);
+                    CatalogRequest request = new CatalogRequest(user.getId(), SearchCache.getCategoryFilter(), itemsLoaded);
+                    //            if (lastItem != null) {
+                    //                request.setLastItemInCatalogId(lastItem.getId());
+                    //            }
+                    getCatalogTask.execute(request);
+                } else {
+                    // This will be a search task once that's available
 //                Toast.makeText(getContext(), "Using search mode", Toast.LENGTH_LONG).show();
-                SearchItemsTask searchTask = new SearchItemsTask(this, searchPresenter);
-                SearchItemsRequest request = new SearchItemsRequest(user.getId(), SearchCache.getCatalogQuery(), itemsLoaded);  // Eventually this will track how many items loaded so far
-                //            if (lastItem != null) {
-                //                request.setLastItemInCatalogId(lastItem.getId());
-                //            }
-                searchTask.execute(request);
+                    SearchItemsTask searchTask = new SearchItemsTask(this, searchPresenter);
+                    SearchItemsRequest request = new SearchItemsRequest(user.getId(), SearchCache.getCatalogQuery(), itemsLoaded);
+                    //            if (lastItem != null) {
+                    //                request.setLastItemInCatalogId(lastItem.getId());
+                    //            }
+                    searchTask.execute(request);
+                }
+            } else {
+                // friend's page
+                if (SearchCache.getFriendCatalogQuery().equals("") || SearchCache.getFriendCategoryFilter() != null) {
+//                Toast.makeText(getContext(), SearchCache.getCategoryFilter(), Toast.LENGTH_SHORT).show();
+                    CatalogTask getCatalogTask = new CatalogTask(presenter, this);
+                    CatalogRequest request = new CatalogRequest(user.getId(), SearchCache.getFriendCategoryFilter(), itemsLoaded);
+                    //            if (lastItem != null) {
+                    //                request.setLastItemInCatalogId(lastItem.getId());
+                    //            }
+                    getCatalogTask.execute(request);
+                } else {
+                    // This will be a search task once that's available
+//                Toast.makeText(getContext(), "Using search mode", Toast.LENGTH_LONG).show();
+                    SearchItemsTask searchTask = new SearchItemsTask(this, searchPresenter);
+                    SearchItemsRequest request = new SearchItemsRequest(user.getId(), SearchCache.getFriendCatalogQuery(), itemsLoaded);
+                    //            if (lastItem != null) {
+                    //                request.setLastItemInCatalogId(lastItem.getId());
+                    //            }
+                    searchTask.execute(request);
+                }
             }
+
         }
 
         @Override

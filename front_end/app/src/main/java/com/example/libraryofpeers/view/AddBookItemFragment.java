@@ -3,6 +3,7 @@ package com.example.libraryofpeers.view;
 import android.content.Intent;
 import android.os.Bundle;
 
+import Config.Constants;
 import Entities.User;
 import Request.AddItemRequest;
 import Response.AddItemResponse;
@@ -32,9 +33,7 @@ public class AddBookItemFragment extends Fragment implements AddItemTask.AddItem
     EditText descriptionEditText;
     EditText imageUrlEditText;
     EditText itemFormatEditText;
-    String BOOK_CATEGORY = "BOOK";
     Button scanButton;
-    final int BARCODE_CODE = 0;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -51,6 +50,14 @@ public class AddBookItemFragment extends Fragment implements AddItemTask.AddItem
         imageUrlEditText = (EditText) view.findViewById(R.id.imageEditor);
         itemFormatEditText = (EditText) view.findViewById(R.id.itemFormatEditor);
 
+        final Button addImageBtn = (Button) view.findViewById(R.id.addBookImageButton);
+        addImageBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                StartImageSelectorActivity();
+            }
+        });
+
         addItemBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -65,7 +72,7 @@ public class AddBookItemFragment extends Fragment implements AddItemTask.AddItem
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(), BarcodeScanner.class);
 //                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivityForResult(intent, BARCODE_CODE);
+                startActivityForResult(intent, Constants.BARCODE_CODE);
             }
         });
 
@@ -78,7 +85,7 @@ public class AddBookItemFragment extends Fragment implements AddItemTask.AddItem
         String title = titleEditText.getText().toString();
         String imageUrl = imageUrlEditText.getText().toString();
         String description = descriptionEditText.getText().toString();
-        String releaseYeaString = releaseYearEditText.getText().toString();
+        String releaseYearString = releaseYearEditText.getText().toString();
         String genre = genreEditText.getText().toString();
         String itemFormat = itemFormatEditText.getText().toString();
         String author = authorEditText.getText().toString();
@@ -87,16 +94,16 @@ public class AddBookItemFragment extends Fragment implements AddItemTask.AddItem
         if (title.isEmpty()) {
             Toast.makeText(getActivity(), "Title is required!", Toast.LENGTH_LONG).show();
         } else {
-            imageUrl = (!imageUrl.isEmpty()) ? imageUrl : null;
-            description = (!description.isEmpty()) ? description : null;
-            genre = (!genre.isEmpty()) ? genre : null;
-            itemFormat = (!itemFormat.isEmpty()) ? itemFormat : null;
-            author = (!author.isEmpty()) ? author : null;
-            releaseYear = (!releaseYeaString.isEmpty()) ? null : Integer.parseInt(releaseYeaString);
+            imageUrl = (imageUrl.isEmpty()) ? null : imageUrl;
+            description = (description.isEmpty()) ? null : description;
+            genre = (genre.isEmpty()) ? null : genre;
+            itemFormat = (itemFormat.isEmpty()) ? null : itemFormat;
+            author = (author.isEmpty()) ? null : author;
+            releaseYear = (releaseYearString.isEmpty()) ? null : Integer.parseInt(releaseYearString);
 
             AddItemRequest addItemRequest = new AddItemRequest(
                     titleEditText.getText().toString(),
-                    BOOK_CATEGORY,
+                    Constants.BOOK_CATEGORY,
                     false,
                     user.getId(),
                     imageUrl,
@@ -127,11 +134,16 @@ public class AddBookItemFragment extends Fragment implements AddItemTask.AddItem
         Toast.makeText(getActivity(), "Failed To Add Item", Toast.LENGTH_LONG).show();
     }
 
+    public void StartImageSelectorActivity() {
+        Intent intent = new Intent(this.getActivity(), ImageSelectorActivity.class);
+        startActivityForResult(intent, Constants.IMAGE_CODE);
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         switch(requestCode) {
-            case (BARCODE_CODE) : {
+            case (Constants.BARCODE_CODE) : {
                 if (resultCode == BarcodeScanner.RESULT_OK) {
                     // TODO Extract the data returned from the child Activity.
                     String isbn = data.getStringExtra("isbn");
@@ -140,11 +152,18 @@ public class AddBookItemFragment extends Fragment implements AddItemTask.AddItem
                 }
                 break;
             }
+            case Constants.IMAGE_CODE:
+                imageUrlEditText.setText(data.getStringExtra(Constants.IMAGE_URL_EXTRA));
+                break;
         }
     }
 
     @Override
     public void onQuerySuccess(APICommunicator.BookResult bookResult) {
+        if (!bookResult.any()) {
+            Toast.makeText(getContext(), "book not found", Toast.LENGTH_SHORT).show();
+            return;
+        }
         if (bookResult.getTitle() != null) {
             titleEditText.setText(bookResult.getTitle());
         }
@@ -153,6 +172,9 @@ public class AddBookItemFragment extends Fragment implements AddItemTask.AddItem
         }
         if (bookResult.getPublishDate() != null) {
             releaseYearEditText.setText(bookResult.getPublishDate());
+        }
+        if (bookResult.getCoverUrl() != null) {
+            imageUrlEditText.setText(bookResult.getCoverUrl());
         }
     }
 
