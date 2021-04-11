@@ -71,6 +71,13 @@ public class HomeFragment extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        SearchCache.setCatalogQuery("");
+        SearchCache.setCategoryFilter(null);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -129,6 +136,7 @@ public class HomeFragment extends Fragment {
         tabs.setupWithViewPager(viewPager);
 
         final SearchView search = getView().findViewById(R.id.catalog_search);
+
         search.setOnQueryTextListener(new OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
