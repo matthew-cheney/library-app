@@ -27,7 +27,7 @@ public class MySqlFriendshipDAO extends BaseMySqlDAO implements IFriendshipDAO {
         ResultSet resultSet;
         String sqlCommand = "SELECT * FROM Friendships WHERE "
                 + "UserIdA = ? AND "
-                + "UserIdB = ?";
+                + "UserIdB = ?;";
 
         try (PreparedStatement statement = connection.prepareStatement(sqlCommand)) {
             statement.setString(1, friendship.getSortedUserIdA());
@@ -63,7 +63,8 @@ public class MySqlFriendshipDAO extends BaseMySqlDAO implements IFriendshipDAO {
                 + "(UserIdA = ? OR "
                 + "UserIdB = ?) "
                 + "ORDER BY UserIdA "
-                + "LIMIT " + offset + ", " + Constants.BATCH_SIZE;
+                + "LIMIT " + offset + ", " + Constants.BATCH_SIZE
+                + ";";
 
         try (PreparedStatement statement = connection.prepareStatement(sqlCommand)) {
             statement.setString(1, userId);
@@ -110,7 +111,7 @@ public class MySqlFriendshipDAO extends BaseMySqlDAO implements IFriendshipDAO {
         Connection connection = getConnectionPool().getConnection();
 
         boolean success = false;
-        String sqlCommand = "INSERT INTO Friendships VALUES(?, ?, ?)";
+        String sqlCommand = "INSERT INTO Friendships VALUES(?, ?, ?);";
 
         try (PreparedStatement statement = connection.prepareStatement(sqlCommand)) {
             statement.setString(1, EntityUtils.generateId());
@@ -141,15 +142,19 @@ public class MySqlFriendshipDAO extends BaseMySqlDAO implements IFriendshipDAO {
 
         boolean success = false;
         String sqlCommand = "DELETE FROM Friendships WHERE "
-                + "UserIdA = ? AND "
-                + "UserIdB = ?";
+                + "(UserIdA = ? AND "
+                + "UserIdB = ?) OR"
+                + "(UserIdA = ? AND "
+                + "UserIdB = ?);";
 
         try (PreparedStatement statement = connection.prepareStatement(sqlCommand)) {
             statement.setString(1, friendship.getSortedUserIdA());
             statement.setString(2, friendship.getSortedUserIdB());
+            statement.setString(3, friendship.getSortedUserIdB());
+            statement.setString(4, friendship.getSortedUserIdA());
 
             if (statement.executeUpdate() != 1) {
-                throw new DatabaseException(HttpURLConnection.HTTP_BAD_REQUEST, "Error deleting friendship!");
+                throw new DatabaseException(HttpURLConnection.HTTP_BAD_REQUEST, "Error deleting friendship: " + friendship.getSortedUserIdA() + "; " + friendship.getSortedUserIdB());
             }
             success = true;
             return true;

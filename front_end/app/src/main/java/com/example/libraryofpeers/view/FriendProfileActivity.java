@@ -1,7 +1,12 @@
 package com.example.libraryofpeers.view;
 
+import Entities.Friendship;
 import Config.Constants;
 import Entities.User;
+import Request.AddFriendRequest;
+import Request.RemoveFriendRequest;
+import Response.AddFriendResponse;
+import Response.RemoveFriendResponse;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
@@ -17,12 +22,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.libraryofpeers.R;
+import com.example.libraryofpeers.async_tasks.AddFriendTask;
+import com.example.libraryofpeers.async_tasks.RemoveFriendTask;
+import com.example.libraryofpeers.presenters.AddFriendPresenter;
+import com.example.libraryofpeers.presenters.RemoveFriendPresenter;
+import com.example.libraryofpeers.service_proxy.LoginServiceProxy;
 import com.example.libraryofpeers.view.utils.SearchCache;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class FriendProfileActivity extends AppCompatActivity {
+public class FriendProfileActivity extends AppCompatActivity implements AddFriendTask.AddFriendObserver, RemoveFriendTask.RemoveFriendObserver {
 
     ImageView friendToggleBtn;
     ImageView returnHomeBtn;
@@ -157,14 +167,42 @@ public class FriendProfileActivity extends AppCompatActivity {
 
     private void toggleFriendship() {
         System.out.println("Toggle Friends");
+        User curUser = LoginServiceProxy.getInstance().getCurrentUser();
+        Friendship friendship = new Friendship(curUser.getId(), userFriend.getId());
         if (friendToggleBtn.isActivated()) {
-            System.out.println("We are now friends!");
-            friendToggleBtn.setActivated(false);
-            Toast.makeText(this, "You are now friends!", Toast.LENGTH_LONG).show();
+            System.out.println("Trying to become friends!");
+            AddFriendRequest request = new AddFriendRequest(friendship);
+            AddFriendPresenter presenter = new AddFriendPresenter();
+            AddFriendTask task = new AddFriendTask(this, presenter);
+            task.execute(request);
         } else {
-            System.out.println("Sorry, we are not friends any more.");
-            friendToggleBtn.setActivated(true);
-            Toast.makeText(this, "Friend removed", Toast.LENGTH_LONG).show();
+            System.out.println("Removing our friendship.");
+            RemoveFriendRequest request = new RemoveFriendRequest(friendship);
+            RemoveFriendPresenter presenter = new RemoveFriendPresenter();
+            RemoveFriendTask task = new RemoveFriendTask(this, presenter);
+            task.execute(request);
         }
+    }
+
+    @Override
+    public void onAddFriendSuccess(AddFriendResponse response) {
+        friendToggleBtn.setActivated(false);
+        Toast.makeText(this, "You are now friends!", Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onAddFriendFailure(AddFriendResponse response) {
+        Toast.makeText(this, "Error adding Friend.", Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onRemoveFriendSuccess(RemoveFriendResponse response) {
+        friendToggleBtn.setActivated(true);
+        Toast.makeText(this, "Friend removed", Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onRemoveFriendFailure(RemoveFriendResponse response) {
+        Toast.makeText(this, "Error removing Friend.", Toast.LENGTH_LONG).show();
     }
 }
