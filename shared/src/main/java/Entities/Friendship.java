@@ -41,6 +41,14 @@ public class Friendship {
         return userIdB;
     }
 
+    public String getUserIdA() {
+        return userIdA;
+    }
+
+    public String getUserIdB() {
+        return userIdB;
+    }
+
     // endregion
 
     // region Setters
